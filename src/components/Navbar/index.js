@@ -1,9 +1,9 @@
 import React from 'react';
 import { StyledNavbar, NavItemLink } from './style';
 
-const Navbar = ({ children }) => {
+const Navbar = ({ children, ...props }) => {
   return (
-    <StyledNavbar>
+    <StyledNavbar {...props}>
       <NavItemLink to='/login'>Log in</NavItemLink>
       <NavItemLink to='/signup'>Sign up</NavItemLink>
     </StyledNavbar>

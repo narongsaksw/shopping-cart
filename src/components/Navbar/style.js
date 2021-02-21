@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 export const StyledNavbar = styled.nav`
   display: flex;
   align-items: center;
-  justiify-content: flex-end;
+  justify-content: flex-end;
   width: 100%;
   height: 70px;
   padding: 0 30px;
@@ -15,7 +15,7 @@ export const StyledNavbar = styled.nav`
 
 export const NavItemLink = styled(Link)`
   color: inherit;
-  margin-left: 16px;
+  margin-right: 16px;
   ${(props) =>
     props.fill &&
     css`

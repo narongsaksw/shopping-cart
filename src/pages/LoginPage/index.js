@@ -10,6 +10,9 @@ import Button from '../../components/Button';
 const LoginPage = () => {
   const onSubmit = (e) => {
     e.preventDefault();
+    const email = document.getElementById('login-email').value;
+    const password = document.getElementById('login-password').value;
+    console.log({ email, password });
   };
   return (
     <EntryPage>
@@ -17,16 +20,12 @@ const LoginPage = () => {
       <EntryCard>
         <form onSubmit={onSubmit}>
           <InputGroup>
-            <label htmlFor='login-email'>Email Address</label>
-            <Input
-              type='text'
-              placeholder='example@email.com'
-              id='login-email'
-            />
+            <label htmlFor='login-username'>Username</label>
+            <Input type='text' placeholder='username' id='login-username' />
           </InputGroup>
           <InputGroup>
             <label htmlFor='login-password'>Password</label>
-            <Input type='text' placeholder='Password' id='login-password' />
+            <Input type='password' placeholder='Password' id='login-password' />
           </InputGroup>
           <Button type='submit' full>
             Log in

@@ -20,6 +20,11 @@ function SideBar() {
   const [sidebar, setSidebar] = useState(false);
   const showSidebar = () => setSidebar(!sidebar);
   const history = useHistory();
+
+  const logout = () => {
+    history.replace('/');
+    localStorage.removeItem('userData');
+  };
   return (
     <Fragment>
       <IconContext.Provider value={{ color: '#fff' }}>
@@ -28,8 +33,13 @@ function SideBar() {
             <FaIcons.FaBars onClick={showSidebar} />
           </MenuBars>
           <MenuBars
-            onClick={() => history.replace('/')}
-            style={{ marginRight: '2rem', color: '#fff', fontSize: 20 }}
+            onClick={logout}
+            style={{
+              marginRight: '2rem',
+              marginLeft: 0,
+              color: '#fff',
+              fontSize: 20,
+            }}
           >
             Log out
           </MenuBars>

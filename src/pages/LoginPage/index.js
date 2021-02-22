@@ -1,18 +1,25 @@
-import React, { Fragment } from 'react';
-import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import React from 'react';
+import { useHistory } from 'react-router';
+import { login } from '../../middleware/auth';
+
 import { EntryPage, PageHeader } from '../style';
+
 import EntryCard from '../../components/EntryCard';
 import Input from '../../components/Input';
 import InputGroup from '../../components/InputGroup';
 import Button from '../../components/Button';
 
 const LoginPage = () => {
-  const onSubmit = (e) => {
+  const history = useHistory();
+  const onSubmit = async (e) => {
     e.preventDefault();
-    const email = document.getElementById('login-email').value;
+    const username = document.getElementById('login-username').value;
     const password = document.getElementById('login-password').value;
-    console.log({ email, password });
+    if (username && password) {
+      login({ history, username, password });
+    } else {
+      alert('username หรือ password ไม่ถูกต้อง !!');
+    }
   };
   return (
     <EntryPage>

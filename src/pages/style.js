@@ -6,7 +6,7 @@ export const EntryPage = styled.div`
   align-items: center;
   flex-direction: column;
   min-height: 100vh;
-  background-color: #fbfbfb;
+  background-color: #f0c1b3;
 `;
 
 export const PageHeader = styled(Link)`

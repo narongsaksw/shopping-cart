@@ -19,12 +19,12 @@ export const login = async ({ history, username, password }) => {
       const {
         role: { role },
         user,
-      } = res.data.dataValues;
-      setUserData({ role, name: user });
+      } = res?.data?.dataValues;
+      setUserData({ role: role, name: user });
     });
 
   if (JSON.parse(localStorage.getItem('userData')).role === 'Admin') {
-    history.push('/admin/history');
+    history.push('/dashboard');
   } else {
     history.push('/employee');
   }

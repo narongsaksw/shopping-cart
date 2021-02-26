@@ -6,17 +6,17 @@ import * as MdIcons from 'react-icons/md';
 export const SidebarTab = [
   {
     title: 'ข้อมูลการขาย',
-    path: '/admin/history',
+    path: '/history',
     icon: <MdIcons.MdAttachMoney />,
   },
   {
     title: 'คลังสินค้า',
-    path: '/admin/stock',
+    path: '/stock',
     icon: <FaIcons.FaWarehouse />,
   },
   {
     title: 'พนักงาน',
-    path: '/admin/employee-list',
+    path: '/employee-list',
     icon: <RiIcons.RiGroupLine />,
   },
 ];

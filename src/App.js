@@ -1,10 +1,11 @@
-import React, { useState, useMemo } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { UserContext } from './hooks/userContext';
+import React from 'react';
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Redirect,
+} from 'react-router-dom';
 import './App.css';
-
-import PublicRoute from './routes/publicRoute';
-import PrivateRoute from './routes/privateRoute';
 
 //layouts
 import AdminLayout from './Layout/AdminLayout';
@@ -18,30 +19,20 @@ import EmployeeListPage from './pages/EmployeeListPage';
 import NotFoundPage from './pages/NotFoundPage';
 
 const App = () => {
-  const [user, setUser] = useState(null);
-  const value = useMemo(() => ({ user, setUser }), [user, setUser]);
   return (
     <Router>
-      <UserContext.Provider value={value}>
-        <Switch>
-          <PublicRoute restricted={true} path='/' exact component={LoginPage} />
-          <PrivateRoute>
-            <AdminLayout>
-              <Switch>
-                <PrivateRoute path='/admin/history' component={HistoryPage} />
-                <PrivateRoute path='/admin/stock' component={StockPage} />
-                <PrivateRoute
-                  path='/admin/employee-list'
-                  component={EmployeeListPage}
-                />
-              </Switch>
-            </AdminLayout>
-          </PrivateRoute>
-          <PrivateRoute path='/employee' component={EmployeePage} />
-          <PrivateRoute path='*' component={NotFoundPage} />
-          <PublicRoute path='*' component={NotFoundPage} />
-        </Switch>
-      </UserContext.Provider>
+      <Switch>
+        <Route path='/' exact component={LoginPage} />
+        <Route path={['/dashboard', '/history', '/employee-list', '/stock']}>
+          <AdminLayout>
+            <Route path='/history' component={HistoryPage} />
+            <Route path='/stock' component={StockPage} />
+            <Route path='/employee-list' component={EmployeeListPage} />
+          </AdminLayout>
+        </Route>
+        <Route path='/not-found' component={NotFoundPage} />
+        <Redirect to='/not-found' />
+      </Switch>
     </Router>
   );
 };

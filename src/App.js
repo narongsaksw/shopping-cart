@@ -9,6 +9,7 @@ import "./App.css";
 
 //layouts
 import AdminLayout from "./Layout/AdminLayout";
+import EmployeeLayout from "./Layout/EmployeeLayout";
 
 //pages
 import LoginPage from "./pages/LoginPage";
@@ -30,7 +31,11 @@ const App = () => {
             <Route path="/employee-list" component={EmployeeListPage} />
           </AdminLayout>
         </Route>
-        <Route path="/employee" component={EmployeePage} />
+        <Route path={["/employee"]}>
+          <EmployeeLayout>
+            <Route path="/employee" component={EmployeePage} />
+          </EmployeeLayout>
+        </Route>
         <Route path="/not-found" component={NotFoundPage} />
         <Redirect to="/not-found" />
       </Switch>

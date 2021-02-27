@@ -11,7 +11,7 @@ export const isLogin = () => {
 
 export const login = async ({ history, username, password }) => {
   await axios
-    .post("https://shopeexpress.herokuapp.com/api/v1/member/login", {
+    .post("http://localhost:3001/api/v1/member/login", {
       username,
       password,
     })
@@ -23,12 +23,12 @@ export const login = async ({ history, username, password }) => {
         } = res.data.dataValues;
         setUserData({ role, name: user });
       } else {
-        history.push("/");
+        window.location.href = "http://localhost:3000";
       }
     });
 
   if (JSON.parse(localStorage.getItem("userData")).role === "Admin") {
-    history.push("/history");
+    history.push("/dashboard");
   } else {
     history.push("/employee");
   }

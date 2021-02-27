@@ -9,13 +9,13 @@
 }
 
 .ant-spin-nested-loading {
-  z-index: -1;
+  z-index: 1;
 }
 
 .ant-picker.ant-picker-range {
-  z-index: -1;
+  z-index: 1;
 }
 
 .ant-card.ant-card-bordered {
-  z-index: -1;
+  z-index: 1;
 }

@@ -9,5 +9,4 @@ export const Container = styled.div`
   // background-image: linear-gradient(to bottom right, #f9ebea, #fadbd8, #d7bde2);
   z-index: 1;
   flex-wrap: wrap;
-  min-width: 1475px;
 `;

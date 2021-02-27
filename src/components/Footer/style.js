@@ -1,1 +1,1 @@
-export const footerStyle = { textAlign: "center" };
+export const footerStyle = { textAlign: "center", minWidth: 815 };

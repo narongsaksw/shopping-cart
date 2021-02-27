@@ -24,5 +24,6 @@ export const style = {
     padding: 24,
     minHeight: 380,
     zIndex: 100,
+    minWidth: 390,
   },
 };

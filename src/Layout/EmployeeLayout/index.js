@@ -7,6 +7,7 @@ import { style } from "./style";
 import { useHistory } from "react-router";
 
 const { Content } = Layout;
+const { SubMenu } = Menu;
 
 const EmployeeLayout = ({ children }) => {
   const history = useHistory();
@@ -15,13 +16,28 @@ const EmployeeLayout = ({ children }) => {
     history.replace("/");
     localStorage.removeItem("userData");
   };
+
+  const handleClick = e => {
+    history.replace(`/employee/${e.key}`);
+  };
+
   return (
     <Layout>
       <Header>
         <div style={style.logoStyle} />
         <LogoutOutlined style={{ ...style.logoLogoutStyle }} onClick={logout} />
-        <Menu theme="dark" mode="horizontal" defaultSelectedKeys={["0"]}>
-          <Menu.Item key="1">nav 1</Menu.Item>
+        <Menu
+          theme="dark"
+          mode="horizontal"
+          defaultSelectedKeys={["0"]}
+          onClick={handleClick}
+        >
+          <SubMenu key="group" title="Group">
+            <Menu.Item key="all">ทั้งหมด</Menu.Item>
+            <Menu.Item key="อาหาร">อาหาร</Menu.Item>
+            <Menu.Item key="น้ำ">น้ำ</Menu.Item>
+            <Menu.Item key="ขนม">ขนม</Menu.Item>
+          </SubMenu>
         </Menu>
       </Header>
       <Content style={style.siteLayoutStyle}>

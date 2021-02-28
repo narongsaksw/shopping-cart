@@ -13,6 +13,7 @@ const EmployeePage = props => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    setLoading(true);
     const group = props.match.params.group;
     if (group === "all") {
       functionGet(warehouse_find_all, async res => {
@@ -34,6 +35,8 @@ const EmployeePage = props => {
           setLoading(false);
         }
       });
+    } else {
+      setData([]);
     }
   }, [props.match.params.group]);
 

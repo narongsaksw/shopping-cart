@@ -8,6 +8,7 @@ export const style = {
     alignItems: "center",
     justifyContent: "center",
     borderRadius: "10px 10px 0 0",
+    padding: 5
   },
-  imageStyle: { width: "100%" },
+  imageStyle: { width: "90%" }
 };

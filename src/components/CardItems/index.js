@@ -4,7 +4,7 @@ import { style } from "./style";
 
 const { Meta } = Card;
 
-const CardItrems = (props) => {
+const CardItrems = props => {
   return (
     <>
       <Card
@@ -15,7 +15,7 @@ const CardItrems = (props) => {
             <img alt="example" src={props.image} style={style.imageStyle} />
           </div>
         }
-        onClick={(e) => {
+        onClick={e => {
           props.setVisible(true);
         }}
       >

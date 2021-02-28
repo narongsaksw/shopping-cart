@@ -11,15 +11,15 @@ export const isLogin = () => {
 
 export const login = async ({ history, username, password }) => {
   await axios
-    .post("http://localhost:3001/api/v1/member/login", {
+    .post("http://localhost:3001/api/v1/act-membership/login", {
       username,
-      password,
+      password
     })
-    .then((res) => {
+    .then(res => {
       if (res.data.dataValues != null) {
         const {
           role: { role },
-          user,
+          user
         } = res.data.dataValues;
         setUserData({ role, name: user });
       } else {
@@ -30,7 +30,7 @@ export const login = async ({ history, username, password }) => {
   if (JSON.parse(localStorage.getItem("userData")).role === "Admin") {
     history.push("/dashboard");
   } else {
-    history.push("/employee");
+    history.push("/employee/all");
   }
   // console.log({  parse: JSON.parse(getUserData) });
 };

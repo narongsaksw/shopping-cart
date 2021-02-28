@@ -3,7 +3,7 @@ import {
   BrowserRouter as Router,
   Route,
   Switch,
-  Redirect,
+  Redirect
 } from "react-router-dom";
 import "./App.css";
 
@@ -33,7 +33,7 @@ const App = () => {
         </Route>
         <Route path={["/employee"]}>
           <EmployeeLayout>
-            <Route path="/employee" component={EmployeePage} />
+            <Route path="/employee/:group" component={EmployeePage} />
           </EmployeeLayout>
         </Route>
         <Route path="/not-found" component={NotFoundPage} />

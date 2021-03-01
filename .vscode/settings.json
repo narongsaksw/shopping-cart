@@ -1,0 +1,6 @@
+{
+    "editor.formatOnPaste": true,
+    "prettier.htmlWhitespaceSensitivity": "ignore",
+    "editor.formatOnSave": true,
+    "editor.fontWeight": null
+}

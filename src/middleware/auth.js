@@ -15,15 +15,21 @@ export const login = async ({ history, username, password }) => {
       username,
       password,
     })
-    .then((res) => res.data);
-  const {
-    role: { role },
-    user,
-  } = res.dataValues;
-  setUserData({ role: role, name: user });
+    .then((res) => {
+      if (res.data.dataValues != null) {
+        const {
+          role: { role },
+          user,
+        } = res.data.dataValues;
+        setUserData({ role, name: user });
+      } else {
+        window.location.href = 'http://localhost:3000';
+      }
+    });
+
   if (JSON.parse(localStorage.getItem('userData')).role === 'Admin') {
     history.push('/dashboard');
   } else {
-    history.push('/employee');
+    history.push('/employee/All Product');
   }
 };

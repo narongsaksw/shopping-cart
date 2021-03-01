@@ -10,23 +10,20 @@ export const isLogin = () => {
 };
 
 export const login = async ({ history, username, password }) => {
-  await axios
-    .post('https://shopeexpress.herokuapp.com/api/v1/member/login', {
+  const res = await axios
+    .post('http://fourdust.kozow.com:3001/api/v1/act-membership/login', {
       username,
       password,
     })
-    .then((res) => {
-      const {
-        role: { role },
-        user,
-      } = res?.data?.dataValues;
-      setUserData({ role: role, name: user });
-    });
-
+    .then((res) => res.data);
+  const {
+    role: { role },
+    user,
+  } = res.dataValues;
+  setUserData({ role: role, name: user });
   if (JSON.parse(localStorage.getItem('userData')).role === 'Admin') {
     history.push('/dashboard');
   } else {
     history.push('/employee');
   }
-  // console.log({  parse: JSON.parse(getUserData) });
 };

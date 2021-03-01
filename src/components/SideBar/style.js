@@ -28,6 +28,7 @@ export const NavMenu = styled.nav`
   top: 0;
   left: ${(props) => (props.isOpen ? '0' : '-100%')};
   transition: ${(props) => (props.isOpen ? '350ms' : '850ms')};
+  z-index: 99;
 `;
 
 export const Navtext = styled.li`

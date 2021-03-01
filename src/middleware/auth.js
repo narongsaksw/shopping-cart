@@ -30,7 +30,7 @@ export const login = async ({ history, username, password }) => {
   if (JSON.parse(localStorage.getItem("userData")).role === "Admin") {
     history.push("/dashboard");
   } else {
-    history.push("/employee/all");
+    history.push("/employee/All Product");
   }
   // console.log({  parse: JSON.parse(getUserData) });
 };

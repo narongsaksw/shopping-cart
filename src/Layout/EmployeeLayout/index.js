@@ -1,15 +1,29 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Layout, Menu, Breadcrumb } from "antd";
 import { LogoutOutlined } from "@ant-design/icons";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
 import { style } from "./style";
 import { useHistory } from "react-router";
+import { product_group_find_all } from '../../constant'
+import { functionGet } from '../../services/employee'
 
 const { Content } = Layout;
 const { SubMenu } = Menu;
 
 const EmployeeLayout = ({ children }) => {
+  const [data, setData] = useState([])
+
+  useEffect(() => {
+    functionGet(product_group_find_all, (e) => {
+      let val = []
+      if (e.lenght !== 0) {
+        e.forEach(elememt => { val.push(<Menu.Item key={`${elememt.uuid}`}>{elememt.name}</Menu.Item>) })
+        setData(val)
+      }
+    })
+  }, [])
+
   const history = useHistory();
 
   const logout = () => {
@@ -33,10 +47,8 @@ const EmployeeLayout = ({ children }) => {
           onClick={handleClick}
         >
           <SubMenu key="group" title="Group">
-            <Menu.Item key="all">ทั้งหมด</Menu.Item>
-            <Menu.Item key="อาหาร">อาหาร</Menu.Item>
-            <Menu.Item key="น้ำ">น้ำ</Menu.Item>
-            <Menu.Item key="ขนม">ขนม</Menu.Item>
+            <Menu.Item key="All Product">All Product</Menu.Item>
+            {data}
           </SubMenu>
         </Menu>
       </Header>

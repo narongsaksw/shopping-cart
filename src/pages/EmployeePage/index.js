@@ -3,7 +3,7 @@ import { Container } from "./style";
 import CardItems from "../../components/CardItems";
 import Drawer from "./Drawer";
 import { functionGet } from "../../services/employee";
-import { warehouse_find_all } from "../../constant";
+import { warehouse_find_all, warehouse_product_group } from "../../constant";
 import { Skeleton } from "antd";
 
 const EmployeePage = props => {
@@ -15,7 +15,7 @@ const EmployeePage = props => {
   useEffect(() => {
     setLoading(true);
     const group = props.match.params.group;
-    if (group === "all") {
+    if (group === "All Product") {
       functionGet(warehouse_find_all, async res => {
         const val = [];
         await res.forEach(element => {
@@ -36,7 +36,25 @@ const EmployeePage = props => {
         }
       });
     } else {
-      setData([]);
+      functionGet(`${warehouse_product_group}${group}`, async res => {
+        const val = [];
+        await res.forEach(element => {
+          val.push(
+            <CardItems
+              {...element}
+              description={`price ${element.price} BATH`}
+              setVisible={e => {
+                setVisible(e);
+                setValue(element);
+              }}
+            />
+          );
+        });
+        if (val.length > 0) {
+          setData(val);
+          setLoading(false);
+        }
+      });
     }
   }, [props.match.params.group]);
 
@@ -49,8 +67,8 @@ const EmployeePage = props => {
           <Skeleton active />
         </>
       ) : (
-        <>{data}</>
-      )}
+          <>{data}</>
+        )}
       <Drawer visible={visible} setVisible={e => setVisible(e)} value={value} />
     </Container>
   );

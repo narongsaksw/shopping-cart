@@ -1,28 +1,33 @@
 import React, { useState, useEffect } from "react";
-import { Layout, Menu, Breadcrumb } from "antd";
+import { Layout, Menu, Breadcrumb, Badge } from "antd";
 import { LogoutOutlined } from "@ant-design/icons";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
 import { style } from "./style";
 import { useHistory } from "react-router";
-import { product_group_find_all } from '../../constant'
-import { functionGet } from '../../services/employee'
+import { product_group_find_all } from "../../constant";
+import { functionGet } from "../../services/employee";
+import { ShoppingCartOutlined } from "@ant-design/icons";
 
 const { Content } = Layout;
 const { SubMenu } = Menu;
 
 const EmployeeLayout = ({ children }) => {
-  const [data, setData] = useState([])
+  const [data, setData] = useState([]);
 
   useEffect(() => {
     functionGet(product_group_find_all, (e) => {
-      let val = []
+      let val = [];
       if (e.lenght !== 0) {
-        e.forEach(elememt => { val.push(<Menu.Item key={`${elememt.uuid}`}>{elememt.name}</Menu.Item>) })
-        setData(val)
+        e.forEach((elememt) => {
+          val.push(
+            <Menu.Item key={`${elememt.uuid}`}>{elememt.name}</Menu.Item>
+          );
+        });
+        setData(val);
       }
-    })
-  }, [])
+    });
+  }, []);
 
   const history = useHistory();
 
@@ -31,7 +36,7 @@ const EmployeeLayout = ({ children }) => {
     localStorage.removeItem("userData");
   };
 
-  const handleClick = e => {
+  const handleClick = (e) => {
     history.replace(`/employee/${e.key}`);
   };
 
@@ -40,6 +45,9 @@ const EmployeeLayout = ({ children }) => {
       <Header>
         <div style={style.logoStyle} />
         <LogoutOutlined style={{ ...style.logoLogoutStyle }} onClick={logout} />
+        <div style={style.logoStyle}>
+          <ShoppingCartOutlined></ShoppingCartOutlined>
+        </div>
         <Menu
           theme="dark"
           mode="horizontal"

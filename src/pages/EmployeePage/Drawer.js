@@ -1,18 +1,31 @@
 import React, { useState, useEffect } from "react";
-import { Drawer, Form, Button, Col, Row, Select, Image, Divider } from "antd";
+import {
+  Drawer,
+  Form,
+  Button,
+  Col,
+  Row,
+  Select,
+  Image,
+  Divider,
+  InputNumber,
+  Space,
+} from "antd";
 
 const { Option } = Select;
 
 const style = { background: "#fff", padding: "8px 0" };
 
-const Drawers = props => {
+const Drawers = (props) => {
   const [visible, setVisible] = useState(false);
   const [value, setValue] = useState({});
   const [random, setRandom] = useState(Date.now());
+  const [values, setValues] = useState("99");
 
   useEffect(() => {
     setVisible(props.visible);
     setValue(props.value);
+    setValues(1);
   }, [props.visible, props.value]);
 
   const onClose = () => {
@@ -30,7 +43,7 @@ const Drawers = props => {
         footer={
           <div
             style={{
-              textAlign: "right"
+              textAlign: "right",
             }}
           >
             <Button onClick={onClose} style={{ marginRight: 8 }}>
@@ -51,7 +64,7 @@ const Drawers = props => {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                border: "1px solid #DDDDDD"
+                border: "1px solid #DDDDDD",
               }}
             >
               <Image
@@ -94,9 +107,48 @@ const Drawers = props => {
                 <div style={style}>{value.description}</div>
               </Col>
             </Row>
+            <Row gutter={8}>
+              <Col className="gutter-row" span={9}>
+                <div style={{ ...style, float: "right", color: "#C6C6C6" }}>
+                  Quantity :
+                </div>
+              </Col>
+              <Col className="gutter-row" span={15}>
+                <div style={style}>
+                  <Space>
+                    <InputNumber
+                      min={1}
+                      max={value.value}
+                      value={values}
+                      onChange={setValues}
+                    />
+                    <Button
+                      type="primary"
+                      onClick={() => {
+                        setValues(1);
+                      }}
+                    >
+                      Reset
+                    </Button>
+                  </Space>
+                </div>
+              </Col>
+            </Row>
+            <Row gutter={8}>
+              <Col className="gutter-row" span={9}>
+                <div style={{ ...style, float: "right", color: "#C6C6C6" }}>
+                  Price/Quantity :
+                </div>
+              </Col>
+              <Col className="gutter-row" span={15}>
+                <div style={{ ...style, color: "red" }}>{`${
+                  values * value.price
+                } Bath`}</div>
+              </Col>
+            </Row>
           </Col>
         </Row>
-        <Divider orientation="left">Select product quantity</Divider>
+        <Divider orientation="right">Select product quantity</Divider>
         <Row gutter={16}></Row>
       </Drawer>
     </>

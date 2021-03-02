@@ -6,7 +6,7 @@ import { functionGet } from "../../services/employee";
 import { warehouse_find_all, warehouse_product_group } from "../../constant";
 import { Skeleton } from "antd";
 
-const EmployeePage = props => {
+const EmployeePage = (props) => {
   const [visible, setVisible] = useState(false);
   const [value, setValue] = useState({});
   const [data, setData] = useState([]);
@@ -16,47 +16,33 @@ const EmployeePage = props => {
     setLoading(true);
     const group = props.match.params.group;
     if (group === "All Product") {
-      functionGet(warehouse_find_all, async res => {
-        const val = [];
-        await res.forEach(element => {
-          val.push(
-            <CardItems
-              {...element}
-              description={`price ${element.price} BATH`}
-              setVisible={e => {
-                setVisible(e);
-                setValue(element);
-              }}
-            />
-          );
-        });
-        if (val.length > 0) {
-          setData(val);
-          setLoading(false);
-        }
-      });
+      card(warehouse_find_all);
     } else {
-      functionGet(`${warehouse_product_group}${group}`, async res => {
-        const val = [];
-        await res.forEach(element => {
-          val.push(
-            <CardItems
-              {...element}
-              description={`price ${element.price} BATH`}
-              setVisible={e => {
-                setVisible(e);
-                setValue(element);
-              }}
-            />
-          );
-        });
-        if (val.length > 0) {
-          setData(val);
-          setLoading(false);
-        }
-      });
+      card(`${warehouse_product_group}${group}`);
     }
   }, [props.match.params.group]);
+
+  const card = (e) => {
+    functionGet(e, async (res) => {
+      const val = [];
+      await res.forEach((element) => {
+        val.push(
+          <CardItems
+            {...element}
+            description={`price ${element.price} BATH`}
+            setVisible={(e) => {
+              setVisible(e);
+              setValue(element);
+            }}
+          />
+        );
+      });
+      if (val.length > 0) {
+        setData(val);
+        setLoading(false);
+      }
+    });
+  };
 
   return (
     <Container>
@@ -67,9 +53,13 @@ const EmployeePage = props => {
           <Skeleton active />
         </>
       ) : (
-          <>{data}</>
-        )}
-      <Drawer visible={visible} setVisible={e => setVisible(e)} value={value} />
+        <>{data}</>
+      )}
+      <Drawer
+        visible={visible}
+        setVisible={(e) => setVisible(e)}
+        value={value}
+      />
     </Container>
   );
 };

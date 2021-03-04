@@ -9,13 +9,11 @@ import {
   warehouse_find_one,
 } from "../../constant";
 import { Skeleton, Modal, Card, Avatar, Empty } from "antd";
-import { useHistory } from "react-router";
 import { old_file_value } from "../../form/employee";
 
 const { Meta } = Card;
 
 export const EmployeePage = (props) => {
-  const history = useHistory();
   const [visible, setVisible] = useState(false);
   const [value, setValue] = useState({});
   const [data, setData] = useState([]);
@@ -24,27 +22,23 @@ export const EmployeePage = (props) => {
   const { updateShopingCart } = useContext(props.menuContext);
   const order = useRef([]);
   const val_old = useRef([]);
+  const checkModal = useRef(false);
   const [shopingCards, setShopingCards] = useState([]);
 
   useEffect(async () => {
     const group = props.group;
     if (group === "All Product") {
       card(warehouse_find_all);
-    } else if (group === "logout") {
-      logout();
-    } else if (group === "cart") {
-      await shopingCard();
-      setVisibleModal(true);
     } else {
       setLoading(true);
       card(`${warehouse_product_group}${group}`);
     }
   }, [props.group]);
 
-  const logout = () => {
-    history.replace("/");
-    localStorage.removeItem("userData");
-  };
+  useEffect(() => {
+    shopingCard();
+    setVisibleModal(props.visible);
+  }, [props.visible]);
 
   const updateOrderItem = async (e) => {
     val_old.current = await val_old.current.map((element) => {
@@ -79,6 +73,7 @@ export const EmployeePage = (props) => {
       order.current.push(JSON.stringify(e));
       updateShopingCart(order.current.length);
     }
+    setValue({});
   };
 
   const card = (e) => {
@@ -122,16 +117,37 @@ export const EmployeePage = (props) => {
 
   const shopingCard = async () => {
     let val = [];
-    await order.current.forEach(async (element, index) => {
+    await order.current.forEach(async (element) => {
       let data = JSON.parse(element);
-      console.log(data);
       let data_item;
       await functionGet(`${warehouse_find_one}${data.warehouse_id}`, (res) => {
         data_item = res;
       });
-      console.log(data);
+      let new_element = null;
+      let dataFilter = await val_old.current.filter((e) => {
+        return JSON.parse(e).item_id === data_item.key;
+      });
+      new_element = {
+        ...data_item,
+        value_buy: JSON.parse(dataFilter[0]).value,
+        id: element.key,
+      };
       await val.push(
-        <Card {...data_item} style={{ width: "100%", marginTop: 16 }}>
+        <Card
+          {...new_element}
+          style={{
+            width: "100%",
+            marginTop: 16,
+            cursor: "pointer",
+            zIndex: 200,
+          }}
+          onClick={() => {
+            setVisible(true);
+            props.setVisibles(false);
+            checkModal.current = true;
+            setValue(new_element);
+          }}
+        >
           <Meta
             avatar={<Avatar src={`${data_item.image}`} />}
             title={`${data.dataValues.value} Item ${data.dataValues.price} Bath`}
@@ -139,7 +155,6 @@ export const EmployeePage = (props) => {
           />
         </Card>
       );
-      console.log("val ", val);
       if (val.length === order.current.length) {
         setShopingCards(val);
       }
@@ -159,10 +174,19 @@ export const EmployeePage = (props) => {
       )}
       <Drawer
         visible={visible}
-        setVisible={(e) => setVisible(e)}
+        setVisible={async (e) => {
+          setVisible(e);
+          if (checkModal.current) {
+            props.setVisibles(true);
+          }
+        }}
         value={value}
         orderItems={(e) => {
           updateOrderItem(e);
+          if (checkModal.current) {
+            shopingCard();
+            props.setVisibles(true);
+          }
         }}
       />
       <Modal
@@ -170,12 +194,12 @@ export const EmployeePage = (props) => {
         centered
         visible={visibleModal}
         onOk={() => {
-          setVisibleModal(false);
-          history.goBack();
+          props.setVisibles(false);
+          checkModal.current = false;
         }}
         onCancel={() => {
-          setVisibleModal(false);
-          history.goBack();
+          props.setVisibles(false);
+          checkModal.current = false;
         }}
         width={1000}
       >

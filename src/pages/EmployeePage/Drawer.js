@@ -45,6 +45,7 @@ const Drawers = (props) => {
         onClose={onClose}
         visible={visible}
         bodyStyle={{ paddingBottom: 80 }}
+        zIndex={1500}
         footer={
           <div
             style={{

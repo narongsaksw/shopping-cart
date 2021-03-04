@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { Layout, Menu, Breadcrumb, Badge } from "antd";
 import { LogoutOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import Footer from "../../components/Footer";
@@ -17,6 +17,7 @@ const EmployeeLayout = ({ children, ...props }) => {
   const [data, setData] = useState([]);
   const [value, setValue] = useState(0);
   const [group, setGroup] = useState();
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     if (props.match.params.group != null) {
@@ -42,7 +43,14 @@ const EmployeeLayout = ({ children, ...props }) => {
   }, []);
 
   const handleClick = (e) => {
-    history.push(`/employee/${e.key}`);
+    if (e.key === "cart") setVisible(true);
+    else if (e.key === "logout") logout();
+    else history.push(`/employee/${e.key}`);
+  };
+
+  const logout = () => {
+    history.replace("/");
+    localStorage.removeItem("userData");
   };
 
   const updateShopingCart = (e) => {
@@ -82,7 +90,12 @@ const EmployeeLayout = ({ children, ...props }) => {
         </Breadcrumb>
         <menuContext.Provider value={{ updateShopingCart }}>
           <div style={style.siteLayoutBackgroundStyle}>
-            <EmployeePage group={group} menuContext={menuContext} />
+            <EmployeePage
+              group={group}
+              menuContext={menuContext}
+              visible={visible}
+              setVisibles={(e) => setVisible(e)}
+            />
           </div>
         </menuContext.Provider>
       </Content>

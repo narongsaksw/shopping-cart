@@ -22,6 +22,7 @@ export const EmployeePage = (props) => {
   const { updateShopingCart } = useContext(props.menuContext);
   const order = useRef([]);
   const val_old = useRef([]);
+  const url = useRef("");
   const checkModal = useRef(false);
   const [shopingCards, setShopingCards] = useState([]);
 
@@ -29,9 +30,11 @@ export const EmployeePage = (props) => {
     const group = props.group;
     if (group === "All Product") {
       card(warehouse_find_all);
+      url.current = warehouse_find_all;
     } else {
       setLoading(true);
       card(`${warehouse_product_group}${group}`);
+      url.current = `${warehouse_product_group}${group}`;
     }
   }, [props.group]);
 
@@ -185,6 +188,7 @@ export const EmployeePage = (props) => {
           updateOrderItem(e);
           if (checkModal.current) {
             shopingCard();
+            card(url.current);
             props.setVisibles(true);
           }
         }}

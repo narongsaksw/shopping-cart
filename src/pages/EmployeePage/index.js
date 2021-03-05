@@ -176,13 +176,11 @@ export const EmployeePage = (props) => {
     formSell.dataValues = order.current;
     form.dataValues.price = Allprice.current;
     functionPost(`${createOrder}SELL`, form, (res) => {
-      console.log("res : ", res);
       formSell.order_sale_id = res.dataValues.uuid;
       functionPost(`${createItems}`, formSell, (response) => {
         if (response.message === "OK") {
           props.setVisibles(false);
           checkModal.current = false;
-          console.log("response : ", response);
           val_old.current = [];
           order.current = [];
           setValue({});

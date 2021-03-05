@@ -4,14 +4,23 @@ export const order_sell = {
 };
 
 export const order_item = {
-  warehouse_id: String,
+  id: String,
   dataValues: {
     value: Number,
     price: Number,
+    old_value: Number,
   },
 };
 
 export const old_file_value = {
   item_id: String,
   value: 0,
+};
+
+export const tradingOrder = {
+  storeInformation: String,
+  dataValues: {
+    price: Number,
+    order_id: Number,
+  },
 };

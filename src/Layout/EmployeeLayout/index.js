@@ -31,8 +31,8 @@ const EmployeeLayout = ({ children, ...props }) => {
     }
     functionGet(product_group_find_all, (e) => {
       let val = [];
-      if (e.lenght !== 0) {
-        e.forEach((elememt) => {
+      if (e.dataValues.lenght !== 0) {
+        e.dataValues.forEach((elememt) => {
           val.push(
             <Menu.Item key={`${elememt.uuid}`}>{elememt.name}</Menu.Item>
           );

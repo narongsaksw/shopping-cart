@@ -30,10 +30,11 @@ const Drawers = (props) => {
 
   const submit = () => {
     let order_item_form = order_item;
-    order_item_form.warehouse_id = value.key;
+    order_item_form.id = value.key;
     order_item_form.dataValues.value = values;
     props.value.value_buy = values;
     order_item_form.dataValues.price = parseInt(values) * parseInt(value.price);
+    order_item_form.dataValues.old_value = 0;
     props.orderItems(order_item_form);
     props.setVisible(false);
   };

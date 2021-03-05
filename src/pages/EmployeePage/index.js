@@ -2,14 +2,17 @@ import React, { useState, useEffect, useRef, useContext } from "react";
 import { Container } from "./style";
 import CardItems from "../../components/CardItems";
 import Drawer from "./Drawer";
-import { functionGet } from "../../services/employee";
+import { functionGet, functionPost } from "../../services/employee";
 import {
   warehouse_find_all,
   warehouse_product_group,
   warehouse_find_one,
+  createOrder,
+  createItems,
 } from "../../constant";
-import { Skeleton, Modal, Card, Avatar, Empty } from "antd";
+import { Skeleton, Modal, Card, Avatar, Empty, Row, Col } from "antd";
 import { old_file_value } from "../../form/employee";
+import { tradingOrder, order_sell } from "../../form/employee";
 
 const { Meta } = Card;
 
@@ -25,6 +28,7 @@ export const EmployeePage = (props) => {
   const url = useRef("");
   const checkModal = useRef(false);
   const [shopingCards, setShopingCards] = useState([]);
+  const Allprice = useRef(0);
 
   useEffect(async () => {
     const group = props.group;
@@ -46,19 +50,19 @@ export const EmployeePage = (props) => {
   const updateOrderItem = async (e) => {
     val_old.current = await val_old.current.map((element) => {
       let _val = JSON.parse(element);
-      if (_val.item_id === e.warehouse_id) {
+      if (_val.item_id === e.id) {
         _val.value = e.dataValues.value;
       }
       return JSON.stringify(_val);
     });
 
     let findCheck = order.current.filter((item) => {
-      return JSON.parse(item).warehouse_id === e.warehouse_id;
+      return JSON.parse(item).id === e.id;
     });
     if (findCheck.length != 0) {
       if (e.dataValues.value === 0) {
         let data = await order.current.filter((item) => {
-          return JSON.parse(item).warehouse_id != e.warehouse_id;
+          return JSON.parse(item).id != e.id;
         });
         order.current = data;
         updateShopingCart(order.current.length);
@@ -67,12 +71,12 @@ export const EmployeePage = (props) => {
         old_Data.dataValues.value = e.dataValues.value;
         old_Data.dataValues.price = e.dataValues.price;
         let dataSplit = await order.current.filter((item) => {
-          return JSON.parse(item).warehouse_id != e.warehouse_id;
+          return JSON.parse(item).id != e.id;
         });
         dataSplit.push(JSON.stringify(old_Data));
         order.current = dataSplit;
       }
-    } else {
+    } else if (e.dataValues.value != 0 && findCheck.length === 0) {
       order.current.push(JSON.stringify(e));
       updateShopingCart(order.current.length);
     }
@@ -82,7 +86,7 @@ export const EmployeePage = (props) => {
   const card = (e) => {
     functionGet(e, async (res) => {
       const val = [];
-      await res.forEach(async (element) => {
+      await res.dataValues.forEach(async (element) => {
         let new_element = null;
         let data = await val_old.current.filter((e) => {
           return JSON.parse(e).item_id === element.key;
@@ -120,14 +124,16 @@ export const EmployeePage = (props) => {
 
   const shopingCard = async () => {
     let val = [];
+    Allprice.current = 0;
     await order.current.forEach(async (element) => {
       let data = JSON.parse(element);
+      Allprice.current += data.dataValues.price;
       let data_item;
-      await functionGet(`${warehouse_find_one}${data.warehouse_id}`, (res) => {
-        data_item = res;
+      await functionGet(`${warehouse_find_one}${data.id}`, (res) => {
+        data_item = res.dataValues;
       });
       let new_element = null;
-      let dataFilter = await val_old.current.filter((e) => {
+      const dataFilter = await val_old.current.filter((e) => {
         return JSON.parse(e).item_id === data_item.key;
       });
       new_element = {
@@ -161,6 +167,29 @@ export const EmployeePage = (props) => {
       if (val.length === order.current.length) {
         setShopingCards(val);
       }
+    });
+  };
+
+  const modalSubmit = async () => {
+    let form = tradingOrder;
+    let formSell = order_sell;
+    formSell.dataValues = order.current;
+    form.dataValues.price = Allprice.current;
+    functionPost(`${createOrder}SELL`, form, (res) => {
+      console.log("res : ", res);
+      formSell.order_sale_id = res.dataValues.uuid;
+      functionPost(`${createItems}`, formSell, (response) => {
+        if (response.message === "OK") {
+          props.setVisibles(false);
+          checkModal.current = false;
+          console.log("response : ", response);
+          val_old.current = [];
+          order.current = [];
+          setValue({});
+          card(url.current);
+          updateShopingCart(order.current.length);
+        }
+      });
     });
   };
 
@@ -198,8 +227,7 @@ export const EmployeePage = (props) => {
         centered
         visible={visibleModal}
         onOk={() => {
-          props.setVisibles(false);
-          checkModal.current = false;
+          modalSubmit();
         }}
         onCancel={() => {
           props.setVisibles(false);
@@ -210,7 +238,21 @@ export const EmployeePage = (props) => {
         {order.current.length === 0 ? (
           <Empty description={false} />
         ) : (
-          <div style={{ maxHeight: 500, overflow: "auto" }}>{shopingCards}</div>
+          <div style={{ maxHeight: 500, overflow: "auto" }}>
+            <Row>
+              <Col
+                style={{
+                  fontSize: 15,
+                  fontFamily: "sans-serif",
+                  fontWeight: 600,
+                }}
+                span={24}
+              >
+                {`Total price : ${Allprice.current}`}
+              </Col>
+            </Row>
+            {shopingCards}
+          </div>
         )}
       </Modal>
     </Container>

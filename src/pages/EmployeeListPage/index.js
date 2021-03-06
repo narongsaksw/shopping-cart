@@ -19,6 +19,14 @@ const ErrorMessage = styled.div`
   color: red;
 `;
 
+const Column = styled.div`
+  text-align: center;
+`;
+
+const Record = styled.div`
+  text-align: center;
+`;
+
 const HookForm = styled.form``;
 const Label = styled.label``;
 
@@ -78,6 +86,7 @@ function EmployeeList() {
   const { register, handleSubmit, errors, reset } = useForm();
   const onSubmit = async (data) => {
     const { email, password } = data;
+    console.log(data);
     reset();
   };
 
@@ -120,37 +129,37 @@ function EmployeeList() {
 
   const columns = [
     {
-      title: 'ชื่อ',
+      title: <Column>ชื่อ</Column>,
       dataIndex: 'firstname',
       // width: '25%',
       editable: true,
     },
     {
-      title: 'นามสกุล',
+      title: <Column>นามสกุล</Column>,
       dataIndex: 'lastname',
       // width: '25%',
       editable: true,
     },
     {
-      title: 'อายุ',
+      title: <Column>อายุ</Column>,
       dataIndex: 'age',
       // width: '15%',
       editable: true,
     },
     {
-      title: 'ที่อยู่',
+      title: <Column>ที่อยู่</Column>,
       dataIndex: 'address',
       // width: '15%',
       editable: true,
     },
     {
-      title: 'อีเมล',
+      title: <Column>อีเมล</Column>,
       dataIndex: 'email',
       // width: '40%',
       editable: true,
     },
     {
-      title: 'operation',
+      title: <Column>ชื่อ</Column>,
       dataIndex: 'operation',
       render: (_, record) => {
         const editable = isEditing(record);

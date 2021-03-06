@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   BrowserRouter as Router,
   Route,
@@ -32,9 +32,7 @@ const App = () => {
           </AdminLayout>
         </Route>
         <Route path={["/employee"]}>
-          <EmployeeLayout>
-            <Route path="/employee/:group" component={EmployeePage} />
-          </EmployeeLayout>
+          <Route path="/employee/:group" component={EmployeeLayout} />
         </Route>
         <Route path="/not-found" component={NotFoundPage} />
         <Redirect to="/not-found" />

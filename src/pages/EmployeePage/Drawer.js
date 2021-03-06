@@ -1,37 +1,43 @@
 import React, { useState, useEffect } from "react";
 import {
   Drawer,
-  Form,
   Button,
   Col,
   Row,
-  Select,
   Image,
   Divider,
   InputNumber,
   Space,
 } from "antd";
-
-const { Option } = Select;
+import { order_item } from "../../form/employee";
 
 const style = { background: "#fff", padding: "8px 0" };
 
 const Drawers = (props) => {
   const [visible, setVisible] = useState(false);
   const [value, setValue] = useState({});
-  const [random, setRandom] = useState(Date.now());
-  const [values, setValues] = useState("99");
+  const [values, setValues] = useState(0);
 
   useEffect(() => {
     setVisible(props.visible);
     setValue(props.value);
-    setValues(1);
+    setValues(props.value.value_buy);
   }, [props.visible, props.value]);
 
   const onClose = () => {
     props.setVisible(false);
   };
 
+  const submit = () => {
+    let order_item_form = order_item;
+    order_item_form.id = value.key;
+    order_item_form.dataValues.value = values;
+    props.value.value_buy = values;
+    order_item_form.dataValues.price = parseInt(values) * parseInt(value.price);
+    order_item_form.dataValues.old_value = 0;
+    props.orderItems(order_item_form);
+    props.setVisible(false);
+  };
   return (
     <>
       <Drawer
@@ -40,6 +46,7 @@ const Drawers = (props) => {
         onClose={onClose}
         visible={visible}
         bodyStyle={{ paddingBottom: 80 }}
+        zIndex={1500}
         footer={
           <div
             style={{
@@ -49,7 +56,7 @@ const Drawers = (props) => {
             <Button onClick={onClose} style={{ marginRight: 8 }}>
               Cancel
             </Button>
-            <Button onClick={onClose} type="primary">
+            <Button onClick={submit} type="primary">
               Submit
             </Button>
           </div>
@@ -117,10 +124,12 @@ const Drawers = (props) => {
                 <div style={style}>
                   <Space>
                     <InputNumber
-                      min={1}
+                      min={0}
                       max={value.value}
                       value={values}
-                      onChange={setValues}
+                      onChange={(e) => {
+                        setValues(e);
+                      }}
                     />
                     <Button
                       type="primary"

@@ -9,8 +9,8 @@ export const style = {
   logoLogoutStyle: {
     float: "right",
     color: "white",
-    margin: "16px 24px 16px 0",
-    fontSize: "31px",
+    margin: "13px 24px 16px 0",
+    fontSize: "28px",
     cursor: "pointer",
   },
   siteLayoutStyle: {

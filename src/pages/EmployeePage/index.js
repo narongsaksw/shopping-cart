@@ -3,13 +3,7 @@ import { Container } from "./style";
 import CardItems from "../../components/CardItems";
 import Drawer from "./Drawer";
 import { functionGet, functionPost } from "../../services/employee";
-import {
-  warehouse_find_all,
-  warehouse_product_group,
-  warehouse_find_one,
-  createOrder,
-  createItems,
-} from "../../constant";
+import { warehouse_find_all, warehouse_product_group, warehouse_find_one, createOrder, createItems } from "../../constant";
 import { Skeleton, Modal, Card, Avatar, Empty, Row, Col } from "antd";
 import { old_file_value } from "../../form/employee";
 import { tradingOrder, order_sell } from "../../form/employee";
@@ -171,24 +165,26 @@ export const EmployeePage = (props) => {
   };
 
   const modalSubmit = async () => {
-    let form = tradingOrder;
-    let formSell = order_sell;
-    formSell.dataValues = order.current;
-    form.dataValues.price = Allprice.current;
-    functionPost(`${createOrder}SELL`, form, (res) => {
-      formSell.order_sale_id = res.dataValues.uuid;
-      functionPost(`${createItems}`, formSell, (response) => {
-        if (response.message === "OK") {
-          props.setVisibles(false);
-          checkModal.current = false;
-          val_old.current = [];
-          order.current = [];
-          setValue({});
-          card(url.current);
-          updateShopingCart(order.current.length);
-        }
+    if (order.current.length != 0) {
+      let form = tradingOrder;
+      let formSell = order_sell;
+      formSell.dataValues = order.current;
+      form.dataValues.price = Allprice.current;
+      functionPost(`${createOrder}SELL`, form, (res) => {
+        formSell.order_sale_id = res.dataValues.uuid;
+        functionPost(`${createItems}`, formSell, (response) => {
+          if (response.message === "OK") {
+            props.setVisibles(false);
+            checkModal.current = false;
+            val_old.current = [];
+            order.current = [];
+            setValue({});
+            card(url.current);
+            updateShopingCart(order.current.length);
+          }
+        });
       });
-    });
+    }
   };
 
   return (

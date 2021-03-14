@@ -1,35 +1,35 @@
-import axios from 'axios';
+import axios from "axios";
 
 const setUserData = ({ role, name }) => {
-  localStorage.setItem('userData', JSON.stringify({ role, name }));
+  localStorage.setItem("userData", JSON.stringify({ role, name }));
 };
 
 export const isLogin = () => {
-  if (localStorage.getItem('userData')) return true;
+  if (localStorage.getItem("userData")) return true;
   return false;
 };
 
 export const login = async ({ history, username, password }) => {
   await axios
-    .post('http://fourdust.kozow.com:3001/api/v1/act-membership/login', {
+    .post("http://localhost:3001/api/v1/act-membership/login", {
       username,
       password,
     })
     .then((res) => {
       if (res.data.dataValues != null) {
         const {
-          role: { role },
+          Role: { role },
           user,
         } = res.data.dataValues;
         setUserData({ role, name: user });
       } else {
-        window.location.href = 'http://localhost:3000';
+        window.location.href = "http://localhost:3000";
       }
     });
 
-  if (JSON.parse(localStorage.getItem('userData')).role === 'Admin') {
-    history.push('/dashboard');
+  if (JSON.parse(localStorage.getItem("userData")).role === "Admin") {
+    history.push("/dashboard");
   } else {
-    history.push('/employee/All Product');
+    history.push("/employee/All Product");
   }
 };

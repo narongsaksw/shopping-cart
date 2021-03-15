@@ -1,46 +1,21 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
+import React, { useState, useEffect } from 'react';
 import { Table, Tag, Space, DatePicker, Row } from 'antd';
 import Card from '../../components/Card';
 import moment from 'moment';
+import { getHistoryByDate } from '../../constant';
+
+import {
+  Container,
+  DateCard,
+  TitleDate,
+  Column,
+  Record,
+  NegativePrice,
+  PositivePrice,
+} from './style';
+import axios from 'axios';
 const { RangePicker } = DatePicker;
-const Container = styled.div`
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  padding: 0 50px;
-`;
 
-const DateCard = styled.div`
-  height: 100px;
-  position: relative;
-  margin: 20px 10px 20px 0;
-  border: 1px solid #f0f0f0;
-  border-radius: 6px;
-`;
-
-const TitleDate = styled.div`
-  position: absolute;
-  top: 5px;
-  left: 5px;
-  font-size: 18px;
-`;
-
-const Column = styled.div`
-  text-align: center;
-`;
-const Record = styled.div`
-  text-align: center;
-`;
-
-const NegativePrice = styled.div`
-  text-align: center;
-  color: red;
-`;
-const PositivePrice = styled.div`
-  text-align: center;
-  color: #07fe06;
-`;
 const columns = [
   {
     title: <Column>ลำดับที่</Column>,
@@ -98,6 +73,27 @@ function History() {
     endTime: null,
   });
 
+  const [historyData, setHisitoryData] = useState([]);
+  const [incomes, setIncomes] = useState(0);
+  const [expenses, setExpenses] = useState(0);
+
+  const getHistory = async () => {
+    const start = moment().format('YYYY-MM-DD 00:00:00');
+    const end = moment().format('YYYY-MM-DD 00:00:00');
+    const res = await axios
+      .get(`${getHistoryByDate}${start}/${end}`)
+      .then((res) => res.data);
+    const { allBuy, allSell, order } = res.dataValues;
+    setHisitoryData(order);
+    setIncomes(allBuy);
+    setExpenses(allSell);
+    console.log('res history', res);
+  };
+
+  useEffect(() => {
+    getHistory();
+  });
+
   const handlePagination = (pagination) => {
     const { pageSize, current } = pagination;
     setFilter({
@@ -123,17 +119,6 @@ function History() {
   const sumPrice = data.reduce((sum, item) => {
     return sum + item.price;
   }, 0);
-
-  const expenses = data
-    .filter((item) => item.price < 0)
-    .reduce((sum, item) => {
-      return sum + item.price;
-    }, 0);
-  const incomes = data
-    .filter((item) => item.price > 0)
-    .reduce((sum, item) => {
-      return sum + item.price;
-    }, 0);
   return (
     <Container>
       <Row style={{ justifyContent: 'flex-end' }}>
@@ -151,11 +136,11 @@ function History() {
         </DateCard>
         <Card title='รายรับทั้งหมด' amount={`${incomes}บาท`} />
         <Card title='รายจ่ายทั้งหมด' amount={`${expenses}บาท`} />
-        <Card title='รายได้สุทธิ' amount={`${sumPrice}บาท`} />
+        <Card title='รายได้สุทธิ' amount={`${incomes - expenses}บาท`} />
       </Row>
       <Table
         columns={columns}
-        dataSource={data}
+        dataSource={historyData}
         pagination={tablePagination}
         onChange={handlePagination}
       />

@@ -15,7 +15,7 @@ import { Skeleton, Modal, Card, Avatar, Empty, Row, Col, Tag } from "antd";
 import { old_file_value } from "../../form/employee";
 import { tradingOrder, order_sell } from "../../form/employee";
 import Promotion from "./Promotion";
-import Order from "./Order";
+import Printer from "./Print";
 
 const { Meta } = Card;
 
@@ -32,6 +32,7 @@ export const EmployeePage = (props) => {
   const checkModal = useRef(false);
   const [shopingCards, setShopingCards] = useState([]);
   const Allprice = useRef(0);
+  const componentRef = useRef();
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(async () => {
@@ -222,7 +223,7 @@ export const EmployeePage = (props) => {
         formSell.order_sale_id = res.dataValues.uuid;
         functionPost(`${createItems}`, formSell, (response) => {
           if (response.message === "OK") {
-            info(res.dataValues.uuid, Allprice.current, order.current);
+            info(res.dataValues.order_id, Allprice.current, order.current);
           }
         });
       });
@@ -231,8 +232,8 @@ export const EmployeePage = (props) => {
 
   const info = (orderId, Allprice, order) => {
     Modal.info({
-      title: `Orders`,
-      content: <Order orderId={orderId} Allprice={Allprice} order={order} />,
+      title: "Order",
+      content: <Printer orderId={orderId} Allprice={Allprice} order={order} />,
       onOk() {
         props.setVisibles(false);
         checkModal.current = false;

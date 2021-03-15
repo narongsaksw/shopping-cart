@@ -102,6 +102,7 @@ const Drawers = (props) => {
     order_item_form.dataValues.old_value = 0;
     props.orderItems(order_item_form);
     props.setVisible(false);
+    setSumItem([]);
   };
   return (
     <>

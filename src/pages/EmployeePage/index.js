@@ -7,14 +7,15 @@ import {
   warehouse_find_all,
   warehouse_product_group,
   warehouse_find_one,
+  promotion_find_one,
   createOrder,
   createItems,
-  promotion_find_one,
 } from "../../constant";
 import { Skeleton, Modal, Card, Avatar, Empty, Row, Col, Tag } from "antd";
 import { old_file_value } from "../../form/employee";
 import { tradingOrder, order_sell } from "../../form/employee";
 import Promotion from "./Promotion";
+import Order from "./Order";
 
 const { Meta } = Card;
 
@@ -159,49 +160,51 @@ export const EmployeePage = (props) => {
         const dataFilter = await val_old.current.filter((e) => {
           return JSON.parse(e).item_id === data_item.key;
         });
-        new_element = {
-          ...data_item,
-          value_buy: JSON.parse(dataFilter[0]).value,
-          id: data.id,
-        };
-        delete new_element.title;
-        await val.push(
-          <Card
-            {...new_element}
-            style={{
-              width: "100%",
-              marginTop: 16,
-              cursor: "pointer",
-              zIndex: 200,
-            }}
-            onClick={() => {
-              setValue(new_element);
-              setVisible(true);
-              props.setVisibles(false);
-              checkModal.current = true;
-            }}
-          >
-            <Meta
-              avatar={<Avatar src={`${data_item.image}`} />}
-              title={
-                <>
-                  <Tag color="blue" style={{ fontSize: 18 }}>{`${data_item.title}`}</Tag>
-                  <Tag
-                    color="geekblue"
-                    style={{ fontSize: 18, marginTop: 5 }}
-                  >{`${data.dataValues.value} item`}</Tag>
-                  <Tag
-                    color="purple"
-                    style={{ fontSize: 18 }}
-                  >{`${data.dataValues.price} Bath`}</Tag>
-                  <Tag color="cyan">{`${data_item.description}`}</Tag>
-                </>
-              }
-            />
-          </Card>
-        );
-        if (val.length === order.current.length) {
-          setShopingCards(val);
+        if (dataFilter.length !== 0) {
+          new_element = {
+            ...data_item,
+            value_buy: JSON.parse(dataFilter[0]).value,
+            id: data.id,
+          };
+          delete new_element.title;
+          await val.push(
+            <Card
+              {...new_element}
+              style={{
+                width: "100%",
+                marginTop: 16,
+                cursor: "pointer",
+                zIndex: 200,
+              }}
+              onClick={() => {
+                setValue(new_element);
+                setVisible(true);
+                props.setVisibles(false);
+                checkModal.current = true;
+              }}
+            >
+              <Meta
+                avatar={<Avatar src={`${data_item.image}`} />}
+                title={
+                  <>
+                    <Tag color="blue" style={{ fontSize: 18 }}>{`${data_item.title}`}</Tag>
+                    <Tag
+                      color="geekblue"
+                      style={{ fontSize: 18, marginTop: 5 }}
+                    >{`${data.dataValues.value} item`}</Tag>
+                    <Tag
+                      color="purple"
+                      style={{ fontSize: 18 }}
+                    >{`${data.dataValues.price} Bath`}</Tag>
+                    <Tag color="cyan">{`${data_item.description}`}</Tag>
+                  </>
+                }
+              />
+            </Card>
+          );
+          if (val.length === order.current.length) {
+            setShopingCards(val);
+          }
         }
       });
     } catch (error) {
@@ -215,22 +218,31 @@ export const EmployeePage = (props) => {
       let formSell = order_sell;
       formSell.dataValues = order.current;
       form.dataValues.price = Allprice.current;
-      console.log("formSell :: ", formSell);
       functionPost(`${createOrder}SELL`, form, (res) => {
         formSell.order_sale_id = res.dataValues.uuid;
         functionPost(`${createItems}`, formSell, (response) => {
           if (response.message === "OK") {
-            props.setVisibles(false);
-            checkModal.current = false;
-            val_old.current = [];
-            order.current = [];
-            setValue({});
-            card(url.current);
-            updateShopingCart(order.current.length);
+            info(res.dataValues.uuid, Allprice.current, order.current);
           }
         });
       });
     }
+  };
+
+  const info = (orderId, Allprice, order) => {
+    Modal.info({
+      title: `Orders`,
+      content: <Order orderId={orderId} Allprice={Allprice} order={order} />,
+      onOk() {
+        props.setVisibles(false);
+        checkModal.current = false;
+        val_old.current = [];
+        order.current = [];
+        setValue({});
+        card(url.current);
+        updateShopingCart(order.current.length);
+      },
+    });
   };
 
   return (

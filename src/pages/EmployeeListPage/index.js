@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 import { Table, Input, InputNumber, Popconfirm, Form, Typography } from 'antd';
@@ -7,6 +7,8 @@ import InputText from '../../components/Input';
 import InputGroup from '../../components/InputGroup';
 import Button from '../../components/Button';
 import { PageHeader } from '../style';
+import { getEmployeeList } from '../../constant';
+import axios from 'axios';
 
 const Container = styled.div`
   display: flex;
@@ -89,6 +91,15 @@ function EmployeeList() {
     console.log(data);
     reset();
   };
+
+  const getEmployee = async () => {
+    const res = await axios.get(getEmployeeList).then((res) => res.data);
+    console.log(res);
+  };
+
+  useEffect(() => {
+    getEmployee();
+  }, []);
 
   const isEditing = (record) => record.key === editingKey;
 

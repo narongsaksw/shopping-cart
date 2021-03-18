@@ -15,11 +15,7 @@ const LoginPage = () => {
     e.preventDefault();
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
-    if (username && password) {
-      login({ history, username, password });
-    } else {
-      alert('username หรือ password ไม่ถูกต้อง !!');
-    }
+    if (username && password) return login({ history, username, password });
   };
   return (
     <EntryPage>

@@ -56,15 +56,6 @@ const columns = [
 ];
 
 const data = [];
-for (let i = 0; i < 50; i++) {
-  data.push({
-    key: i + 1,
-    date: `${moment().format('DD/MM/YYYY HH:mm:ss')}`,
-    name: `Edward King ${i}`,
-    order: `order${i}`,
-    price: Math.ceil(Math.random() * 99) * (Math.round(Math.random()) ? 1 : -1),
-  });
-}
 function History() {
   const [filter, setFilter] = useState({
     offset: 0,
@@ -72,27 +63,30 @@ function History() {
     startTime: null,
     endTime: null,
   });
+  const [startDate, setStartDate] = useState(
+    moment().format('YYYY-MM-DD 00:00:00')
+  );
+  const [endDate, setEndDate] = useState(
+    moment().format('YYYY-MM-DD 00:00:00')
+  );
 
   const [historyData, setHisitoryData] = useState([]);
   const [incomes, setIncomes] = useState(0);
   const [expenses, setExpenses] = useState(0);
 
   const getHistory = async () => {
-    const start = moment().format('YYYY-MM-DD 00:00:00');
-    const end = moment().format('YYYY-MM-DD 00:00:00');
     const res = await axios
-      .get(`${getHistoryByDate}${start}/${end}`)
+      .get(`${getHistoryByDate}${startDate}/${endDate}`)
       .then((res) => res.data);
     const { allBuy, allSell, order } = res.dataValues;
     setHisitoryData(order);
     setIncomes(allBuy);
     setExpenses(allSell);
-    console.log('res history', res);
   };
 
   useEffect(() => {
     getHistory();
-  });
+  }, [startDate, endDate]);
 
   const handlePagination = (pagination) => {
     const { pageSize, current } = pagination;
@@ -104,6 +98,8 @@ function History() {
   };
   const onCalendarChange = (dates, stringDates) => {
     console.log({ dates, stringDates });
+    setStartDate(moment(dates[0]).format('YYYY-MM-DD 00:00:00'));
+    setEndDate(moment(dates[1]).format('YYYY-MM-DD 00:00:00'));
   };
 
   const tablePagination = {
@@ -116,9 +112,6 @@ function History() {
     size: 'small',
   };
 
-  const sumPrice = data.reduce((sum, item) => {
-    return sum + item.price;
-  }, 0);
   return (
     <Container>
       <Row style={{ justifyContent: 'flex-end' }}>

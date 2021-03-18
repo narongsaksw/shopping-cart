@@ -7,6 +7,8 @@ import InputText from '../../components/Input';
 import InputGroup from '../../components/InputGroup';
 import Button from '../../components/Button';
 import { PageHeader } from '../style';
+import axios from 'axios';
+import { getWarehouseAll } from '../../constant';
 
 const Container = styled.div`
   display: flex;
@@ -44,6 +46,7 @@ for (let i = 0; i < 20; i++) {
 }
 function Stock() {
   const { register, handleSubmit, errors, reset } = useForm();
+  const [stock, setStock] = useState([]);
   const onSubmit = async (data) => {
     const { email, password } = data;
     console.log(data);
@@ -60,7 +63,7 @@ function Stock() {
     {
       title: <Column>ลำดับที่</Column>,
       dataIndex: 'key',
-      render: (text) => <Record>{text}</Record>,
+      render: (text, _, idx) => <Record>{idx + 1}</Record>,
     },
     {
       title: <Column>ผู้ค้า</Column>,
@@ -69,15 +72,35 @@ function Stock() {
     },
     {
       title: <Column>วัตถุดิบ</Column>,
-      dataIndex: 'material',
+      dataIndex: 'title',
+      render: (text) => <Record>{text}</Record>,
+    },
+    {
+      title: <Column>คงเหลือ</Column>,
+      dataIndex: 'value',
+      render: (text) => <Record>{text}</Record>,
+    },
+    {
+      title: <Column>หน่วย</Column>,
+      dataIndex: 'description',
       render: (text) => <Record>{text}</Record>,
     },
     {
       title: <Column>เบอร์ติดต่อ</Column>,
       dataIndex: 'phoneNumber',
-      render: (text) => <Record>{phoneNumberFormat(text)}</Record>,
+      render: (text) => <Record>{text}</Record>,
     },
   ];
+
+  const getWarehouse = async () => {
+    const res = await axios
+      .get(getWarehouseAll)
+      .then((res) => res.data.dataValues);
+    setStock(res);
+  };
+  useEffect(() => {
+    getWarehouse();
+  }, []);
   return (
     <Container>
       <EntryCard style={{ padding: '10px 50px' }}>
@@ -160,7 +183,7 @@ function Stock() {
           </Button>
         </HookForm>
       </EntryCard>
-      <Table columns={columns} dataSource={originData} />
+      <Table columns={columns} dataSource={stock} />
     </Container>
   );
 }

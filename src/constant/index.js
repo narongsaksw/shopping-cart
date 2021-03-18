@@ -9,3 +9,7 @@ export const createItems = ip + '/api/v1/order-items/create';
 
 //admin
 export const getHistoryByDate = ip + '/api/v1/trading-orders/find-by-date/';
+export const getWarehouseAll = ip + '/api/v1/warehouse/findAll';
+const userId = JSON.parse(localStorage.getItem('userData')).id;
+export const getEmployeeList =
+  ip + `/api/v1/act-membership/findAllMember/${userId}`;

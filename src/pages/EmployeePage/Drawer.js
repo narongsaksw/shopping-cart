@@ -14,7 +14,7 @@ import {
   Empty,
 } from "antd";
 import { order_item } from "../../form/employee";
-import { warehouse_find_one, promotion_find_one } from "../../constant";
+import { warehouse_find_one, promotion_find_one, promotion_item_find_pid } from "../../constant";
 import { functionGet } from "../../services/employee";
 
 const style = { background: "#fff", padding: "8px 0" };
@@ -53,7 +53,7 @@ const Drawers = (props) => {
 
   const itemPromotion = async (id) => {
     let val = [];
-    await functionGet(`${promotion_find_one}${id}`, async (res) => {
+    await functionGet(`${promotion_item_find_pid}${id}`, async (res) => {
       res.dataValues.map(async (item) => {
         const title = item.Warehouse.title;
         const data = item.Warehouse;

@@ -7,6 +7,7 @@ export const createOrder = ip + "/api/v1/trading-orders/create/";
 export const createItems = ip + "/api/v1/product-history/create";
 export const promotion_find_all = ip + "/api/v1/promotion/findAll";
 export const promotion_find_one = ip + "/api/v1/promotion/findOne/";
+export const promotion_item_find_pid = ip + "/api/v1/promotion-item/find-all-by-promotion/";
 
 //admin
 export const getHistoryByDate = ip + "/api/v1/trading-orders/find-by-date/";

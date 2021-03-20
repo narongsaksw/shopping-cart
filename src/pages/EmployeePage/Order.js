@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { functionGet } from "../../services/employee";
-import { warehouse_find_one, promotion_find_one } from "../../constant";
+import { warehouse_find_one, promotion_find_one, promotion_item_find_pid } from "../../constant";
 
 const Orders = ({ orderId, Allprice, order }) => {
   const [value, setValue] = useState([]);
@@ -15,7 +15,7 @@ const Orders = ({ orderId, Allprice, order }) => {
         if (res === "Promotion") {
           functionGet(`${promotion_find_one}${orderOne.id}`, async (resf) => {
             if (resf.dataValues != null) {
-              functionGet(`${promotion_find_one}${resf.dataValues.key}`, async (res) => {
+              functionGet(`${promotion_item_find_pid}${resf.dataValues.key}`, async (res) => {
                 if (res.dataValues != null) {
                   let d = (
                     <tr key={orderOne.id}>

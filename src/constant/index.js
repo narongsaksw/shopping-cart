@@ -5,6 +5,8 @@ export const warehouse_product_group = ip + "/api/v1/warehouse/find-by-product-g
 export const warehouse_find_one = ip + "/api/v1/warehouse/find/";
 export const createOrder = ip + "/api/v1/trading-orders/create/";
 export const createItems = ip + "/api/v1/order-items/create";
+export const promotion_find_all = ip + "/api/v1/promotion-item/find-all-by-promotion/";
+export const promotion_find_one = ip + "/api/v1/promotion-item/find-one/";
 
 //admin
 export const getHistoryByDate = ip + "/api/v1/trading-orders/find-by-date/";

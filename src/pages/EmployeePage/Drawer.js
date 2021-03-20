@@ -53,7 +53,7 @@ const Drawers = (props) => {
 
   const itemPromotion = async (id) => {
     let val = [];
-    await functionGet(`${promotion_item_find_pid}${id}`, async (res) => {
+    await functionGet(`${promotion_find_one}${id}`, async (res) => {
       res.dataValues.map(async (item) => {
         const title = item.Warehouse.title;
         const data = item.Warehouse;

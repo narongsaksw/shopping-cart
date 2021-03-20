@@ -14,7 +14,7 @@ import {
   Empty,
 } from "antd";
 import { order_item } from "../../form/employee";
-import { warehouse_find_one, promotion_find_one, promotion_item_find_pid } from "../../constant";
+import { warehouse_find_one, promotion_find_one } from "../../constant";
 import { functionGet } from "../../services/employee";
 
 const style = { background: "#fff", padding: "8px 0" };

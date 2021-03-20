@@ -230,18 +230,18 @@ export const EmployeePage = (props) => {
     }
   };
 
-  const info = (orderId, Allprice, order) => {
+  const info = (orderId, Allprice, orders) => {
     Modal.info({
       title: "Order",
-      content: <Printer orderId={orderId} Allprice={Allprice} order={order} />,
+      content: <Printer orderId={orderId} Allprice={Allprice} order={orders} />,
       onOk() {
-        props.setVisibles(false);
         checkModal.current = false;
         val_old.current = [];
         order.current = [];
         setValue({});
         card(url.current);
         updateShopingCart(order.current.length);
+        props.setVisibles(false);
       },
     });
   };

@@ -19,7 +19,6 @@ const TitleDate = styled.div`
   position: absolute;
   top: 5px;
   left: 5px;
-  font-size: 18px;
 `;
 
 const Column = styled.div`

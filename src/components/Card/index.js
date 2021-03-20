@@ -1,4 +1,5 @@
 import React from 'react';
+import { Typography } from 'antd';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -27,7 +28,7 @@ const Amount = styled.div`
 const Card = ({ title, amount }) => {
   return (
     <Container>
-      <Title>{title}</Title>
+      <Typography.Text>{title}</Typography.Text>
       <Amount>{amount}</Amount>
     </Container>
   );

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Tag, Space, DatePicker, Row } from 'antd';
+import { Table, DatePicker, Typography } from 'antd';
 import Card from '../../components/Card';
+import PageLayout from '../../Layout/PageLayout';
 import moment from 'moment';
 import { getHistoryByDate } from '../../constant';
 
@@ -113,31 +114,35 @@ function History() {
   };
 
   return (
-    <Container>
-      <Row style={{ justifyContent: 'flex-end' }}>
-        <DateCard>
-          <TitleDate>วันที่</TitleDate>
-          <RangePicker
-            format='DD/MM/YYYY'
-            defaultValue={[moment(), moment()]}
-            onCalendarChange={(dates, stringDates) =>
-              onCalendarChange(dates, stringDates)
-            }
-            size='large'
-            style={{ height: 60, top: '40%', borderRadius: 6 }}
-          />
-        </DateCard>
-        <Card title='รายรับทั้งหมด' amount={`${incomes}บาท`} />
-        <Card title='รายจ่ายทั้งหมด' amount={`${expenses}บาท`} />
-        <Card title='รายได้สุทธิ' amount={`${incomes - expenses}บาท`} />
-      </Row>
+    <PageLayout
+      shownBack={false}
+      extra={[
+        <div key='extra' style={{ display: 'flex' }}>
+          <DateCard>
+            <TitleDate>วันที่</TitleDate>
+            <RangePicker
+              format='DD/MM/YYYY'
+              defaultValue={[moment(), moment()]}
+              onCalendarChange={(dates, stringDates) =>
+                onCalendarChange(dates, stringDates)
+              }
+              size='large'
+              style={{ height: 60, top: '40%', borderRadius: 6 }}
+            />
+          </DateCard>
+          <Card title='รายรับทั้งหมด' amount={`${incomes} บาท`} />
+          <Card title='รายจ่ายทั้งหมด' amount={`${expenses} บาท`} />
+          <Card title='รายได้สุทธิ' amount={`${incomes - expenses} บาท`} />
+        </div>,
+      ]}
+    >
       <Table
         columns={columns}
         dataSource={historyData}
         pagination={tablePagination}
         onChange={handlePagination}
       />
-    </Container>
+    </PageLayout>
   );
 }
 

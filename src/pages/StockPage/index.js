@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 import { Table } from 'antd';
 import AddButton from './AddButton';
+import EditModal from './EditModal';
+import ListOperation from '../../components/ListOperation';
 import axios from 'axios';
 import { getWarehouseAll } from '../../constant';
 
@@ -28,12 +30,16 @@ for (let i = 0; i < 20; i++) {
   });
 }
 function Stock() {
-  const { register, handleSubmit, errors, reset } = useForm();
   const [stock, setStock] = useState([]);
+  const [record, setRecord] = useState({});
+  const [isModalVisible, setModalVisible] = useState(false);
   const onSubmit = async (data) => {
     const { email, password } = data;
     console.log(data);
-    reset();
+  };
+  const onEdit = (record) => {
+    setRecord(record);
+    setModalVisible((state) => !state);
   };
   const phoneNumberFormat = (val) => {
     //08-1234-5678
@@ -73,6 +79,13 @@ function Stock() {
       dataIndex: 'phoneNumber',
       render: (text) => <Record>{text}</Record>,
     },
+    {
+      title: 'แอคชั่น',
+      dataIndex: 'key',
+      render: (text, record) => {
+        return <ListOperation onEdit={() => onEdit(record)} />;
+      },
+    },
   ];
 
   const getWarehouse = async () => {
@@ -85,8 +98,13 @@ function Stock() {
     getWarehouse();
   }, []);
   return (
-    <PageLayout extra={[<AddButton />]}>
+    <PageLayout subTitle={<AddButton />}>
       <Table columns={columns} dataSource={stock} />
+      <EditModal
+        record={record}
+        isModalVisible={isModalVisible}
+        setModalVisible={setModalVisible}
+      />
     </PageLayout>
   );
 }

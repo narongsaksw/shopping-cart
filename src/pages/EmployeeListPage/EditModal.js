@@ -19,7 +19,8 @@ const initialValues = {
   roles: '',
 };
 
-const Modal = ({ isModalVisible, setModalVisible }) => {
+const Modal = ({ record, isModalVisible, setModalVisible }) => {
+  // console.log(record);
   const handleSubmit = async (values) => {
     try {
       console.log(values);
@@ -38,7 +39,7 @@ const Modal = ({ isModalVisible, setModalVisible }) => {
       onCancel={() => setModalVisible(false)}
       visible={isModalVisible}
     >
-      <Form name='add' initialValues={initialValues} onFinish={handleSubmit}>
+      <Form name='add' initialValues={record} onFinish={handleSubmit}>
         <Col>
           <Form.Item
             label='ชื่อ'

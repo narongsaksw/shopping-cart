@@ -10,9 +10,8 @@ const AddButton = () => {
         type='primary'
         block
         onClick={() => setModalVisible((state) => (state = !state))}
-        className='content-add-button'
       >
-        Add
+        เพิ่มรายการ
       </Button>
       <Modal
         isModalVisible={isModalVisible}

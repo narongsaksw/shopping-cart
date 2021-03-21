@@ -37,27 +37,55 @@ const Modal = ({ isModalVisible, setModalVisible }) => {
       centered
       onCancel={() => setModalVisible(false)}
       visible={isModalVisible}
-      // width={700}
     >
       <Form name='add' initialValues={initialValues} onFinish={handleSubmit}>
-        <div className='row'>
-          <Col span={20}>
-            <Form.Item
-              name='link'
-              rules={[{ required: true }]}
-              style={{ flexFlow: 'row', marginBottom: 0 }}
-            >
-              <Input
-                className='content-input'
-                placeholder='Link'
-                style={{ margin: 0 }}
-              />
-            </Form.Item>
-          </Col>
-          {/* <Col span={4}> */}
-          <SaveButton />
-          {/* </Col> */}
-        </div>
+        <Col>
+          <Form.Item
+            label='ชื่อผู้ค้า'
+            name='name'
+            rules={[{ required: true, message: '*กรุณากรอกชื่อผู้ค้า' }]}
+          >
+            <Input />
+          </Form.Item>
+        </Col>
+
+        <Col>
+          <Form.Item
+            label='วัตถุดิบ'
+            name='title'
+            rules={[{ required: true, message: '*กรุณากรอกวัตถุดิบ' }]}
+          >
+            <Input />
+          </Form.Item>
+        </Col>
+        <Col>
+          <Form.Item
+            label='คงเหลือ'
+            name='value'
+            rules={[{ required: true, message: '*กรุณากรอกจำนวนคงเหลือ' }]}
+          >
+            <Input />
+          </Form.Item>
+        </Col>
+        <Col>
+          <Form.Item
+            label='หน่วย'
+            name='description'
+            rules={[{ required: true, message: '*กรุณากรอกหน่วย' }]}
+          >
+            <Input />
+          </Form.Item>
+        </Col>
+        <Col>
+          <Form.Item
+            label='เบอร์ติดต่อ'
+            name='phoneNumber'
+            rules={[{ required: true, message: '*กรุณากรอกเบอร์โทรศัพท์' }]}
+          >
+            <Input />
+          </Form.Item>
+        </Col>
+        <SaveButton />
       </Form>
     </AntdModal>
   );

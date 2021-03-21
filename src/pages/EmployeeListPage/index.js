@@ -5,6 +5,8 @@ import { Table } from 'antd';
 import AddButton from './AddButton';
 import { getEmployeeList } from '../../constant';
 import axios from 'axios';
+import ListOperation from '../../components/ListOperation';
+import EditModal from './EditModal';
 
 const Column = styled.div`
   text-align: center;
@@ -30,6 +32,8 @@ for (let i = 0; i < 100; i++) {
 
 function EmployeeList() {
   const [data, setData] = useState(originData);
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [record, setRecord] = useState({});
   const onSubmit = async (data) => {
     const { email, password } = data;
     console.log(data);
@@ -44,35 +48,51 @@ function EmployeeList() {
     getEmployee();
   }, []);
 
+  const onEdit = (record) => {
+    setRecord(record);
+    setModalVisible((state) => !state);
+  };
   const columns = [
     {
-      title: <Column>ชื่อ</Column>,
+      title: 'ชื่อ',
       dataIndex: 'firstname',
     },
     {
-      title: <Column>นามสกุล</Column>,
+      title: 'นามสกุล',
       dataIndex: 'lastname',
     },
     {
-      title: <Column>อายุ</Column>,
+      title: 'อายุ',
       dataIndex: 'age',
     },
     {
-      title: <Column>ที่อยู่</Column>,
+      title: 'ที่อยู',
       dataIndex: 'address',
     },
     {
-      title: <Column>อีเมล</Column>,
+      title: 'อีเมล์',
       dataIndex: 'email',
     },
     {
-      title: <Column>แอคชั่น</Column>,
-      dataIndex: 'operation',
+      title: 'แอคชั่น',
+      dataIndex: 'key',
+      render: (text, record) => {
+        return (
+          <ListOperation onEdit={() => onEdit(record)} deletePath={record} />
+        );
+      },
     },
   ];
   return (
-    <PageLayout extra={[<AddButton />]}>
-      <Table dataSource={data} columns={columns} />
+    <PageLayout subTitle={<AddButton />}>
+      <>
+        <Table dataSource={data} columns={columns} />
+        <EditModal
+          record={record}
+          isModalVisible={isModalVisible}
+          setModalVisible={setModalVisible}
+        />
+      </>
     </PageLayout>
   );
 }

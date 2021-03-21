@@ -29,7 +29,7 @@ const PageLayout = ({
           {/* Hi, {username} */}
           สวัสดี, คุณ Dev
         </Typography.Title>
-        <Avatar size={64} src={'https://avatar.proxied.cloud/1'} />
+        {/* <Avatar size={64} src={'https://avatar.proxied.cloud/1'} /> */}
       </div>
       <PageHeader
         onBack={() => history.goBack()}

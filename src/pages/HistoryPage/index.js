@@ -79,10 +79,11 @@ function History() {
     const res = await axios
       .get(`${getHistoryByDate}${startDate}/${endDate}`)
       .then((res) => res.data);
-    const { allBuy, allSell, order } = res.dataValues;
-    setHisitoryData(order);
-    setIncomes(allBuy);
-    setExpenses(allSell);
+    // const { allBuy, allSell, order } = res.dataValues;
+    console.log('his', res.dataValues);
+    // setHisitoryData(order);
+    // setIncomes(allBuy);
+    // setExpenses(allSell);
   };
 
   useEffect(() => {

@@ -1,20 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import PageLayout from '../../Layout/PageLayout';
 import styled from 'styled-components';
-import { Table } from 'antd';
+import { Table, Input } from 'antd';
 import AddButton from './AddButton';
 import { getEmployeeList } from '../../constant';
 import axios from 'axios';
 import ListOperation from '../../components/ListOperation';
 import EditModal from './EditModal';
 
-const Column = styled.div`
-  text-align: center;
-`;
-
-const Record = styled.div`
-  text-align: center;
-`;
+const { Search } = Input;
 
 const originData = [];
 
@@ -34,6 +28,7 @@ function EmployeeList() {
   const [data, setData] = useState(originData);
   const [isModalVisible, setModalVisible] = useState(false);
   const [record, setRecord] = useState({});
+  const [filterTable, setFilterTable] = useState(null);
   const onSubmit = async (data) => {
     const { email, password } = data;
     console.log(data);
@@ -83,10 +78,27 @@ function EmployeeList() {
       },
     },
   ];
+
+  const search = (value) => {
+    const filterTable = originData.filter((o) =>
+      Object.keys(o).some((k) =>
+        String(o[k]).toLowerCase().includes(value.toLowerCase().trim())
+      )
+    );
+    setFilterTable(filterTable);
+  };
   return (
-    <PageLayout subTitle={<AddButton />}>
+    <PageLayout
+      subTitle={<AddButton />}
+      extra={[
+        <Search placeholder='Search by...' enterButton onSearch={search} />,
+      ]}
+    >
       <>
-        <Table dataSource={data} columns={columns} />
+        <Table
+          dataSource={filterTable === null ? data : filterTable}
+          columns={columns}
+        />
         <EditModal
           record={record}
           isModalVisible={isModalVisible}

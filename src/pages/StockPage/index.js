@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PageLayout from '../../Layout/PageLayout';
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
-import { Table } from 'antd';
+import { Table, Input } from 'antd';
 import AddButton from './AddButton';
 import EditModal from './EditModal';
 import ListOperation from '../../components/ListOperation';
@@ -17,6 +17,7 @@ const Record = styled.div`
   text-align: center;
 `;
 
+const { Search } = Input;
 const originData = [];
 
 for (let i = 0; i < 20; i++) {
@@ -33,6 +34,7 @@ function Stock() {
   const [stock, setStock] = useState([]);
   const [record, setRecord] = useState({});
   const [isModalVisible, setModalVisible] = useState(false);
+  const [filterTable, setFilterTable] = useState(null);
   const onSubmit = async (data) => {
     const { email, password } = data;
     console.log(data);
@@ -97,9 +99,26 @@ function Stock() {
   useEffect(() => {
     getWarehouse();
   }, []);
+
+  const search = (value) => {
+    const filterTable = stock.filter((o) =>
+      Object.keys(o).some((k) =>
+        String(o[k]).toLowerCase().includes(value.toLowerCase().trim())
+      )
+    );
+    setFilterTable(filterTable);
+  };
   return (
-    <PageLayout subTitle={<AddButton />}>
-      <Table columns={columns} dataSource={stock} />
+    <PageLayout
+      subTitle={<AddButton />}
+      extra={[
+        <Search placeholder='Search by...' enterButton onSearch={search} />,
+      ]}
+    >
+      <Table
+        columns={columns}
+        dataSource={filterTable === null ? stock : filterTable}
+      />
       <EditModal
         record={record}
         isModalVisible={isModalVisible}

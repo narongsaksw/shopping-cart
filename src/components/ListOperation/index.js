@@ -5,14 +5,13 @@ import axios from 'axios';
 
 function ListOperation({ deletePath, onEdit }) {
   const onDelete = async () => {
-    console.log(deletePath.key);
-    // try {
-    //   // await axios.delete(deletePath)
-    //   message.success('Success');
-    // } catch (e) {
-    //   console.log(e);
-    //   message.error('Error');
-    // }
+    try {
+      await axios.delete(deletePath);
+      message.success('Success');
+    } catch (e) {
+      console.log(e);
+      message.error('Error');
+    }
   };
 
   const menu = (

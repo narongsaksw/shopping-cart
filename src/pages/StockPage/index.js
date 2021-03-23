@@ -1,44 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import PageLayout from '../../Layout/PageLayout';
-import styled from 'styled-components';
-import { useForm } from 'react-hook-form';
-import { Table, Input } from 'antd';
+import { Table, Input, Typography } from 'antd';
 import AddButton from './AddButton';
 import EditModal from './EditModal';
 import ListOperation from '../../components/ListOperation';
 import axios from 'axios';
-import { getWarehouseAll } from '../../constant';
-
-const Column = styled.div`
-  text-align: center;
-`;
-
-const Record = styled.div`
-  text-align: center;
-`;
+import { getWarehouseAll, deleteStockById } from '../../constant';
 
 const { Search } = Input;
-const originData = [];
 
-for (let i = 0; i < 20; i++) {
-  originData.push({
-    key: i.toString(),
-    name: `name ${i}`,
-    material: `material ${i}`,
-    unit: ` ${i}`,
-    price: ` ${i}`,
-    phoneNumber: '0812345678',
-  });
-}
 function Stock() {
   const [stock, setStock] = useState([]);
   const [record, setRecord] = useState({});
   const [isModalVisible, setModalVisible] = useState(false);
   const [filterTable, setFilterTable] = useState(null);
-  const onSubmit = async (data) => {
-    const { email, password } = data;
-    console.log(data);
-  };
   const onEdit = (record) => {
     setRecord(record);
     setModalVisible((state) => !state);
@@ -46,46 +21,53 @@ function Stock() {
   const phoneNumberFormat = (val) => {
     //08-1234-5678
     let phoneNumber;
-    const pn = val.split('');
-    phoneNumber = `${pn[0]}${pn[1]}-${pn[2]}${pn[3]}${pn[4]}${pn[5]}-${pn[6]}${pn[7]}${pn[8]}${pn[9]}`;
-    return phoneNumber;
+    if (val !== null) {
+      const pn = val.split('');
+      phoneNumber = `${pn[0]}${pn[1]}-${pn[2]}${pn[3]}${pn[4]}${pn[5]}-${pn[6]}${pn[7]}${pn[8]}${pn[9]}`;
+      return phoneNumber;
+    }
   };
   const columns = [
     {
-      title: <Column>ลำดับที่</Column>,
+      title: 'ลำดับที่',
       dataIndex: 'key',
-      render: (text, _, idx) => <Record>{idx + 1}</Record>,
+      render: (text, _, idx) => {
+        return <Typography.Text>{idx + 1}</Typography.Text>;
+      },
     },
     {
-      title: <Column>ผู้ค้า</Column>,
-      dataIndex: 'name',
-      render: (text) => <Record>{text}</Record>,
+      title: 'ผู้ค้า',
+      dataIndex: 'fullname',
     },
     {
-      title: <Column>วัตถุดิบ</Column>,
+      title: 'วัตถุดิบ',
       dataIndex: 'title',
-      render: (text) => <Record>{text}</Record>,
     },
     {
-      title: <Column>คงเหลือ</Column>,
+      title: 'คงเหลือ',
       dataIndex: 'value',
-      render: (text) => <Record>{text}</Record>,
     },
     {
-      title: <Column>หน่วย</Column>,
+      title: 'หน่วย',
       dataIndex: 'description',
-      render: (text) => <Record>{text}</Record>,
     },
     {
-      title: <Column>เบอร์ติดต่อ</Column>,
-      dataIndex: 'phoneNumber',
-      render: (text) => <Record>{text}</Record>,
+      title: 'เบอร์ติดต่อ',
+      dataIndex: 'phone_number',
+      render: (text) => {
+        return <Typography.Text>{phoneNumberFormat(text)}</Typography.Text>;
+      },
     },
     {
       title: 'แอคชั่น',
       dataIndex: 'key',
-      render: (text, record) => {
-        return <ListOperation onEdit={() => onEdit(record)} />;
+      render: (id, record) => {
+        return (
+          <ListOperation
+            onEdit={() => onEdit(record)}
+            deletePath={`${deleteStockById}/${id}`}
+          />
+        );
       },
     },
   ];
@@ -98,7 +80,7 @@ function Stock() {
   };
   useEffect(() => {
     getWarehouse();
-  }, []);
+  }, [isModalVisible]);
 
   const search = (value) => {
     const filterTable = stock.filter((o) =>

@@ -3,45 +3,28 @@ import PageLayout from '../../Layout/PageLayout';
 import styled from 'styled-components';
 import { Table, Input } from 'antd';
 import AddButton from './AddButton';
-import { getEmployeeList } from '../../constant';
+import { getEmployeeList, deleteEmployee } from '../../constant';
 import axios from 'axios';
 import ListOperation from '../../components/ListOperation';
 import EditModal from './EditModal';
 
 const { Search } = Input;
 
-const originData = [];
-
-for (let i = 0; i < 100; i++) {
-  originData.push({
-    key: i.toString(),
-    firstname: `Firstname ${i}`,
-    lastname: `Lastname ${i}`,
-    age: 32,
-    address: `London Park no. ${i}`,
-    email: `Email no. ${i}`,
-    password: `Password no. ${i}`,
-  });
-}
-
 function EmployeeList() {
-  const [data, setData] = useState(originData);
+  const [data, setData] = useState([]);
   const [isModalVisible, setModalVisible] = useState(false);
   const [record, setRecord] = useState({});
   const [filterTable, setFilterTable] = useState(null);
-  const onSubmit = async (data) => {
-    const { email, password } = data;
-    console.log(data);
-  };
 
   const getEmployee = async () => {
     const res = await axios.get(getEmployeeList).then((res) => res.data);
-    console.log(res);
+    if (res.message === 'OK') {
+      setData(res.dataValues);
+    }
   };
-
   useEffect(() => {
     getEmployee();
-  }, []);
+  }, [isModalVisible]);
 
   const onEdit = (record) => {
     setRecord(record);
@@ -49,11 +32,11 @@ function EmployeeList() {
   };
   const columns = [
     {
-      title: 'ชื่อ',
+      title: 'ชื่อ-นามสกุล',
       dataIndex: 'firstname',
     },
     {
-      title: 'นามสกุล',
+      title: 'ชื่อ-นามสกุล',
       dataIndex: 'lastname',
     },
     {
@@ -61,7 +44,7 @@ function EmployeeList() {
       dataIndex: 'age',
     },
     {
-      title: 'ที่อยู',
+      title: 'ที่อยู่',
       dataIndex: 'address',
     },
     {
@@ -69,18 +52,24 @@ function EmployeeList() {
       dataIndex: 'email',
     },
     {
-      title: 'แอคชั่น',
-      dataIndex: 'key',
-      render: (text, record) => {
+      title: 'เบอร์โทรศัพท์',
+      dataIndex: 'phone_number',
+    },
+    {
+      dataIndex: 'uuid',
+      render: (id, record) => {
         return (
-          <ListOperation onEdit={() => onEdit(record)} deletePath={record} />
+          <ListOperation
+            onEdit={() => onEdit(record)}
+            deletePath={`${deleteEmployee}/${id}`}
+          />
         );
       },
     },
   ];
 
   const search = (value) => {
-    const filterTable = originData.filter((o) =>
+    const filterTable = data.filter((o) =>
       Object.keys(o).some((k) =>
         String(o[k]).toLowerCase().includes(value.toLowerCase().trim())
       )

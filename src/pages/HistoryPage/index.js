@@ -64,23 +64,18 @@ function History() {
     startTime: null,
     endTime: null,
   });
-  const [startDate, setStartDate] = useState(
-    moment().format('YYYY-MM-DD 00:00:00')
-  );
-  const [endDate, setEndDate] = useState(
-    moment().format('YYYY-MM-DD 00:00:00')
-  );
+  const [startDate, setStartDate] = useState(moment().format('YYYY-MM-DD'));
+  const [endDate, setEndDate] = useState(moment().format('YYYY-MM-DD'));
 
   const [historyData, setHisitoryData] = useState([]);
   const [incomes, setIncomes] = useState(0);
   const [expenses, setExpenses] = useState(0);
-
   const getHistory = async () => {
     const res = await axios
-      .get(`${getHistoryByDate}${startDate}/${endDate}`)
+      .get(`${getHistoryByDate}/${startDate}/${endDate}`)
       .then((res) => res.data);
+    console.log(res);
     // const { allBuy, allSell, order } = res.dataValues;
-    console.log('his', res.dataValues);
     // setHisitoryData(order);
     // setIncomes(allBuy);
     // setExpenses(allSell);
@@ -99,9 +94,8 @@ function History() {
     });
   };
   const onCalendarChange = (dates, stringDates) => {
-    console.log({ dates, stringDates });
-    setStartDate(moment(dates[0]).format('YYYY-MM-DD 00:00:00'));
-    setEndDate(moment(dates[1]).format('YYYY-MM-DD 00:00:00'));
+    setStartDate(moment(dates[0]).format('YYYY-MM-DD'));
+    setEndDate(moment(dates[1]).format('YYYY-MM-DD'));
   };
 
   const tablePagination = {
@@ -138,6 +132,7 @@ function History() {
       ]}
     >
       <Table
+        rowKey='uuid'
         columns={columns}
         dataSource={historyData}
         pagination={tablePagination}

@@ -39,3 +39,7 @@ export const login = async ({ history, username, password }) => {
     console.log('err');
   }
 };
+
+export const logout = () => {
+  localStorage.removeItem('userData');
+};

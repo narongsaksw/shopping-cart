@@ -3,6 +3,7 @@ import {
   Modal as AntdModal,
   Form,
   Input,
+  InputNumber,
   Row,
   Col,
   Typography,
@@ -11,34 +12,71 @@ import {
   message,
 } from 'antd';
 import SaveButton from './SaveButton';
+import axios from 'axios';
+
+import { createStock } from '../../constant';
 
 const initialValues = {
-  firstname: '',
-  lastname: '',
-  email: '',
-  roles: '',
+  name: '',
+  title: '',
+  value: '',
+  description: '',
+  price: '',
+  eachprice: '',
+  phoneNumber: '',
+  image: '',
 };
 
 const Modal = ({ isModalVisible, setModalVisible }) => {
+  const [form] = Form.useForm();
   const handleSubmit = async (values) => {
+    const data = {
+      name: values.name,
+      firstname: values.name,
+      lastname: '',
+      phone_number: values.phoneNumber,
+      role: 'BUY',
+      dataValues: [
+        {
+          price: values.price,
+          group: 'Food',
+          warehouse: {
+            name: values.title,
+            value: values.value,
+            price: values.eachprice,
+            image: values.image,
+            description: values.description,
+          },
+        },
+      ],
+    };
     try {
-      console.log(values);
+      await axios.post(createStock, data);
       message.success('success');
       setModalVisible(false);
     } catch (error) {
       message.error('error');
     }
+    form.resetFields();
   };
 
   return (
     <AntdModal
-      title='Add Content'
+      title='เพิ่มรายการ'
       footer={null}
       centered
-      onCancel={() => setModalVisible(false)}
+      onCancel={() => {
+        form.resetFields();
+        setModalVisible(false);
+      }}
       visible={isModalVisible}
     >
-      <Form name='add' initialValues={initialValues} onFinish={handleSubmit}>
+      <Form
+        name='add'
+        form={form}
+        initialValues={initialValues}
+        onFinish={handleSubmit}
+      >
         <Col>
           <Form.Item
             label='ชื่อผู้ค้า'
@@ -60,7 +98,7 @@ const Modal = ({ isModalVisible, setModalVisible }) => {
         </Col>
         <Col>
           <Form.Item
-            label='คงเหลือ'
+            label='จำนวน'
             name='value'
             rules={[{ required: true, message: '*กรุณากรอกจำนวนคงเหลือ' }]}
           >
@@ -78,9 +116,36 @@ const Modal = ({ isModalVisible, setModalVisible }) => {
         </Col>
         <Col>
           <Form.Item
+            label='ราคา'
+            name='price'
+            rules={[{ required: true, message: '*กรุณากรอกราคา' }]}
+          >
+            <InputNumber />
+          </Form.Item>
+        </Col>
+        <Col>
+          <Form.Item
+            label='ราคาขายต่อชิ้น'
+            name='eachprice'
+            rules={[{ required: true, message: '*กรุณากรอกราคาต่อชิ้น' }]}
+          >
+            <InputNumber />
+          </Form.Item>
+        </Col>
+        <Col>
+          <Form.Item
             label='เบอร์ติดต่อ'
             name='phoneNumber'
             rules={[{ required: true, message: '*กรุณากรอกเบอร์โทรศัพท์' }]}
+          >
+            <Input />
+          </Form.Item>
+        </Col>
+        <Col>
+          <Form.Item
+            label='รูป'
+            name='image'
+            rules={[{ required: true, message: '*กรุณาเพิ่มรูป(ลิ้งค์)' }]}
           >
             <Input />
           </Form.Item>

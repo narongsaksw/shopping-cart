@@ -9,36 +9,64 @@ import {
   Button,
   Select,
   message,
+  InputNumber,
 } from 'antd';
 import SaveButton from './SaveButton';
+import { createEmployee } from '../../constant';
+import axios from 'axios';
 
 const initialValues = {
   firstname: '',
   lastname: '',
   email: '',
-  roles: '',
+  role: '',
+  age: '',
+  phoneNumber: '',
+  address: '',
+  username: '',
+  password: '',
+  email: '',
 };
 
 const Modal = ({ isModalVisible, setModalVisible }) => {
+  const [form] = Form.useForm();
   const handleSubmit = async (values) => {
+    const data = {
+      firstname: values.firstname,
+      lastname: values.lastname,
+      age: values.age,
+      phone_number: values.phoneNumber,
+      address: values.address,
+      username: values.username,
+      password: values.password,
+      id: values.username,
+      role_name: values.role,
+      email: values.email,
+    };
     try {
-      console.log(values);
+      await axios.post(createEmployee, data);
       message.success('success');
       setModalVisible(false);
     } catch (error) {
       message.error('error');
     }
+    form.resetFields();
   };
 
   return (
     <AntdModal
-      title='Add Content'
+      title='เพิ่มพนักงาน'
       footer={null}
       centered
       onCancel={() => setModalVisible(false)}
       visible={isModalVisible}
     >
-      <Form name='add' initialValues={initialValues} onFinish={handleSubmit}>
+      <Form
+        name='add'
+        form={form}
+        initialValues={initialValues}
+        onFinish={handleSubmit}
+      >
         <Col>
           <Form.Item
             label='ชื่อ'
@@ -64,7 +92,7 @@ const Modal = ({ isModalVisible, setModalVisible }) => {
             name='age'
             rules={[{ required: true, message: '*กรุณากรอกอายุ' }]}
           >
-            <Input />
+            <InputNumber />
           </Form.Item>
         </Col>
         <Col>
@@ -92,6 +120,33 @@ const Modal = ({ isModalVisible, setModalVisible }) => {
             rules={[{ required: true, message: '*กรุณากรอกเบอร์โทรศัพท์' }]}
           >
             <Input />
+          </Form.Item>
+        </Col>
+        <Col>
+          <Form.Item
+            label='ยูสเซอร์'
+            name='username'
+            rules={[{ required: true, message: '*กรุณากรอกยูสเซอร์' }]}
+          >
+            <Input />
+          </Form.Item>
+        </Col>
+        <Col>
+          <Form.Item
+            label='รหัสผ่าน'
+            name='password'
+            rules={[{ required: true, message: '*กรุณากรอกรหัสผ่าน' }]}
+          >
+            <Input.Password />
+          </Form.Item>
+        </Col>
+        <Col>
+          <Form.Item label='ตำแหน่ง' name='role'>
+            <Select>
+              <Select.Option value='Admin'>ผู้ดูแลระบบ</Select.Option>
+              <Select.Option value='Employee'>พนักงาน</Select.Option>
+              <Select.Option value='Programmer'>โปรแกรมเมอร์</Select.Option>
+            </Select>
           </Form.Item>
         </Col>
         <SaveButton />

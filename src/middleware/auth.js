@@ -12,7 +12,6 @@ export const isLogin = () => {
 
 export const login = async ({ history, username, password }) => {
   await axios
-    // .post('http://fourdust.kozow.com:3001/api/v1/act-membership/login', {
     .post('http://localhost:3001/api/v1/act-membership/login', {
       username,
       password,

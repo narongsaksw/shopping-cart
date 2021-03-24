@@ -33,6 +33,9 @@ const AdminLayout = ({ children }) => {
           <Menu.Item key='/employee-list'>
             <Link to='/employee-list'>พนักงาน</Link>
           </Menu.Item>
+          <Menu.Item key='/promotion'>
+            <Link to='/promotion'>โปรโมชั่น</Link>
+          </Menu.Item>
           <Menu.Item key='/logout'>
             <Link to='/logout'>ออกจากระบบ</Link>
           </Menu.Item>

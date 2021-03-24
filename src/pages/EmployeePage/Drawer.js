@@ -125,7 +125,17 @@ const Drawers = (props) => {
                 border: "1px solid #DDDDDD",
               }}
             >
-              <Image width={197} src={`${value.image}`} placeholder={<Image preview={true} src={`${value.image}`} width={197} />} />
+              <Image
+                width={197}
+                src={`${value.image != null ? value.image : "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"}`}
+                placeholder={
+                  <Image
+                    preview={true}
+                    src={`${value.image != null ? value.image : "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"}`}
+                    width={197}
+                  />
+                }
+              />
             </div>
           </Col>
           <Col className="gutter-row" span={14}>

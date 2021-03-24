@@ -4,7 +4,7 @@ import { style } from "./style";
 
 const { Meta } = Card;
 
-const CardItrems = props => {
+const CardItrems = (props) => {
   return (
     <>
       <Card
@@ -12,10 +12,14 @@ const CardItrems = props => {
         style={style.cardStyle}
         cover={
           <div style={style.imagePanel}>
-            <img alt="example" src={props.image} style={style.imageStyle} />
+            <img
+              alt="example"
+              src={props.image != null ? props.image : "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"}
+              style={style.imageStyle}
+            />
           </div>
         }
-        onClick={e => {
+        onClick={(e) => {
           props.setVisible(true);
         }}
       >

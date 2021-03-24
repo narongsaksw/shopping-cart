@@ -3,14 +3,7 @@ import { Container } from "./style";
 import CardItems from "../../components/CardItems";
 import Drawer from "./Drawer";
 import { functionGet, functionPost } from "../../services/employee";
-import {
-  warehouse_find_all,
-  warehouse_product_group,
-  warehouse_find_one,
-  promotion_find_one,
-  createOrder,
-  createItems,
-} from "../../constant";
+import { warehouse_find_all, warehouse_product_group, warehouse_find_one, promotion_find_one, createOrder, createItems } from "../../constant";
 import { Skeleton, Modal, Card, Avatar, Empty, Row, Col, Tag } from "antd";
 import { old_file_value } from "../../form/employee";
 import { tradingOrder, order_sell } from "../../form/employee";
@@ -184,18 +177,14 @@ export const EmployeePage = (props) => {
             }}
           >
             <Meta
-              avatar={<Avatar src={`${data_item.image}`} />}
+              avatar={
+                <Avatar src={`${data_item.image != null ? data_item.image : "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"}`} />
+              }
               title={
                 <>
                   <Tag color="blue" style={{ fontSize: 18 }}>{`${data_item.title}`}</Tag>
-                  <Tag
-                    color="geekblue"
-                    style={{ fontSize: 18, marginTop: 5 }}
-                  >{`${data.dataValues.value} item`}</Tag>
-                  <Tag
-                    color="purple"
-                    style={{ fontSize: 18 }}
-                  >{`${data.dataValues.price} Bath`}</Tag>
+                  <Tag color="geekblue" style={{ fontSize: 18, marginTop: 5 }}>{`${data.dataValues.value} item`}</Tag>
+                  <Tag color="purple" style={{ fontSize: 18 }}>{`${data.dataValues.price} Bath`}</Tag>
                   <Tag color="cyan">{`${data_item.description}`}</Tag>
                 </>
               }

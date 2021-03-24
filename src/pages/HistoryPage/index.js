@@ -19,31 +19,30 @@ const { RangePicker } = DatePicker;
 
 const columns = [
   {
-    title: <Column>ลำดับที่</Column>,
+    title: 'ลำดับที่',
     dataIndex: 'key',
     key: 'key',
-    render: (text) => <Record>{text}</Record>,
   },
   {
-    title: <Column>วันและเวลา</Column>,
+    title: 'วันและเวลา',
     dataIndex: 'date',
     key: 'date',
-    render: (text) => <Record>{text}</Record>,
+    render: (date) => {
+      return moment(date).format('DD/MM/YYYY hh:mm:ss');
+    },
   },
   {
-    title: <Column>ผู้ค้า</Column>,
+    title: 'ผู้ค้า',
     dataIndex: 'name',
     key: 'name',
-    render: (text) => <Record>{text}</Record>,
   },
   {
-    title: <Column>รายการ</Column>,
+    title: 'รายการ',
     dataIndex: 'order',
     key: 'order',
-    render: (text) => <Record>{text}</Record>,
   },
   {
-    title: <Column>ราคา(บาท)</Column>,
+    title: 'ราคา(บาท)',
     dataIndex: 'price',
     key: 'price',
     render: (price) => {
@@ -67,18 +66,18 @@ function History() {
   const [startDate, setStartDate] = useState(moment().format('YYYY-MM-DD'));
   const [endDate, setEndDate] = useState(moment().format('YYYY-MM-DD'));
 
-  const [historyData, setHisitoryData] = useState([]);
+  const [historyData, setHistoryData] = useState([]);
   const [incomes, setIncomes] = useState(0);
   const [expenses, setExpenses] = useState(0);
   const getHistory = async () => {
     const res = await axios
       .get(`${getHistoryByDate}/${startDate}/${endDate}`)
       .then((res) => res.data);
-    console.log(res);
-    // const { allBuy, allSell, order } = res.dataValues;
-    // setHisitoryData(order);
-    // setIncomes(allBuy);
-    // setExpenses(allSell);
+    const { allBuy, allSell, order } = res.dataValues;
+    const parseOrder = order.map((i) => JSON.parse(i));
+    setHistoryData(parseOrder);
+    setIncomes(allBuy);
+    setExpenses(allSell);
   };
 
   useEffect(() => {
@@ -107,7 +106,6 @@ function History() {
     showTotal: (total) => `ทั้งหมด: ${total} รายการ`,
     size: 'small',
   };
-
   return (
     <PageLayout
       shownBack={false}

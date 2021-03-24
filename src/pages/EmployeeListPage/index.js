@@ -13,6 +13,7 @@ const { Search } = Input;
 function EmployeeList() {
   const [data, setData] = useState([]);
   const [isModalVisible, setModalVisible] = useState(false);
+  const [isModalAddVisible, setModalAddVisible] = useState(false);
   const [record, setRecord] = useState({});
   const [filterTable, setFilterTable] = useState(null);
 
@@ -21,10 +22,11 @@ function EmployeeList() {
     if (res.message === 'OK') {
       setData(res.dataValues);
     }
+    console.log(res);
   };
   useEffect(() => {
     getEmployee();
-  }, [isModalVisible]);
+  }, [isModalVisible, isModalAddVisible]);
 
   const onEdit = (record) => {
     setRecord(record);
@@ -78,7 +80,12 @@ function EmployeeList() {
   };
   return (
     <PageLayout
-      subTitle={<AddButton />}
+      subTitle={
+        <AddButton
+          isModalVisible={isModalAddVisible}
+          setModalVisible={setModalAddVisible}
+        />
+      }
       extra={[
         <Search placeholder='Search by...' enterButton onSearch={search} />,
       ]}

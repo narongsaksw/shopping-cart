@@ -17,7 +17,8 @@ import { updateStockById } from '../../constant';
 
 const Modal = ({ record, isModalVisible, setModalVisible }) => {
   const initialValues = {
-    name: record.fullname,
+    firstname: record.firstname,
+    lastname: record.lastname,
     description: record.description,
     price: record.price,
     value: record.value,
@@ -29,7 +30,8 @@ const Modal = ({ record, isModalVisible, setModalVisible }) => {
     const data = {
       shop_item_id: record.key,
       dataValues: {
-        name: values.name,
+        firstname: values.firstname,
+        lastname: values.lastname,
         value: values.value,
         price: values.price,
         image: values.image,

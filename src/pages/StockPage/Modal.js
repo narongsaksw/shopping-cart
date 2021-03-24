@@ -17,7 +17,8 @@ import axios from 'axios';
 import { createStock } from '../../constant';
 
 const initialValues = {
-  name: '',
+  firstname: '',
+  lastname: '',
   title: '',
   value: '',
   description: '',
@@ -31,9 +32,9 @@ const Modal = ({ isModalVisible, setModalVisible }) => {
   const [form] = Form.useForm();
   const handleSubmit = async (values) => {
     const data = {
-      name: values.name,
-      firstname: values.name,
-      lastname: '',
+      name: values.firstname,
+      firstname: values.firstname,
+      lastname: values.lastname,
       phone_number: values.phoneNumber,
       role: 'BUY',
       dataValues: [
@@ -80,8 +81,17 @@ const Modal = ({ isModalVisible, setModalVisible }) => {
         <Col>
           <Form.Item
             label='ชื่อผู้ค้า'
-            name='name'
+            name='firstname'
             rules={[{ required: true, message: '*กรุณากรอกชื่อผู้ค้า' }]}
+          >
+            <Input />
+          </Form.Item>
+        </Col>
+        <Col>
+          <Form.Item
+            label='นามสกุล'
+            name='lastname'
+            rules={[{ required: true, message: '*กรุณากรอกนามสกุล' }]}
           >
             <Input />
           </Form.Item>

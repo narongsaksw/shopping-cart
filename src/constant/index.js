@@ -20,6 +20,6 @@ export const deleteEmployee = ip + '/api/v1/act-membership/delete-member';
 export const updateEmployee = ip + '/api/v1/act-membership/update-member';
 
 //stock
-export const createStock = ip + '/api/v1/store-information/create-item ';
+export const createStock = ip + '/api/v1/store-information/create-item';
 export const deleteStockById = ip + '/api/v1/warehouse/delete';
 export const updateStockById = ip + '/api/v1/warehouse/update';

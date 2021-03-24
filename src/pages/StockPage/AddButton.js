@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { Button } from 'antd';
 import Modal from './Modal';
 
-const AddButton = () => {
-  const [isModalVisible, setModalVisible] = useState(false);
+const AddButton = ({ isModalVisible, setModalVisible }) => {
   return (
     <>
       <Button

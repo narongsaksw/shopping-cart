@@ -13,6 +13,7 @@ function Stock() {
   const [stock, setStock] = useState([]);
   const [record, setRecord] = useState({});
   const [isModalVisible, setModalVisible] = useState(false);
+  const [isModalAddVisible, setModalAddVisible] = useState(false);
   const [filterTable, setFilterTable] = useState(null);
   const onEdit = (record) => {
     setRecord(record);
@@ -55,7 +56,7 @@ function Stock() {
       title: 'เบอร์ติดต่อ',
       dataIndex: 'phone_number',
       render: (text) => {
-        return <Typography.Text>{phoneNumberFormat(text)}</Typography.Text>;
+        return <Typography.Text>{text}</Typography.Text>;
       },
     },
     {
@@ -80,7 +81,7 @@ function Stock() {
   };
   useEffect(() => {
     getWarehouse();
-  }, [isModalVisible]);
+  }, [isModalVisible, isModalAddVisible]);
 
   const search = (value) => {
     const filterTable = stock.filter((o) =>
@@ -92,7 +93,12 @@ function Stock() {
   };
   return (
     <PageLayout
-      subTitle={<AddButton />}
+      subTitle={
+        <AddButton
+          isModalVisible={isModalAddVisible}
+          setModalVisible={setModalAddVisible}
+        />
+      }
       extra={[
         <Search placeholder='Search by...' enterButton onSearch={search} />,
       ]}

@@ -1,18 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Drawer,
-  Button,
-  Col,
-  Row,
-  Image,
-  Divider,
-  InputNumber,
-  Space,
-  Card,
-  Avatar,
-  Tag,
-  Empty,
-} from "antd";
+import { Drawer, Button, Col, Row, Image, Divider, InputNumber, Space, Card, Avatar, Tag, Empty } from "antd";
 import { order_item } from "../../form/employee";
 import { warehouse_find_one, promotion_find_one, promotion_item_find_pid } from "../../constant";
 import { functionGet } from "../../services/employee";
@@ -55,34 +42,33 @@ const Drawers = (props) => {
     let val = [];
     await functionGet(`${promotion_item_find_pid}${id}`, async (res) => {
       res.dataValues.map(async (item) => {
-        const title = item.Warehouse.title;
-        const data = item.Warehouse;
-        delete data.title;
-        await val.push(
-          <Card
-            {...data}
-            style={{
-              width: "100%",
-              marginTop: 16,
-              cursor: "pointer",
-              zIndex: 200,
-            }}
-          >
-            <Meta
-              avatar={<Avatar src={`${item.Warehouse.image}`} />}
-              title={
-                <>
-                  <Tag color="blue" style={{ fontSize: 18 }}>{`${title}`}</Tag>
-                  <Tag
-                    color="geekblue"
-                    style={{ fontSize: 18, marginTop: 5 }}
-                  >{`${item.value} item`}</Tag>
-                  <Tag color="cyan">{`${item.Warehouse.description}`}</Tag>
-                </>
-              }
-            />
-          </Card>
-        );
+        if (item.Warehouse != null) {
+          const title = item.Warehouse.title;
+          const data = item.Warehouse;
+          delete data.title;
+          await val.push(
+            <Card
+              {...data}
+              style={{
+                width: "100%",
+                marginTop: 16,
+                cursor: "pointer",
+                zIndex: 200,
+              }}
+            >
+              <Meta
+                avatar={<Avatar src={`${item.Warehouse.image}`} />}
+                title={
+                  <>
+                    <Tag color="blue" style={{ fontSize: 18 }}>{`${title}`}</Tag>
+                    <Tag color="geekblue" style={{ fontSize: 18, marginTop: 5 }}>{`${item.value} item`}</Tag>
+                    <Tag color="cyan">{`${item.Warehouse.description}`}</Tag>
+                  </>
+                }
+              />
+            </Card>
+          );
+        }
       });
     });
     setSumItem(val);
@@ -139,11 +125,7 @@ const Drawers = (props) => {
                 border: "1px solid #DDDDDD",
               }}
             >
-              <Image
-                width={197}
-                src={`${value.image}`}
-                placeholder={<Image preview={true} src={`${value.image}`} width={197} />}
-              />
+              <Image width={197} src={`${value.image}`} placeholder={<Image preview={true} src={`${value.image}`} width={197} />} />
             </div>
           </Col>
           <Col className="gutter-row" span={14}>

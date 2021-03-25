@@ -25,6 +25,7 @@ export const EmployeePage = (props) => {
   const checkModal = useRef(false);
   const [shopingCards, setShopingCards] = useState([]);
   const Allprice = useRef(0);
+  // eslint-disable-next-line no-unused-vars
   const componentRef = useRef();
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -49,6 +50,7 @@ export const EmployeePage = (props) => {
   useEffect(() => {
     shopingCard();
     setVisibleModal(props.visible);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.visible]);
 
   const updateOrderItem = async (e) => {

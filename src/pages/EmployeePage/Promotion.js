@@ -8,6 +8,7 @@ const Promotion = (props) => {
     props.card(promotion_find_all).then((res) => {
       setData(res);
     });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return <>{data}</>;

@@ -3,6 +3,7 @@ import { functionGet } from "../../services/employee";
 import { warehouse_find_one, promotion_find_one, promotion_item_find_pid } from "../../constant";
 
 const Orders = ({ orderId, Allprice, order }) => {
+  // eslint-disable-next-line no-unused-vars
   const [value, setValue] = useState([]);
   const data = useRef([]);
 

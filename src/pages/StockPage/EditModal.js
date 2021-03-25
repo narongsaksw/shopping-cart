@@ -33,6 +33,7 @@ const Modal = ({ record, isModalVisible, setModalVisible }) => {
         firstname: values.firstname,
         lastname: values.lastname,
         value: values.value,
+        name: values.title,
         price: values.price,
         image: values.image,
         description: values.description,
@@ -57,6 +58,24 @@ const Modal = ({ record, isModalVisible, setModalVisible }) => {
       visible={isModalVisible}
     >
       <Form name='add' initialValues={initialValues} onFinish={handleSubmit}>
+        <Col>
+          <Form.Item
+            label='ชื่อผู้ค้า'
+            name='firstname'
+            rules={[{ required: true, message: '*กรุณากรอกชื่อผู้ค้า' }]}
+          >
+            <Input />
+          </Form.Item>
+        </Col>
+        <Col>
+          <Form.Item
+            label='นามสกุล'
+            name='lastname'
+            rules={[{ required: true, message: '*กรุณากรอกนามสกุล' }]}
+          >
+            <Input />
+          </Form.Item>
+        </Col>
         <Col>
           <Form.Item
             label='วัตถุดิบ'

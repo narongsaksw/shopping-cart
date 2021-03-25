@@ -54,7 +54,7 @@ const Modal = ({ record, isModalVisible, setModalVisible }) => {
 
   return (
     <AntdModal
-      title='Add Content'
+      title='แก้ไขข้อมูลพนักงาน'
       footer={null}
       centered
       onCancel={() => setModalVisible(false)}

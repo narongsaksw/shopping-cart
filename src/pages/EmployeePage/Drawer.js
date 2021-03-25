@@ -22,7 +22,58 @@ const Drawers = (props) => {
     setVisible(props.visible);
     setValue(props.value);
     setValues(props.value.value_buy);
-  }, [props.visible, props.value]);
+    if (props.value.id != null) {
+      await functionGet(`${warehouse_find_one}${props.value.id}`, async (res) => {
+        if (res.dataValues != null) {
+          setValue(res.dataValues);
+        } else {
+          await functionGet(`${promotion_find_one}${props.value.id}`, (res) => {
+            if (res.dataValues != null) {
+              setValue(res.dataValues);
+              itemPromotion(res.dataValues.key);
+            }
+          });
+        }
+      });
+    }
+  }, [props.value]);
+
+  const itemPromotion = async (id) => {
+    let val = [];
+    await functionGet(`${promotion_find_one}${id}`, async (res) => {
+      res.dataValues.map(async (item) => {
+        const title = item.Warehouse.title;
+        const data = item.Warehouse;
+        delete data.title;
+        await val.push(
+          <Card
+            {...data}
+            style={{
+              width: "100%",
+              marginTop: 16,
+              cursor: "pointer",
+              zIndex: 200,
+            }}
+          >
+            <Meta
+              avatar={<Avatar src={`${item.Warehouse.image}`} />}
+              title={
+                <>
+                  <Tag color="blue" style={{ fontSize: 18 }}>{`${title}`}</Tag>
+                  <Tag
+                    color="geekblue"
+                    style={{ fontSize: 18, marginTop: 5 }}
+                  >{`${item.value} item`}</Tag>
+                  <Tag color="cyan">{`${item.Warehouse.description}`}</Tag>
+                </>
+              }
+            />
+          </Card>
+        );
+      });
+    });
+    setSumItem(val);
+  };
 
   const onClose = () => {
     props.setVisible(false);

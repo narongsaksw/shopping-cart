@@ -184,10 +184,7 @@ const PromotionPage = () => {
   };
 
   return (
-    <PageLayout
-      subTitle={<AddButton getPromotion={() => getPromotion()} />}
-      extra={[<Search placeholder="Search by..." enterButton onSearch={""} />]}
-    >
+    <PageLayout subTitle={<AddButton getPromotion={() => getPromotion()} />}>
       <Typography.Text>
         <Table columns={columns} dataSource={data} />
       </Typography.Text>

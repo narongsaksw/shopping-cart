@@ -26,7 +26,6 @@ const CollectionCreateForm = ({ visible, onCreate, onCancel, field }) => {
 
   const findWarehouse = () => {
     functionGet(warehouse_find_all, (res) => {
-      console.log(res);
       setWha(
         res.dataValues.map((item) => {
           return <Option key={item.key}>{item.title}</Option>;

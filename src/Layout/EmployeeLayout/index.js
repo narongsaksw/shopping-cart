@@ -33,9 +33,7 @@ const EmployeeLayout = ({ children, ...props }) => {
       let val = [];
       if (e.dataValues.lenght !== 0) {
         e.dataValues.forEach((elememt) => {
-          val.push(
-            <Menu.Item key={`${elememt.uuid}`}>{elememt.name}</Menu.Item>
-          );
+          val.push(<Menu.Item key={`${elememt.uuid}`}>{elememt.name}</Menu.Item>);
         });
         setData(val);
       }
@@ -61,12 +59,7 @@ const EmployeeLayout = ({ children, ...props }) => {
     <Layout>
       <Header>
         <div style={style.logoStyle} />
-        <Menu
-          theme="dark"
-          mode="horizontal"
-          defaultSelectedKeys={["0"]}
-          onClick={handleClick}
-        >
+        <Menu theme="dark" mode="horizontal" defaultSelectedKeys={["0"]} onClick={handleClick}>
           <SubMenu key="group" title="Group">
             <Menu.Item key="All Product">All Product</Menu.Item>
             {data}
@@ -76,9 +69,7 @@ const EmployeeLayout = ({ children, ...props }) => {
           </Menu.Item>
           <Menu.Item key="cart" style={{ float: "right" }}>
             <Badge count={value}>
-              <ShoppingCartOutlined
-                style={{ fontSize: "28px", color: "white" }}
-              />
+              <ShoppingCartOutlined style={{ fontSize: "28px", color: "white" }} />
             </Badge>
           </Menu.Item>
         </Menu>
@@ -90,16 +81,11 @@ const EmployeeLayout = ({ children, ...props }) => {
         </Breadcrumb>
         <menuContext.Provider value={{ updateShopingCart }}>
           <div style={style.siteLayoutBackgroundStyle}>
-            <EmployeePage
-              group={group}
-              menuContext={menuContext}
-              visible={visible}
-              setVisibles={(e) => setVisible(e)}
-            />
+            <EmployeePage group={group} menuContext={menuContext} visible={visible} setVisibles={(e) => setVisible(e)} />
           </div>
         </menuContext.Provider>
       </Content>
-      <Footer description={<h3>Shoping Card ©2021 Created by BALL ERTH</h3>} />
+      <Footer description={<h3></h3>} />
     </Layout>
   );
 };

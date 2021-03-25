@@ -4,13 +4,14 @@ import CollectionCreateForm from "./CollectionCreateForm";
 import { create_promotion } from "../../constant";
 import { functionPost } from "../../services/employee";
 
-const AddButton = () => {
+const AddButton = ({ getPromotion }) => {
   const [visible, setVisible] = useState(false);
 
   const onCreate = (values) => {
     console.log("Received values of form: ", values);
     functionPost(create_promotion, values, (res) => {
       if (res.message === "OK") {
+        getPromotion();
         setVisible(false);
       }
     });

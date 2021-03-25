@@ -10,6 +10,9 @@ export const promotion_find_one = ip + "/api/v1/promotion/findOne/";
 export const promotion_item_find_pid = ip + "/api/v1/promotion-item/find-all-by-promotion/";
 export const find_warehouse_all = ip + "/api/v1/promotion-item/find-warehouse-all/";
 export const create_promotion = ip + "/api/v1/promotion/create";
+export const find_value_id = ip + "/api/v1/promotion-item/value-id/";
+export const update_promotion = ip + "/api/v1/promotion/update";
+export const delete_promotion = ip + "/api/v1/promotion/delete/";
 
 //history
 export const getHistoryByDate = ip + "/api/v1/trading-orders/find-by-date";

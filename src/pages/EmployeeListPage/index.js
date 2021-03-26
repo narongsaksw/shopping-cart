@@ -34,11 +34,11 @@ function EmployeeList() {
   };
   const columns = [
     {
-      title: 'ชื่อ-นามสกุล',
+      title: 'ชื่อ',
       dataIndex: 'firstname',
     },
     {
-      title: 'ชื่อ-นามสกุล',
+      title: 'นามสกุล',
       dataIndex: 'lastname',
     },
     {

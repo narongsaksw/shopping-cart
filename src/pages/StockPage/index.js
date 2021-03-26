@@ -83,6 +83,8 @@ function Stock() {
     getWarehouse();
   }, [isModalVisible, isModalAddVisible]);
 
+  console.log(stock);
+
   const search = (value) => {
     const filterTable = stock.filter((o) =>
       Object.keys(o).some((k) =>

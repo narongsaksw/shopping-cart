@@ -22,6 +22,9 @@ const columns = [
     title: 'ลำดับที่',
     dataIndex: 'key',
     key: 'key',
+    render: (_, __, index) => {
+      return index + 1;
+    },
   },
   {
     title: 'วันและเวลา',
@@ -40,13 +43,22 @@ const columns = [
     title: 'รายการ',
     dataIndex: 'order',
     key: 'order',
+    render: (orders) => {
+      return orders.map((text, idx) => {
+        if (idx !== orders.length - 1) {
+          return <Typography.Text>{text} , </Typography.Text>;
+        } else {
+          return <Typography.Text>{text}</Typography.Text>;
+        }
+      });
+    },
   },
   {
     title: 'ราคา(บาท)',
     dataIndex: 'price',
     key: 'price',
-    render: (price) => {
-      if (price < 0) {
+    render: (price, record) => {
+      if (record.role === 'SELL') {
         return <NegativePrice>{price}</NegativePrice>;
       } else {
         return <PositivePrice>{price}</PositivePrice>;
@@ -79,6 +91,8 @@ function History() {
     setIncomes(allBuy);
     setExpenses(allSell);
   };
+
+  console.log(historyData);
 
   useEffect(() => {
     getHistory();
@@ -121,6 +135,7 @@ function History() {
               }
               size='large'
               style={{ height: 60, top: '40%', borderRadius: 6 }}
+              allowClear={false}
             />
           </DateCard>
           <Card title='รายรับทั้งหมด' amount={`${incomes} บาท`} />

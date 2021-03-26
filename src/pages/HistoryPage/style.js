@@ -29,11 +29,9 @@ const Record = styled.div`
 `;
 
 const NegativePrice = styled.div`
-  text-align: center;
   color: red;
 `;
 const PositivePrice = styled.div`
-  text-align: center;
   color: #07fe06;
 `;
 

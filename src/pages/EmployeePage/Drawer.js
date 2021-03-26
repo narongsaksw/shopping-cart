@@ -93,7 +93,7 @@ const Drawers = (props) => {
   return (
     <>
       <Drawer
-        title="Product information"
+        title="รายละเอียดสินค้า"
         width={550}
         onClose={onClose}
         visible={visible}
@@ -105,10 +105,10 @@ const Drawers = (props) => {
             }}
           >
             <Button onClick={onClose} style={{ marginRight: 8 }}>
-              Cancel
+              ยกเลิก
             </Button>
             <Button onClick={submit} type="primary">
-              Submit
+              เพิ่มในตระกร้า
             </Button>
           </div>
         }
@@ -141,7 +141,7 @@ const Drawers = (props) => {
           <Col className="gutter-row" span={14}>
             <Row gutter={8}>
               <Col className="gutter-row" span={9}>
-                <div style={{ ...style, float: "right", color: "#C6C6C6" }}>Product name :</div>
+                <div style={{ ...style, float: "right", color: "#C6C6C6" }}>ชื่อสินค้า :</div>
               </Col>
               <Col className="gutter-row" span={15}>
                 <div style={style}>{value.title}</div>
@@ -149,7 +149,7 @@ const Drawers = (props) => {
             </Row>
             <Row gutter={8}>
               <Col className="gutter-row" span={9}>
-                <div style={{ ...style, float: "right", color: "#C6C6C6" }}>Price :</div>
+                <div style={{ ...style, float: "right", color: "#C6C6C6" }}>ราคา :</div>
               </Col>
               <Col className="gutter-row" span={15}>
                 <div style={style}>{`${value.price} Bath`}</div>
@@ -157,7 +157,7 @@ const Drawers = (props) => {
             </Row>
             <Row gutter={8}>
               <Col className="gutter-row" span={9}>
-                <div style={{ ...style, float: "right", color: "#C6C6C6" }}>Description :</div>
+                <div style={{ ...style, float: "right", color: "#C6C6C6" }}>บรรยาย :</div>
               </Col>
               <Col className="gutter-row" span={15}>
                 <div style={style}>{value.description}</div>
@@ -165,7 +165,7 @@ const Drawers = (props) => {
             </Row>
             <Row gutter={8}>
               <Col className="gutter-row" span={9}>
-                <div style={{ ...style, float: "right", color: "#C6C6C6" }}>Quantity :</div>
+                <div style={{ ...style, float: "right", color: "#C6C6C6" }}>จำนวน :</div>
               </Col>
               <Col className="gutter-row" span={15}>
                 <div style={style}>
@@ -184,7 +184,7 @@ const Drawers = (props) => {
                         setValues(1);
                       }}
                     >
-                      Reset
+                      ค่าเริ่มต้น
                     </Button>
                   </Space>
                 </div>
@@ -192,7 +192,7 @@ const Drawers = (props) => {
             </Row>
             <Row gutter={8}>
               <Col className="gutter-row" span={9}>
-                <div style={{ ...style, float: "right", color: "#C6C6C6" }}>Price/Quantity :</div>
+                <div style={{ ...style, float: "right", color: "#C6C6C6" }}>ราคาต่อจำนวน :</div>
               </Col>
               <Col className="gutter-row" span={15}>
                 <div style={{ ...style, color: "red" }}>{`${values * value.price} Bath`}</div>
@@ -200,7 +200,7 @@ const Drawers = (props) => {
             </Row>
           </Col>
         </Row>
-        <Divider orientation="right">Select product quantity</Divider>
+        <Divider orientation="right">รายละเอียดย่อยของรายการ</Divider>
         {subItem.length !== 0 ? <>{subItem}</> : <Empty description={false} />}
       </Drawer>
     </>

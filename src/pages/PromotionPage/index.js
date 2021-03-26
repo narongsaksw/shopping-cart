@@ -34,7 +34,7 @@ const PromotionPage = () => {
               showModal(res);
             }}
           >
-            View items
+            ดูรายการ
           </a>
         </Space>
       ),
@@ -57,17 +57,17 @@ const PromotionPage = () => {
         <Space>
           <a
             onClick={() => {
-              deletePromotion(res);
+              warning(res);
             }}
           >
-            Delete
+            ลบ
           </a>
           <a
             onClick={() => {
               updatePromotionForm(res);
             }}
           >
-            Edite
+            แก้ไข
           </a>
         </Space>
       ),
@@ -113,21 +113,35 @@ const PromotionPage = () => {
     setVisible(true);
   };
 
+  const warning = async (id) => {
+    Modal.warning({
+      title: "ยืนยันการลบโปรโมชั่น",
+      content: "ท่านแน่ใจแล้วหรือไม่ที่ต้องการจะลบโปรโมชั่นนี้",
+      onOk() {
+        deletePromotion(id);
+      },
+    });
+  };
+
   useEffect(() => {
     if (data.length === 0) {
       getPromotion();
     }
   }, []);
 
-  const getPromotion = () => {
-    functionGet(promotion_find_all, (res) => {
+  const getPromotion = async () => {
+    await functionGet(promotion_find_all, (res) => {
       setData(res.dataValues);
     });
   };
 
   const deletePromotion = async (id) => {
     await axios.delete(delete_promotion + id).then((res) => {
-      getPromotion();
+      if (res.status === 200) {
+        setTimeout(() => {
+          getPromotion();
+        }, 500);
+      }
     });
   };
 
@@ -196,7 +210,7 @@ const PromotionPage = () => {
         }}
         field={field}
       />
-      <Modal title="Items" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+      <Modal title="รายการสินค้า" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
         {ware}
       </Modal>
     </PageLayout>

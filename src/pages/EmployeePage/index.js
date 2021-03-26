@@ -223,8 +223,10 @@ export const EmployeePage = (props) => {
 
   const info = (orderId, Allprice, orders) => {
     Modal.info({
-      title: "Order",
+      title: "รายละเอียดรายการสั่งซื้อ",
       content: <Printer orderId={orderId} Allprice={Allprice} order={orders} />,
+      okText: "ยืนยันสั่งซื้อ",
+      cancelText: "ยกเลิกการสั่งซื้อ",
       onOk() {
         checkModal.current = false;
         val_old.current = [];
@@ -271,9 +273,11 @@ export const EmployeePage = (props) => {
         }}
       />
       <Modal
-        title="Orders"
+        title="รายการสั่งซื้อ"
         centered
         visible={visibleModal}
+        okText={"สั่งซื้อ"}
+        cancelText={"ยกเลิกการสั่งซื้อ"}
         onOk={() => {
           modalSubmit();
         }}

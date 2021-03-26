@@ -38,9 +38,9 @@ const CollectionCreateForm = ({ visible, onCreate, onCancel, field }) => {
     <Modal
       height={100}
       visible={visible}
-      title="Create a new Promotion"
-      okText="Create"
-      cancelText="Cancel"
+      title="สร้างโปรโมชั่น"
+      okText="ยืนยัน"
+      cancelText="ยกเลิก"
       onCancel={onCancel}
       onOk={() => {
         form
@@ -66,11 +66,11 @@ const CollectionCreateForm = ({ visible, onCreate, onCancel, field }) => {
       >
         <Form.Item
           name="name"
-          label="Name"
+          label="ชื่อโปรโมชั่น"
           rules={[
             {
               required: true,
-              message: "Please input the name of collection!",
+              message: "กรุณาใส่ชื่อ!",
             },
           ]}
         >
@@ -78,11 +78,11 @@ const CollectionCreateForm = ({ visible, onCreate, onCancel, field }) => {
         </Form.Item>
         <Form.Item
           name="price"
-          label="Price"
+          label="ราคา"
           rules={[
             {
               required: true,
-              message: "Please input the price of collection!",
+              message: "กรุณาใส่ราคา!",
             },
           ]}
         >
@@ -90,11 +90,11 @@ const CollectionCreateForm = ({ visible, onCreate, onCancel, field }) => {
         </Form.Item>
         <Form.Item
           name="description"
-          label="Description"
+          label="บรรยาย"
           rules={[
             {
               required: true,
-              message: "Please input the description of collection!",
+              message: "กรุณาใส่คำบรรยาย!",
             },
           ]}
         >
@@ -102,11 +102,11 @@ const CollectionCreateForm = ({ visible, onCreate, onCancel, field }) => {
         </Form.Item>
         <Form.Item
           name="image"
-          label="Image"
+          label="รูป"
           rules={[
             {
               required: true,
-              message: "Please input the image of collection!",
+              message: "กรุณาใส่รูป!",
             },
           ]}
         >
@@ -125,10 +125,10 @@ const CollectionCreateForm = ({ visible, onCreate, onCancel, field }) => {
                     {() => (
                       <Form.Item
                         {...field}
-                        label="Items"
+                        label="สินค้า"
                         name={[field.name, "id"]}
                         fieldKey={[field.fieldKey, "id"]}
-                        rules={[{ required: true, message: "Missing sight" }]}
+                        rules={[{ required: true, message: "กรุณาใส่สินค้า" }]}
                         style={{ display: "flex" }}
                       >
                         <Select style={{ width: 260 }}>{wha}</Select>
@@ -137,10 +137,10 @@ const CollectionCreateForm = ({ visible, onCreate, onCancel, field }) => {
                   </Form.Item>
                   <Form.Item
                     {...field}
-                    label="Values"
+                    label="จำนวน"
                     name={[field.name, "value"]}
                     fieldKey={[field.fieldKey, "value"]}
-                    rules={[{ required: true, message: "Missing price" }]}
+                    rules={[{ required: true, message: "กรุณาใส่จำนวน" }]}
                   >
                     <Input />
                   </Form.Item>
@@ -151,7 +151,7 @@ const CollectionCreateForm = ({ visible, onCreate, onCancel, field }) => {
 
               <Form.Item>
                 <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
-                  Add sights
+                  เพิ่มรายการสินค้า
                 </Button>
               </Form.Item>
             </>

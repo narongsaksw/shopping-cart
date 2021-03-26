@@ -8,7 +8,6 @@ const AddButton = ({ getPromotion }) => {
   const [visible, setVisible] = useState(false);
 
   const onCreate = (values) => {
-    console.log("Received values of form: ", values);
     functionPost(create_promotion, values, (res) => {
       if (res.message === "OK") {
         getPromotion();
@@ -20,7 +19,7 @@ const AddButton = ({ getPromotion }) => {
   return (
     <>
       <Button type="primary" onClick={() => setVisible(true)}>
-        Add Promotion
+        เพิ่มโปรโมชั่น
       </Button>
       <CollectionCreateForm
         visible={visible}

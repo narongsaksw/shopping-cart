@@ -60,7 +60,7 @@ const EmployeeLayout = ({ children, ...props }) => {
       <Header>
         <div style={style.logoStyle} />
         <Menu theme="dark" mode="horizontal" defaultSelectedKeys={["0"]} onClick={handleClick}>
-          <SubMenu key="group" title="Group">
+          <SubMenu key="group" title="กรุ๊ป">
             <Menu.Item key="All Product">All Product</Menu.Item>
             {data}
           </SubMenu>

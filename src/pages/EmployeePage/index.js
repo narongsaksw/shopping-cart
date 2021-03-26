@@ -92,44 +92,46 @@ export const EmployeePage = (props) => {
   const card = async (e) => {
     let val = [];
     await functionGet(e, async (res) => {
-      await res.dataValues.forEach(async (element) => {
-        let new_element = null;
-        let data = await val_old.current.filter((e) => {
-          return JSON.parse(e).item_id === element.key;
+      if (res.dataValues != null) {
+        await res.dataValues.forEach(async (element) => {
+          let new_element = null;
+          let data = await val_old.current.filter((e) => {
+            return JSON.parse(e).item_id === element.key;
+          });
+          if (data.length === 0) {
+            const new_old_file_value = old_file_value;
+            new_old_file_value.item_id = element.key;
+            new_old_file_value.value = 0;
+            val_old.current.push(JSON.stringify(new_old_file_value));
+            new_element = { ...element, value_buy: 0, id: element.key };
+          } else {
+            new_element = {
+              ...element,
+              value_buy: JSON.parse(data[0]).value,
+              id: element.key,
+            };
+          }
+          val.push(
+            <CardItems
+              {...new_element}
+              description={`price ${new_element.price} BATH`}
+              setVisible={(e) => {
+                setVisible(e);
+                let findCheck = order.current.filter((item) => {
+                  return JSON.parse(item).id === new_element.id;
+                });
+                if (findCheck.length !== 0) {
+                  new_element.value_buy = JSON.parse(findCheck).dataValues.value;
+                  setValue(new_element);
+                } else {
+                  new_element.value_buy = 0;
+                  setValue(new_element);
+                }
+              }}
+            />
+          );
         });
-        if (data.length === 0) {
-          const new_old_file_value = old_file_value;
-          new_old_file_value.item_id = element.key;
-          new_old_file_value.value = 0;
-          val_old.current.push(JSON.stringify(new_old_file_value));
-          new_element = { ...element, value_buy: 0, id: element.key };
-        } else {
-          new_element = {
-            ...element,
-            value_buy: JSON.parse(data[0]).value,
-            id: element.key,
-          };
-        }
-        val.push(
-          <CardItems
-            {...new_element}
-            description={`price ${new_element.price} BATH`}
-            setVisible={(e) => {
-              setVisible(e);
-              let findCheck = order.current.filter((item) => {
-                return JSON.parse(item).id === new_element.id;
-              });
-              if (findCheck.length !== 0) {
-                new_element.value_buy = JSON.parse(findCheck).dataValues.value;
-                setValue(new_element);
-              } else {
-                new_element.value_buy = 0;
-                setValue(new_element);
-              }
-            }}
-          />
-        );
-      });
+      }
     });
     return val;
   };

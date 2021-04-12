@@ -3,9 +3,18 @@ import { isLogin } from '../../middleware/auth';
 import SideBar from '../../components/SideBar';
 import { Link, Redirect, useLocation } from 'react-router-dom';
 import { Layout, Menu, Image, Typography } from 'antd';
-import Logo from '../../images/logo192.png';
+import { GiShoppingCart } from 'react-icons/gi';
+import styled from 'styled-components';
 
 const { Footer, Sider, Content } = Layout;
+
+const WrapIcon = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 150px;
+  padding: 10px;
+`;
 
 const AdminLayout = ({ children }) => {
   const location = useLocation();
@@ -15,9 +24,9 @@ const AdminLayout = ({ children }) => {
   return (
     <Layout style={{ minHeight: '100vh' }}>
       <Sider theme='light' style={{ boxShadow: '0px 3px 10px #00000029' }}>
-        <div style={{ padding: 10 }}>
-          <Image src={Logo} preview={false} style={{ padding: '10px 30px' }} />
-        </div>
+        <WrapIcon>
+          <GiShoppingCart size={50} />
+        </WrapIcon>
         <Menu
           theme='light'
           defaultSelectedKeys={['/history']}

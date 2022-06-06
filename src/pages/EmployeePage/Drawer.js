@@ -66,7 +66,7 @@ const Drawers = (props) => {
                   </>
                 }
               />
-            </Card>
+            </Card>,
           );
         }
       });
@@ -127,11 +127,17 @@ const Drawers = (props) => {
             >
               <Image
                 width={197}
-                src={`${value.image != null ? value.image : "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"}`}
+                src={`${
+                  value.image != null ? value.image : "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+                }`}
                 placeholder={
                   <Image
                     preview={true}
-                    src={`${value.image != null ? value.image : "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"}`}
+                    src={`${
+                      value.image != null
+                        ? value.image
+                        : "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+                    }`}
                     width={197}
                   />
                 }
@@ -157,10 +163,18 @@ const Drawers = (props) => {
             </Row>
             <Row gutter={8}>
               <Col className="gutter-row" span={9}>
-                <div style={{ ...style, float: "right", color: "#C6C6C6" }}>บรรยาย :</div>
+                <div style={{ ...style, float: "right", color: "#C6C6C6" }}>หน่วย :</div>
               </Col>
               <Col className="gutter-row" span={15}>
                 <div style={style}>{value.description}</div>
+              </Col>
+            </Row>
+            <Row gutter={8}>
+              <Col className="gutter-row" span={9}>
+                <div style={{ ...style, float: "right", color: "#C6C6C6" }}>คงเหลือในคลัง :</div>
+              </Col>
+              <Col className="gutter-row" span={15}>
+                <div style={style}>{`${value.value - values} ${value.description}`} </div>
               </Col>
             </Row>
             <Row gutter={8}>

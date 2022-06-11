@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import PageLayout from '../../Layout/PageLayout';
-import styled from 'styled-components';
 import { Table, Input } from 'antd';
 import AddButton from './AddButton';
 import { getEmployeeList, deleteEmployee } from '../../constant';
@@ -12,7 +11,7 @@ const { Search } = Input;
 
 function EmployeeList() {
   const [data, setData] = useState([]);
-  const [isModalVisible, setModalVisible] = useState(false);
+  const [isModalEditVisible, setModalEditVisible] = useState(false);
   const [isModalAddVisible, setModalAddVisible] = useState(false);
   const [record, setRecord] = useState({});
   const [filterTable, setFilterTable] = useState(null);
@@ -26,11 +25,11 @@ function EmployeeList() {
   };
   useEffect(() => {
     getEmployee();
-  }, [isModalVisible, isModalAddVisible]);
+  }, [isModalEditVisible, isModalAddVisible]);
 
   const onEdit = (record) => {
     setRecord(record);
-    setModalVisible((state) => !state);
+    setModalEditVisible((state) => !state);
   };
   const columns = [
     {
@@ -97,8 +96,8 @@ function EmployeeList() {
         />
         <EditModal
           record={record}
-          isModalVisible={isModalVisible}
-          setModalVisible={setModalVisible}
+          isModalVisible={isModalEditVisible}
+          setModalVisible={setModalEditVisible}
         />
       </>
     </PageLayout>

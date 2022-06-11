@@ -1,17 +1,15 @@
-import React, { useState } from 'react';
-import { Button } from 'antd';
-import Modal from './Modal';
+import React from "react";
+import AddListButton from "../../components/Button/AddButton";
+import Modal from "./Modal";
 
 const AddButton = ({ isModalVisible, setModalVisible }) => {
   return (
     <>
-      <Button
-        type='primary'
-        block
+      <AddListButton
+        title="เพิ่มรายการ"
         onClick={() => setModalVisible((state) => (state = !state))}
-      >
-        เพิ่มรายการ
-      </Button>
+      />
+
       <Modal
         isModalVisible={isModalVisible}
         setModalVisible={setModalVisible}

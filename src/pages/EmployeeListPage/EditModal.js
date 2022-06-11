@@ -1,7 +1,7 @@
 import React from "react";
 import { message } from "antd";
 import Modal from "../../components/Modal";
-import EmployeeForm from "./EmployeeForm";
+import EmployeeForm from "../../components/Form/EmployeeForm";
 import axios from "axios";
 
 import { updateEmployee } from "../../constant";

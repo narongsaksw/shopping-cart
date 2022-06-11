@@ -1,7 +1,7 @@
 import React from "react";
 import { Form, message } from "antd";
 import Modal from "../../components/Modal";
-import EmployeeForm from "./EmployeeForm";
+import EmployeeForm from "../../components/Form/EmployeeForm";
 import { createEmployee } from "../../constant";
 import axios from "axios";
 
@@ -15,7 +15,6 @@ const initialValues = {
   address: "",
   username: "",
   password: "",
-  email: "",
 };
 
 const AddModal = ({ isModalVisible, setModalVisible }) => {

@@ -1,10 +1,8 @@
-import React, { Fragment } from 'react';
-import { isLogin } from '../../middleware/auth';
-import SideBar from '../../components/SideBar';
-import { Link, Redirect, useLocation } from 'react-router-dom';
-import { Layout, Menu, Image, Typography } from 'antd';
-import { GiShoppingCart } from 'react-icons/gi';
-import styled from 'styled-components';
+import React from "react";
+import { isLogin } from "../../middleware/auth";
+import { Link, Redirect, useLocation } from "react-router-dom";
+import { Layout, Menu } from "antd";
+import styled from "styled-components";
 
 const { Footer, Sider, Content } = Layout;
 
@@ -18,40 +16,44 @@ const WrapIcon = styled.div`
 
 const AdminLayout = ({ children }) => {
   const location = useLocation();
-  if (!isLogin()) {
-    return <Redirect to='/' />;
-  }
+  // if (!isLogin()) {
+  //   return <Redirect to='/' />;
+  // }
   return (
-    <Layout style={{ minHeight: '100vh' }}>
-      <Sider theme='light' style={{ boxShadow: '0px 3px 10px #00000029' }}>
-        <WrapIcon>
-          <GiShoppingCart size={50} />
-        </WrapIcon>
+    <Layout style={{ minHeight: "100vh" }}>
+      <Sider theme="dark" style={{ boxShadow: "0px 3px 10px #00000029" }}>
+        <WrapIcon />
         <Menu
-          theme='light'
-          defaultSelectedKeys={['/history']}
+          theme="dark"
+          defaultSelectedKeys={["/history"]}
           selectedKeys={[location.pathname]}
-          mode='inline'
+          mode="inline"
         >
-          <Menu.Item key='/history'>
-            <Link to='/history'>ข้อมูลการขาย</Link>
+          <Menu.Item key="/history">
+            <Link to="/history">รายงานการขายสินค้า</Link>
           </Menu.Item>
-          <Menu.Item key='/stock'>
-            <Link to='/stock'>คลังสินค้า</Link>
+          <Menu.Item key="/stockHistory">
+            <Link to="/stockHistory">รายงานการนำเข้าสินค้า</Link>
           </Menu.Item>
-          <Menu.Item key='/employee-list'>
-            <Link to='/employee-list'>พนักงาน</Link>
+          <Menu.Item key="/stock">
+            <Link to="/stock">รายการคลังสินค้า</Link>
           </Menu.Item>
-          <Menu.Item key='/promotion'>
-            <Link to='/promotion'>โปรโมชั่น</Link>
+          <Menu.Item key="/employeeList">
+            <Link to="/employeeList">รายชื่อพนักงาน</Link>
           </Menu.Item>
-          <Menu.Item key='/logout'>
-            <Link to='/logout'>ออกจากระบบ</Link>
+          <Menu.Item key="/companyList">
+            <Link to="/companyList">รายชื่อบริษัทคู่ค้า</Link>
+          </Menu.Item>
+          <Menu.Item key="/promotion">
+            <Link to="/promotion">จัดการโปรโมชั่น</Link>
+          </Menu.Item>
+          <Menu.Item key="/logout">
+            <Link to="/logout">ออกจากระบบ</Link>
           </Menu.Item>
         </Menu>
       </Sider>
       <Layout>
-        <Content style={{ backgroundColor: 'white' }}>{children}</Content>
+        <Content style={{ backgroundColor: "white" }}>{children}</Content>
       </Layout>
     </Layout>
   );

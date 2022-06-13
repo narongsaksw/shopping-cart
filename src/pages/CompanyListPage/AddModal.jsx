@@ -2,7 +2,7 @@ import React from "react";
 import { Form, message } from "antd";
 import Modal from "../../components/Modal";
 import CompanyForm from "../../components/Form/CompanyForm";
-import { createEmployee } from "../../constant";
+import { companyAPI } from "../../constant";
 import axios from "axios";
 
 const initialValues = {
@@ -10,22 +10,29 @@ const initialValues = {
   email: "",
   phoneNumber: "",
   address: "",
+  icon: null,
 };
 
 const AddModal = ({ isModalVisible, setModalVisible }) => {
   const [form] = Form.useForm();
   const handleSubmit = async (values) => {
-    const data = {
-      name: values.name,
-      phone_number: values.phoneNumber,
-      address: values.address,
-      email: values.email,
-    };
+    const formData = new FormData()
+    formData.append("merchant_name", values.name);
+    formData.append("phone_number", values.phoneNumber);
+    formData.append("address", values.address);
+    formData.append("email", values.email);
+    formData.append("file", values.icon[0].originFileObj);
     try {
-      await axios.post(createEmployee, data);
+      await axios({
+        url: companyAPI,
+        method: "POST",
+        data: formData,
+        headers: { "Content-Type": "multipart/form-data" },
+      });
       message.success("success");
       setModalVisible(false);
     } catch (error) {
+      console.log('error', error)
       message.error("error");
     }
     form.resetFields();

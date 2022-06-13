@@ -5,18 +5,37 @@ import AddButton from "./AddButton";
 import EditModal from './EditModal'
 
 import ListOperation from "../../components/ListOperation";
+import axios from "axios";
+
+//api
+import { companyAPI } from "../../constant";
 
 const { Search } = Input;
 
 const CompanyListPage = () => {
-  const [data, setData] = useState([]);
+  const [companies, setCompanies] = useState([]);
   const [isModalEditVisible, setModalEditVisible] = useState(false);
   const [isModalAddVisible, setModalAddVisible] = useState(false);
   const [record, setRecord] = useState({});
   const [filterTable, setFilterTable] = useState(null);
+  
+  useEffect(() => {
+    getCompanies()
+  },[])
+
+  const getCompanies = async () => {
+    try {
+      const res = await axios.get(companyAPI).then((res) => res.data.data);
+      setCompanies(res)
+      
+    } catch (error) {
+      console.log('error', error);
+      setCompanies([])
+    }
+  }
 
   const search = (value) => {
-    const filterTable = data.filter((o) =>
+    const filterTable = companies.filter((o) =>
       Object.keys(o).some((k) =>
         String(o[k]).toLowerCase().includes(value.toLowerCase().trim())
       )
@@ -26,13 +45,20 @@ const CompanyListPage = () => {
 
   const onEdit = (record) => {
     setRecord(record);
-    setModalEditVisible((state) => !state);
+    setModalEditVisible(true);
   };
 
   const columns = [
     {
+      title: "ลำดับที่",
+      key: "key",
+      render: (_, __, index) => {
+        return index + 1;
+      },
+    },
+    {
       title: "ชื่อ",
-      dataIndex: "name",
+      dataIndex: "merchant_name",
     },
     {
       title: "ที่อยู่",
@@ -47,12 +73,13 @@ const CompanyListPage = () => {
       dataIndex: "phone_number",
     },
     {
-      dataIndex: "uuid",
+      dataIndex: 'uuid',
       render: (id, record) => {
         return (
           <ListOperation
+             key={record.uuid}
             onEdit={() => onEdit(record)}
-            //   deletePath={`${deleteEmployee}/${id}`}
+              deletePath={`${companyAPI}/${id}`}
           />
         );
       },
@@ -72,7 +99,7 @@ const CompanyListPage = () => {
     >
       <Fragment>
         <Table
-          dataSource={filterTable === null ? data : filterTable}
+          dataSource={filterTable === null ? companies : filterTable}
           columns={columns}
         />
         <EditModal

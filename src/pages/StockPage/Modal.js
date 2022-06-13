@@ -1,32 +1,53 @@
-import React from "react";
-import { Modal as AntdModal, Form, Input, InputNumber, Row, Col, Typography, Button, Select, message } from "antd";
+import React, { useEffect, useState } from "react";
+import {
+  Modal as AntdModal,
+  Form,
+  Input,
+  InputNumber,
+  Col,
+  Select,
+  message,
+  Upload,
+  Button,
+} from "antd";
+import { UploadOutlined } from "@ant-design/icons";
 import SaveButton from "./SaveButton";
 import axios from "axios";
+import { normFile, uploadProps } from "../../utils";
 
-import { createStock } from "../../constant";
+import { createStock, companyAPI } from "../../constant";
+
+const { Option } = Select;
 
 const initialValues = {
-  firstname: "",
-  lastname: "",
   title: "",
   value: "",
   description: "",
   price: "",
   eachprice: "",
   phoneNumber: "",
-  image: "",
 };
 
 const Modal = ({ isModalVisible, setModalVisible }) => {
   const [form] = Form.useForm();
+  const [companyList, setCompanyList] = useState([]);
+
+  useEffect(() => {
+    getCompanyList();
+  }, []);
+
+  const getCompanyList = async () => {
+    const res = await axios.get(companyAPI).then((res) => res.data.data);
+    setCompanyList(res);
+  };
   const handleSubmit = async (values) => {
-    const data = {
-      name: values.firstname,
-      firstname: values.firstname,
-      lastname: values.lastname,
-      phone_number: values.phoneNumber,
-      role: "BUY",
-      dataValues: [
+    const formData = new FormData();
+    formData.append("merchant_id", values.merchantId);
+    formData.append("phone_number", values.phoneNumber);
+    formData.append("role", "BUY");
+    formData.append(
+      "dataValues",
+      JSON.stringify([
         {
           price: values.price,
           group: "Food",
@@ -34,14 +55,16 @@ const Modal = ({ isModalVisible, setModalVisible }) => {
             name: values.title,
             value: values.value,
             price: values.eachprice,
-            image: values.image,
             description: values.description,
           },
         },
-      ],
-    };
+      ])
+    );
+    formData.append("file", values.image[0].originFileObj);
     try {
-      await axios.post(createStock, data);
+      await axios.post(createStock, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
       message.success("success");
       setModalVisible(false);
     } catch (error) {
@@ -61,35 +84,65 @@ const Modal = ({ isModalVisible, setModalVisible }) => {
       }}
       visible={isModalVisible}
     >
-      <Form name="add" form={form} initialValues={initialValues} onFinish={handleSubmit}>
+      <Form
+        name="add"
+        form={form}
+        initialValues={initialValues}
+        onFinish={handleSubmit}
+      >
         <Col>
-          <Form.Item label="ชื่อผู้ค้า" name="firstname" rules={[{ required: true, message: "*กรุณากรอกชื่อผู้ค้า" }]}>
+          <Form.Item
+            label="ชื่อผู้ค้า"
+            name="merchantId"
+            rules={[
+              {
+                required: true,
+                message: "*กรุณาเลือกบริษัทคู่ค้า",
+              },
+            ]}
+          >
+            <Select allowClear>
+              {companyList.map((company) => (
+                <Option key={company.uuid} value={company.uuid}>
+                  {company.merchant_name}
+                </Option>
+              ))}
+            </Select>
+          </Form.Item>
+        </Col>
+        <Col>
+          <Form.Item
+            label="วัตถุดิบ"
+            name="title"
+            rules={[{ required: true, message: "*กรุณากรอกวัตถุดิบ" }]}
+          >
             <Input />
           </Form.Item>
         </Col>
         <Col>
-          <Form.Item label="นามสกุล" name="lastname" rules={[{ required: true, message: "*กรุณากรอกนามสกุล" }]}>
-            <Input />
-          </Form.Item>
-        </Col>
-
-        <Col>
-          <Form.Item label="วัตถุดิบ" name="title" rules={[{ required: true, message: "*กรุณากรอกวัตถุดิบ" }]}>
-            <Input />
-          </Form.Item>
-        </Col>
-        <Col>
-          <Form.Item label="จำนวน" name="value" rules={[{ required: true, message: "*กรุณากรอกจำนวนคงเหลือ" }]}>
+          <Form.Item
+            label="จำนวน"
+            name="value"
+            rules={[{ required: true, message: "*กรุณากรอกจำนวนคงเหลือ" }]}
+          >
             <InputNumber min={0} />
           </Form.Item>
         </Col>
         <Col>
-          <Form.Item label="หน่วย" name="description" rules={[{ required: true, message: "*กรุณากรอกหน่วย" }]}>
+          <Form.Item
+            label="หน่วย"
+            name="description"
+            rules={[{ required: true, message: "*กรุณากรอกหน่วย" }]}
+          >
             <Input />
           </Form.Item>
         </Col>
         <Col>
-          <Form.Item label="ราคา" name="price" rules={[{ required: true, message: "*กรุณากรอกราคา" }]}>
+          <Form.Item
+            label="ราคา"
+            name="price"
+            rules={[{ required: true, message: "*กรุณากรอกราคา" }]}
+          >
             <InputNumber min={0} />
           </Form.Item>
         </Col>
@@ -112,8 +165,14 @@ const Modal = ({ isModalVisible, setModalVisible }) => {
           </Form.Item>
         </Col>
         <Col>
-          <Form.Item label="รูป" name="image" rules={[{ required: true, message: "*กรุณาเพิ่มรูป(ลิ้งค์)" }]}>
-            <Input />
+          <Form.Item
+            name="image"
+            label="อัพโหลดรูปภาพ"
+            getValueFromEvent={normFile}
+          >
+            <Upload {...uploadProps}>
+              <Button icon={<UploadOutlined />}>Upload jpeg/png only</Button>
+            </Upload>
           </Form.Item>
         </Col>
         <SaveButton />

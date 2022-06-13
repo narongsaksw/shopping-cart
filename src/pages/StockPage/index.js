@@ -19,49 +19,41 @@ function Stock() {
     setRecord(record);
     setModalVisible((state) => !state);
   };
-  const phoneNumberFormat = (val) => {
-    //08-1234-5678
-    let phoneNumber;
-    if (val !== null) {
-      const pn = val.split('');
-      phoneNumber = `${pn[0]}${pn[1]}-${pn[2]}${pn[3]}${pn[4]}${pn[5]}-${pn[6]}${pn[7]}${pn[8]}${pn[9]}`;
-      return phoneNumber;
-    }
-  };
+
   const columns = [
     {
-      title: 'ลำดับที่',
-      dataIndex: 'key',
+      title: "ลำดับที่",
+      dataIndex: "key",
       render: (text, _, idx) => {
         return <Typography.Text>{idx + 1}</Typography.Text>;
       },
     },
     {
-      title: 'ผู้ค้า',
-      dataIndex: 'fullname',
+      title: "ผู้ค้า",
+      dataIndex: "merchant_name",
     },
     {
-      title: 'วัตถุดิบ',
-      dataIndex: 'title',
+      title: "วัตถุดิบ",
+      dataIndex: "title",
     },
     {
-      title: 'คงเหลือ',
-      dataIndex: 'value',
+      title: "คงเหลือ",
+      dataIndex: "value",
     },
     {
-      title: 'หน่วย',
-      dataIndex: 'description',
+      title: "หน่วย",
+      dataIndex: "description",
     },
     {
-      title: 'เบอร์ติดต่อ',
-      dataIndex: 'phone_number',
+      title: "เบอร์ติดต่อ",
+      dataIndex: "phone_number",
       render: (text) => {
         return <Typography.Text>{text}</Typography.Text>;
       },
     },
     {
-      title: 'แอคชั่น',
-      dataIndex: 'key',
+      title: "แอคชั่น",
+      dataIndex: "key",
       render: (id, record) => {
         return (
           <ListOperation
@@ -83,8 +75,6 @@ function Stock() {
     getWarehouse();
   }, [isModalVisible, isModalAddVisible]);
 
-  console.log(stock);
-
   const search = (value) => {
     const filterTable = stock.filter((o) =>
       Object.keys(o).some((k) =>
@@ -93,16 +83,18 @@ function Stock() {
     );
     setFilterTable(filterTable);
   };
+
   return (
     <PageLayout
       subTitle={
         <AddButton
+          stock={stock}
           isModalVisible={isModalAddVisible}
           setModalVisible={setModalAddVisible}
         />
       }
       extra={[
-        <Search placeholder='Search by...' enterButton onSearch={search} />,
+        <Search placeholder="Search by..." enterButton onSearch={search} />,
       ]}
     >
       <Table

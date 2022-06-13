@@ -15,7 +15,8 @@ export const update_promotion = ip + "/api/v1/promotion/update";
 export const delete_promotion = ip + "/api/v1/promotion/delete/";
 
 //history
-export const getHistoryByDate = ip + "/api/v1/trading-orders/find-by-date";
+export const getHistory = ip + "/api/v1/trading-orders";
+export const getHistoryByDate = ip + "/api/v1/transaction/find-by-date";
 export const getWarehouseAll = ip + "/api/v1/warehouse/findAll";
 const userId = JSON.parse(localStorage.getItem("userData"))?.id;
 export const getEmployeeList = ip + `/api/v1/act-membership/findAllMember/${userId}`;
@@ -29,3 +30,6 @@ export const updateEmployee = ip + "/api/v1/act-membership/update-member";
 export const createStock = ip + "/api/v1/store-information/create-item";
 export const deleteStockById = ip + "/api/v1/warehouse/delete";
 export const updateStockById = ip + "/api/v1/warehouse/update";
+
+//company-list
+export const companyAPI = ip + "/api/v1/personal-information";

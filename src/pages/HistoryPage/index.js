@@ -5,7 +5,12 @@ import PageLayout from "../../Layout/PageLayout";
 import moment from "moment";
 import { getHistoryByDate } from "../../constant";
 
-import { Container, DateCard, TitleDate, Column, Record, NegativePrice, PositivePrice } from "./style";
+import {
+  DateCard,
+  TitleDate,
+  NegativePrice,
+  PositivePrice,
+} from "./style";
 import axios from "axios";
 const { RangePicker } = DatePicker;
 
@@ -27,44 +32,25 @@ const columns = [
     },
   },
   {
-    title: "ผู้ค้า",
-    dataIndex: "name",
-    key: "name",
-  },
-  {
     title: "รายการ",
-    dataIndex: "order",
-    key: "order",
-    render: (orders) => {
-      return orders.map((text, idx) => {
-        if (idx !== orders.length - 1) {
-          return <Typography.Text>{text} , </Typography.Text>;
-        } else {
-          return <Typography.Text>{text}</Typography.Text>;
-        }
-      });
-    },
+    dataIndex: "items",
+    key: "items",
   },
   {
     title: "ราคา(บาท)",
     dataIndex: "price",
     key: "price",
-    render: (price, record) => {
-      if (record.role === "SELL") {
-        return <NegativePrice>{price}</NegativePrice>;
-      } else {
-        return <PositivePrice>{price}</PositivePrice>;
-      }
-    },
+    render: (price) => <Typography.Text>{price}</Typography.Text>,
   },
   {
-    title: "คงเหลือสินค้า",
-    key: "total",
-    render: (_, record) => {
-      if (record.role === "SELL") {
-        return <Typography.Text>{record.old_value - record.value}</Typography.Text>;
+    title: "สถานะ",
+    dataIndex: "status",
+    key: "status",
+    render: (status, record) => {
+      if (record.status === "CANCEL") {
+        return <NegativePrice>{status}</NegativePrice>;
       } else {
-        return <Typography.Text>{record.old_value + record.value}</Typography.Text>;
+        return <PositivePrice>{status}</PositivePrice>;
       }
     },
   },
@@ -85,15 +71,14 @@ function History() {
   const [incomes, setIncomes] = useState(0);
   const [expenses, setExpenses] = useState(0);
   const getHistory = async () => {
-    const res = await axios.get(`${getHistoryByDate}/${startDate}/${endDate}`).then((res) => res.data);
-    const { allBuy, allSell, order } = res.dataValues;
-    const parseOrder = order.map((i) => JSON.parse(i));
-    setHistoryData(parseOrder);
-    setIncomes(allBuy);
-    setExpenses(allSell);
+    const res = await axios
+      .get(`${getHistoryByDate}/${startDate}/${endDate}`)
+      .then((res) => res.data);
+    const { dataValues, totalBuy, totalSell } = res;
+    setHistoryData(dataValues);
+    setIncomes(totalSell);
+    setExpenses(totalBuy);
   };
-
-  console.log(historyData);
 
   useEffect(() => {
     getHistory();
@@ -138,7 +123,9 @@ function History() {
               format="DD/MM/YYYY"
               disabledDate={disabledDate}
               defaultValue={[moment(), moment()]}
-              onCalendarChange={(dates, stringDates) => onCalendarChange(dates, stringDates)}
+              onCalendarChange={(dates, stringDates) =>
+                onCalendarChange(dates, stringDates)
+              }
               size="large"
               style={{ height: 60, top: "40%", borderRadius: 6 }}
               allowClear={false}

@@ -1,22 +1,22 @@
 import React, { useState, useEffect } from "react";
-import { Table, Typography } from "antd";
+import { Table } from "antd";
 import PageLayout from "../../Layout/PageLayout";
 import moment from "moment";
+import { getHistory } from "../../constant";
 
 import axios from "axios";
 
 const columns = [
   {
     title: "ลำดับที่",
-    dataIndex: "key",
-    key: "key",
+    key: "id",
     render: (_, __, index) => {
       return index + 1;
     },
   },
   {
     title: "วันและเวลา",
-    dataIndex: "date",
+    dataIndex: "updatedAt",
     key: "date",
     render: (date) => {
       return moment(date).format("DD/MM/YYYY hh:mm:ss");
@@ -24,22 +24,13 @@ const columns = [
   },
   {
     title: "ผู้ค้า",
-    dataIndex: "name",
+    dataIndex: "merchant_name",
     key: "name",
   },
   {
-    title: "รายการ",
-    dataIndex: "order",
-    key: "order",
-    render: (orders) => {
-      return orders.map((text, idx) => {
-        if (idx !== orders.length - 1) {
-          return <Typography.Text>{text} , </Typography.Text>;
-        } else {
-          return <Typography.Text>{text}</Typography.Text>;
-        }
-      });
-    },
+    title: "สินค้า",
+    dataIndex: "product_name",
+    key: "product_name",
   },
   {
     title: "ราคา(บาท)",
@@ -57,11 +48,16 @@ function StockHistoryPage() {
     endTime: null,
   });
 
-  const [historyData, setHistoryData] = useState([]);
+  const [history, setHistory] = useState([]);
 
-  console.log(historyData);
+  useEffect(() => {
+    getHistoryList();
+  }, []);
 
-  useEffect(() => {}, []);
+  const getHistoryList = async () => {
+    const res = await axios.get(getHistory).then((res) => res.data.dataValues);
+    setHistory(res);
+  };
 
   const paginationHandler = (pagination) => {
     const { pageSize, current } = pagination;
@@ -84,9 +80,9 @@ function StockHistoryPage() {
   return (
     <PageLayout shownBack={false}>
       <Table
-        rowKey="uuid"
+        rowKey="id"
         columns={columns}
-        dataSource={historyData}
+        dataSource={history}
         pagination={pagination}
         onChange={paginationHandler}
       />

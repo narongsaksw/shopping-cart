@@ -6,13 +6,12 @@ export const EntryPage = styled.div`
   align-items: center;
   flex-direction: column;
   min-height: 100vh;
-  background-color: #f0c1b3;
+  background-color: #001529;
 `;
 
 export const PageHeader = styled(Link)`
   font-size: 2rem;
   font-weight: 600;
   margin: 40px 0;
-  color: inherit;
   text-decoration: none;
 `;

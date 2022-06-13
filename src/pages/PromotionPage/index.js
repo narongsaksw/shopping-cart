@@ -4,7 +4,14 @@ import { Typography } from "antd";
 import { Table, Space, Avatar, Image, Input, Card, Tag, Modal } from "antd";
 import AddButton from "./AddButton";
 import { functionGet } from "../../services/employee";
-import { promotion_find_all, find_warehouse_all, promotion_find_one, find_value_id, update_promotion, delete_promotion } from "../../constant";
+import {
+  promotion_find_all,
+  find_warehouse_all,
+  promotion_find_one,
+  find_value_id,
+  update_promotion,
+  delete_promotion,
+} from "../../constant";
 import CollectionCreateForm from "./CollectionCreateForm";
 import axios from "axios";
 
@@ -45,7 +52,10 @@ const PromotionPage = () => {
       key: "image",
       render: (e) => (
         <>
-          <Avatar size="large" src={<Image src={e != null ? e : `https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png`} />} />
+          <Avatar
+            size="large"
+            src={<Image src={e != null ? e : `https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png`} />}
+          />
         </>
       ),
     },
@@ -75,7 +85,6 @@ const PromotionPage = () => {
   ];
 
   const updatePromotionForm = async (id) => {
-    console.log(id);
     setPromotion_id(id);
     let f = [];
     let res1 = null;
@@ -172,7 +181,13 @@ const PromotionPage = () => {
             }}
           >
             <Meta
-              avatar={<Avatar src={`${item.image != null ? item.image : "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"}`} />}
+              avatar={
+                <Avatar
+                  src={`${
+                    item.image != null ? item.image : "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+                  }`}
+                />
+              }
               title={
                 <>
                   <Tag color="blue" style={{ fontSize: 18 }}>{`${title}`}</Tag>
@@ -184,7 +199,7 @@ const PromotionPage = () => {
             />
           </Card>
         );
-      })
+      }),
     );
     setIsModalVisible(true);
   };

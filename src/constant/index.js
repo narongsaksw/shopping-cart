@@ -33,3 +33,10 @@ export const updateStockById = ip + "/api/v1/warehouse/update";
 
 //company-list
 export const companyAPI = ip + "/api/v1/personal-information";
+export const addQuote = ip + "/api/v1/quote";
+export const updateQuote = ip + "/api/v1/quote";
+export const getQuoteById = ip + "/api/v1/quote/";
+export const getQuoteItemById = ip + "/api/v1/quote/";
+export const deleteQuoteItemById = ip + "/api/v1/quote/";
+
+export const createTransaction = ip + "/api/v1/transaction";

@@ -38,21 +38,13 @@ const EditModal = ({ record, isModalVisible, setModalVisible }) => {
       setModalVisible(false);
     } catch (error) {
       message.error("error");
-      console.log(JSON.stringify(error, null, 2));
+      console.error(JSON.stringify(error, null, 2));
     }
   };
 
   return (
-    <Modal
-      title="แก้ไขข้อมูลพนักงาน"
-      onCancel={() => setModalVisible(false)}
-      visible={isModalVisible}
-    >
-      <EmployeeForm
-        name="edit"
-        initialValues={initialValues}
-        onFinish={handleSubmit}
-      />
+    <Modal title="แก้ไขข้อมูลพนักงาน" onCancel={() => setModalVisible(false)} visible={isModalVisible}>
+      <EmployeeForm name="edit" initialValues={initialValues} onFinish={handleSubmit} />
     </Modal>
   );
 };

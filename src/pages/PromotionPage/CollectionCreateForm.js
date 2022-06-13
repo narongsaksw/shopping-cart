@@ -29,7 +29,7 @@ const CollectionCreateForm = ({ visible, onCreate, onCancel, field }) => {
       setWha(
         res.dataValues.map((item) => {
           return <Option key={item.key}>{item.title}</Option>;
-        })
+        }),
       );
     });
   };
@@ -50,7 +50,7 @@ const CollectionCreateForm = ({ visible, onCreate, onCancel, field }) => {
             onCreate(values);
           })
           .catch((info) => {
-            console.log("Validate Failed:", info);
+            console.error("Validate Failed:", info);
           });
       }}
     >
@@ -120,7 +120,9 @@ const CollectionCreateForm = ({ visible, onCreate, onCancel, field }) => {
                 <Space key={field.key} style={{ width: "100%" }}>
                   <Form.Item
                     noStyle
-                    shouldUpdate={(prevValues, curValues) => prevValues.area !== curValues.area || prevValues.sights !== curValues.sights}
+                    shouldUpdate={(prevValues, curValues) =>
+                      prevValues.area !== curValues.area || prevValues.sights !== curValues.sights
+                    }
                   >
                     {() => (
                       <Form.Item

@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Layout, Menu, Breadcrumb, Badge } from "antd";
 import { LogoutOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
 import { style } from "./style";
 import { useHistory } from "react-router";
-import { product_group_find_all } from "../../constant";
+import { product_group_find_all, getQuoteById } from "../../constant";
 import { functionGet } from "../../services/employee";
 import EmployeePage from "../../pages/EmployeePage";
+import { order_item } from "../../form/employee";
 
 const { Content } = Layout;
 const { SubMenu } = Menu;
@@ -18,6 +19,7 @@ const EmployeeLayout = ({ children, ...props }) => {
   const [value, setValue] = useState(0);
   const [group, setGroup] = useState();
   const [visible, setVisible] = useState(false);
+  const [order, setOrder] = useState([]);
 
   useEffect(() => {
     if (props.match.params.group != null) {
@@ -38,7 +40,26 @@ const EmployeeLayout = ({ children, ...props }) => {
         setData(val);
       }
     });
+    initialCart();
   }, []);
+
+  const initialCart = async () => {
+    functionGet(`${getQuoteById}${JSON.parse(localStorage.getItem("userData"))["quote"]}`, async (e) => {
+      const result = await e.dataValues.quoteItems.map((item) => {
+        let order_item_form = {
+          id: item.item_id,
+          dataValues: {
+            value: item.value,
+            price: item.price,
+            old_value: 0,
+          },
+        };
+        setValue(order_item_form.lenght);
+        return order_item_form;
+      });
+      setOrder(result);
+    });
+  };
 
   const handleClick = (e) => {
     if (e.key === "cart") setVisible(true);
@@ -81,7 +102,13 @@ const EmployeeLayout = ({ children, ...props }) => {
         </Breadcrumb>
         <menuContext.Provider value={{ updateShopingCart }}>
           <div style={style.siteLayoutBackgroundStyle}>
-            <EmployeePage group={group} menuContext={menuContext} visible={visible} setVisibles={(e) => setVisible(e)} />
+            <EmployeePage
+              group={group}
+              menuContext={menuContext}
+              visible={visible}
+              setVisibles={(e) => setVisible(e)}
+              order={order}
+            />
           </div>
         </menuContext.Provider>
       </Content>

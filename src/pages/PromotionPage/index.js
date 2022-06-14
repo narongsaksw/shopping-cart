@@ -11,6 +11,7 @@ import {
   find_value_id,
   update_promotion,
   delete_promotion,
+  ip,
 } from "../../constant";
 import CollectionCreateForm from "./CollectionCreateForm";
 import axios from "axios";
@@ -54,7 +55,11 @@ const PromotionPage = () => {
         <>
           <Avatar
             size="large"
-            src={<Image src={e != null ? e : `https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png`} />}
+            src={
+              <Image
+                src={e != null ? `${ip}/${e}` : `https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png`}
+              />
+            }
           />
         </>
       ),
@@ -155,11 +160,11 @@ const PromotionPage = () => {
   };
 
   const onCreate = async (values) => {
-    const formData = new FormData()
+    const formData = new FormData();
     formData.append("promotion_id", promotion_id);
-    formData.append('name', values.name)
-    formData.append('price', values.price)
-    formData.append('description', values.description)
+    formData.append("name", values.name);
+    formData.append("price", values.price);
+    formData.append("description", values.description);
     formData.append("dataValues", JSON.stringify(values.dataValues));
     formData.append("file", values.image[0].originFileObj);
     await axios.put(update_promotion, formData).then((res) => {
@@ -190,24 +195,16 @@ const PromotionPage = () => {
             <Meta
               avatar={
                 <Avatar
-                  src={`${
-                    item.image != null
-                      ? item.image
-                      : "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+                  src={`${ip}/${
+                    item.image != null ? item.image : "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
                   }`}
                 />
               }
               title={
                 <>
                   <Tag color="blue" style={{ fontSize: 18 }}>{`${title}`}</Tag>
-                  <Tag
-                    color="geekblue"
-                    style={{ fontSize: 18, marginTop: 5 }}
-                  >{`${item.value} item`}</Tag>
-                  <Tag
-                    color="purple"
-                    style={{ fontSize: 18 }}
-                  >{`${item.price} Bath`}</Tag>
+                  <Tag color="geekblue" style={{ fontSize: 18, marginTop: 5 }}>{`${item.value} item`}</Tag>
+                  <Tag color="purple" style={{ fontSize: 18 }}>{`${item.price} Bath`}</Tag>
                   <Tag color="cyan">{`${item.description}`}</Tag>
                 </>
               }
@@ -240,12 +237,7 @@ const PromotionPage = () => {
         }}
         field={field}
       />
-      <Modal
-        title="รายการสินค้า"
-        visible={isModalVisible}
-        onOk={handleOk}
-        onCancel={handleCancel}
-      >
+      <Modal title="รายการสินค้า" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
         {ware}
       </Modal>
     </PageLayout>

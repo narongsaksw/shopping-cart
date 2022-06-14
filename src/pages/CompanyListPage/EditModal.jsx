@@ -37,7 +37,7 @@ const EditModal = ({ record, isModalVisible, setModalVisible }) => {
       setModalVisible(false);
     } catch (error) {
       message.error("error");
-      console.log(JSON.stringify(error, null, 2));
+      console.error(JSON.stringify(error, null, 2));
     }
   };
 

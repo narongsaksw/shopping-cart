@@ -1,8 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Drawer, Button, Col, Row, Image, Divider, InputNumber, Space, Card, Avatar, Tag, Empty } from "antd";
 import { order_item } from "../../form/employee";
-import { warehouse_find_one, promotion_find_one, promotion_item_find_pid } from "../../constant";
-import { functionGet } from "../../services/employee";
+import {
+  warehouse_find_one,
+  promotion_find_one,
+  promotion_item_find_pid,
+  addQuote,
+  deleteQuoteItemById,
+  ip,
+} from "../../constant";
+import { functionGet, functionPost, functionPut, functionDelete } from "../../services/employee";
 
 const style = { background: "#fff", padding: "8px 0" };
 
@@ -57,7 +64,7 @@ const Drawers = (props) => {
               }}
             >
               <Meta
-                avatar={<Avatar src={`${item.Warehouse.image}`} />}
+                avatar={<Avatar src={`${ip}/${item.Warehouse.image}`} />}
                 title={
                   <>
                     <Tag color="blue" style={{ fontSize: 18 }}>{`${title}`}</Tag>
@@ -79,17 +86,68 @@ const Drawers = (props) => {
     props.setVisible(false);
   };
 
-  const submit = () => {
+  const submit = async () => {
     let order_item_form = order_item;
     order_item_form.id = value.key;
     order_item_form.dataValues.value = values;
     props.value.value_buy = values;
     order_item_form.dataValues.price = parseInt(values) * parseInt(value.price);
     order_item_form.dataValues.old_value = 0;
+    let quoteForm = {
+      quote_id: JSON.parse(localStorage.getItem("userData"))["quote"],
+      type: "item",
+      item_id: value.key,
+      value: values,
+      price: order_item_form.dataValues.price,
+    };
+    await functionPost(`${addQuote}`, quoteForm, async (res) => {});
     props.orderItems(order_item_form);
     props.setVisible(false);
     setSumItem([]);
   };
+
+  const update = async () => {
+    let order_item_form = order_item;
+    order_item_form.id = value.key;
+    order_item_form.dataValues.value = values;
+    props.value.value_buy = values;
+    order_item_form.dataValues.price = parseInt(values) * parseInt(value.price);
+    order_item_form.dataValues.old_value = 0;
+    let quoteForm = {
+      quote_id: JSON.parse(localStorage.getItem("userData"))["quote"],
+      type: "item",
+      item_id: value.key,
+      value: values,
+      price: order_item_form.dataValues.price,
+    };
+    await functionPut(`${addQuote}`, quoteForm, async (res) => {});
+    props.orderItems(order_item_form);
+    props.setVisible(false);
+    setSumItem([]);
+  };
+
+  const deleteQuoteItem = async () => {
+    let order_item_form = order_item;
+    order_item_form.id = value.key;
+    order_item_form.dataValues.value = values;
+    props.value.value_buy = values;
+    order_item_form.dataValues.price = parseInt(values) * parseInt(value.price);
+    order_item_form.dataValues.old_value = 0;
+    let quoteForm = {
+      quote_id: JSON.parse(localStorage.getItem("userData"))["quote"],
+      type: "item",
+      item_id: value.key,
+      value: values,
+      price: order_item_form.dataValues.price,
+    };
+    await functionDelete(`${deleteQuoteItemById}${value.key}`, quoteForm, async (res) => {});
+    props.orderItems(order_item_form);
+    props.setVisible(false);
+    setSumItem([]);
+  };
+
+  console.log("values ", values);
+
   return (
     <>
       <Drawer
@@ -107,9 +165,25 @@ const Drawers = (props) => {
             <Button onClick={onClose} style={{ marginRight: 8 }}>
               ยกเลิก
             </Button>
-            <Button onClick={submit} type="primary">
-              เพิ่มในตระกร้า
-            </Button>
+            <>
+              {props.value.value_buy > 0 ? (
+                <>
+                  {parseInt(values) === 0 ? (
+                    <Button onClick={deleteQuoteItem} type="primary">
+                      ลบในตระกร้า
+                    </Button>
+                  ) : (
+                    <Button onClick={update} disabled={values === props.value.value_buy} type="primary">
+                      อัพเดตในตระกร้า
+                    </Button>
+                  )}
+                </>
+              ) : (
+                <Button onClick={submit} type="primary">
+                  เพิ่มในตระกร้า
+                </Button>
+              )}
+            </>
           </div>
         }
       >
@@ -127,7 +201,7 @@ const Drawers = (props) => {
             >
               <Image
                 width={197}
-                src={`${
+                src={`${ip}/${
                   value.image != null ? value.image : "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
                 }`}
                 placeholder={

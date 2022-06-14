@@ -1,10 +1,11 @@
 import React from "react";
 import { Card } from "antd";
 import { style } from "./style";
+import { ip } from "../../constant";
 
 const { Meta } = Card;
 
-const CardItrems = props => {
+const CardItrems = (props) => {
   return (
     <>
       <Card
@@ -12,10 +13,10 @@ const CardItrems = props => {
         style={style.cardStyle}
         cover={
           <div style={style.imagePanel}>
-            <img alt="example" src={props.image} style={style.imageStyle} />
+            <img alt="example" src={`${ip}/${props.image}`} style={style.imageStyle} />
           </div>
         }
-        onClick={e => {
+        onClick={(e) => {
           props.setVisible(true);
         }}
       >

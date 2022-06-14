@@ -54,15 +54,7 @@ const PromotionPage = () => {
         <>
           <Avatar
             size="large"
-            src={
-              <Image
-                src={
-                  e != null
-                    ? e
-                    : `https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png`
-                }
-              />
-            }
+            src={<Image src={e != null ? e : `https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png`} />}
           />
         </>
       ),
@@ -93,7 +85,6 @@ const PromotionPage = () => {
   ];
 
   const updatePromotionForm = async (id) => {
-    console.log(id);
     setPromotion_id(id);
     let f = [];
     let res1 = null;
@@ -223,7 +214,7 @@ const PromotionPage = () => {
             />
           </Card>
         );
-      })
+      }),
     );
     setIsModalVisible(true);
   };

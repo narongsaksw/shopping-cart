@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import PageLayout from '../../Layout/PageLayout';
-import { Table, Input, Typography } from 'antd';
-import AddButton from './AddButton';
-import EditModal from './EditModal';
-import ListOperation from '../../components/ListOperation';
-import axios from 'axios';
-import { getWarehouseAll, deleteStockById } from '../../constant';
+import React, { useState, useEffect } from "react";
+import PageLayout from "../../Layout/PageLayout";
+import { Table, Input, Typography } from "antd";
+import AddButton from "./AddButton";
+import EditModal from "./EditModal";
+import ListOperation from "../../components/ListOperation";
+import axios from "axios";
+import { getWarehouseAll, deleteStockById } from "../../constant";
 
 const { Search } = Input;
 
@@ -19,7 +19,6 @@ function Stock() {
     setRecord(record);
     setModalVisible((state) => !state);
   };
-
   const columns = [
     {
       title: "ลำดับที่",
@@ -55,20 +54,13 @@ function Stock() {
       title: "แอคชั่น",
       dataIndex: "key",
       render: (id, record) => {
-        return (
-          <ListOperation
-            onEdit={() => onEdit(record)}
-            deletePath={`${deleteStockById}/${id}`}
-          />
-        );
+        return <ListOperation onEdit={() => onEdit(record)} deletePath={`${deleteStockById}/${id}`} />;
       },
     },
   ];
 
   const getWarehouse = async () => {
-    const res = await axios
-      .get(getWarehouseAll)
-      .then((res) => res.data.dataValues);
+    const res = await axios.get(getWarehouseAll).then((res) => res.data.dataValues);
     setStock(res);
   };
   useEffect(() => {
@@ -77,35 +69,18 @@ function Stock() {
 
   const search = (value) => {
     const filterTable = stock.filter((o) =>
-      Object.keys(o).some((k) =>
-        String(o[k]).toLowerCase().includes(value.toLowerCase().trim())
-      )
+      Object.keys(o).some((k) => String(o[k]).toLowerCase().includes(value.toLowerCase().trim())),
     );
     setFilterTable(filterTable);
   };
 
   return (
     <PageLayout
-      subTitle={
-        <AddButton
-          stock={stock}
-          isModalVisible={isModalAddVisible}
-          setModalVisible={setModalAddVisible}
-        />
-      }
-      extra={[
-        <Search placeholder="Search by..." enterButton onSearch={search} />,
-      ]}
+      subTitle={<AddButton stock={stock} isModalVisible={isModalAddVisible} setModalVisible={setModalAddVisible} />}
+      extra={[<Search placeholder="Search by..." enterButton onSearch={search} />]}
     >
-      <Table
-        columns={columns}
-        dataSource={filterTable === null ? stock : filterTable}
-      />
-      <EditModal
-        record={record}
-        isModalVisible={isModalVisible}
-        setModalVisible={setModalVisible}
-      />
+      <Table columns={columns} dataSource={filterTable === null ? stock : filterTable} />
+      <EditModal record={record} isModalVisible={isModalVisible} setModalVisible={setModalVisible} />
     </PageLayout>
   );
 }

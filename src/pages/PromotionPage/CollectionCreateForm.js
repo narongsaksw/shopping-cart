@@ -34,7 +34,7 @@ const CollectionCreateForm = ({ visible, onCreate, onCancel, field }) => {
       setWha(
         res.dataValues.map((item) => {
           return <Option key={item.key}>{item.title}</Option>;
-        })
+        }),
       );
     });
   };
@@ -55,7 +55,7 @@ const CollectionCreateForm = ({ visible, onCreate, onCancel, field }) => {
             onCreate(values);
           })
           .catch((info) => {
-            console.log("Validate Failed:", info);
+            console.error("Validate Failed:", info);
           });
       }}
     >

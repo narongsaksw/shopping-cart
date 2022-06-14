@@ -13,13 +13,14 @@ const LoginPage = () => {
   const history = useHistory();
   const onSubmit = async (e) => {
     e.preventDefault();
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
-    if (username && password) {
-      login({ history, username, password });
-    } else {
-      alert('username หรือ password ไม่ถูกต้อง!');
-    }
+    // const username = document.getElementById('username').value;
+    // const password = document.getElementById('password').value;
+    // if (username && password) {
+    //   login({ history, username, password });
+    // } else {
+    //   alert('username หรือ password ไม่ถูกต้อง!');
+    // }
+    history.push('/history')
   };
   return (
     <EntryPage>

@@ -21,7 +21,6 @@ function EmployeeList() {
     if (res.message === 'OK') {
       setData(res.dataValues);
     }
-    console.log(res);
   };
   useEffect(() => {
     getEmployee();

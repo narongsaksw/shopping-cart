@@ -13,7 +13,6 @@ const Orders = ({ orderId, Allprice, order }) => {
     await order.map(async (item) => {
       const orderOne = JSON.parse(item);
       await check(orderOne.id, async (res) => {
-        console.log(res);
         if (res === "Promotion") {
           functionGet(`${promotion_find_one}${orderOne.id}`, async (resf) => {
             if (resf.dataValues != null) {

@@ -3,7 +3,17 @@ import { Container } from "./style";
 import CardItems from "../../components/CardItems";
 import Drawer from "./Drawer";
 import { functionGet, functionPost } from "../../services/employee";
-import { warehouse_find_all, warehouse_product_group, warehouse_find_one, promotion_find_one, createOrder, createItems } from "../../constant";
+import {
+  warehouse_find_all,
+  warehouse_product_group,
+  warehouse_find_one,
+  promotion_find_one,
+  createOrder,
+  createItems,
+  createTransaction,
+  ip,
+  cancleTransaction,
+} from "../../constant";
 import { Skeleton, Modal, Card, Avatar, Empty, Row, Col, Tag } from "antd";
 import { old_file_value } from "../../form/employee";
 import { tradingOrder, order_sell } from "../../form/employee";
@@ -52,6 +62,12 @@ export const EmployeePage = (props) => {
     setVisibleModal(props.visible);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.visible]);
+
+  useEffect(() => {
+    props.order.forEach((item) => {
+      updateOrderItem(item);
+    });
+  }, [props.order]);
 
   const updateOrderItem = async (e) => {
     val_old.current = await val_old.current.map((element) => {
@@ -128,7 +144,7 @@ export const EmployeePage = (props) => {
                   setValue(new_element);
                 }
               }}
-            />
+            />,
           );
         });
       }
@@ -155,48 +171,57 @@ export const EmployeePage = (props) => {
           }
         });
         let new_element = null;
-        const dataFilter = await val_old.current.filter((e) => {
-          return JSON.parse(e).item_id === data_item.key;
+        let findCheck = order.current.filter((item) => {
+          return JSON.parse(item).id === data.id;
         });
-        new_element = {
-          ...data_item,
-          value_buy: JSON.parse(dataFilter[0]).value,
-          id: data.id,
-        };
-        delete new_element.title;
-        await val.push(
-          <Card
-            {...new_element}
-            style={{
-              width: "100%",
-              marginTop: 16,
-              cursor: "pointer",
-              zIndex: 200,
-            }}
-            onClick={() => {
-              setValue(new_element);
-              setVisible(true);
-              props.setVisibles(false);
-              checkModal.current = true;
-            }}
-          >
-            <Meta
-              avatar={
-                <Avatar src={`${data_item.image != null ? data_item.image : "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"}`} />
-              }
-              title={
-                <>
-                  <Tag color="blue" style={{ fontSize: 18 }}>{`${data_item.title}`}</Tag>
-                  <Tag color="geekblue" style={{ fontSize: 18, marginTop: 5 }}>{`${data.dataValues.value} item`}</Tag>
-                  <Tag color="purple" style={{ fontSize: 18 }}>{`${data.dataValues.price} Bath`}</Tag>
-                  <Tag color="cyan">{`${data_item.description}`}</Tag>
-                </>
-              }
-            />
-          </Card>
-        );
-        if (val.length === order.current.length) {
-          setShopingCards(val);
+        console.log("findCheck ", findCheck);
+        if (findCheck.length > 0) {
+          new_element = {
+            ...data_item,
+            value_buy: JSON.parse(findCheck).dataValues.value,
+            id: data.id,
+          };
+          delete new_element.title;
+          await val.push(
+            <Card
+              {...new_element}
+              style={{
+                width: "100%",
+                marginTop: 16,
+                cursor: "pointer",
+                zIndex: 200,
+              }}
+              onClick={() => {
+                setValue(new_element);
+                setVisible(true);
+                props.setVisibles(false);
+                checkModal.current = true;
+              }}
+            >
+              <Meta
+                avatar={
+                  <Avatar
+                    src={`${
+                      data_item.image != null
+                        ? ip + "/" + data_item.image
+                        : "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+                    }`}
+                  />
+                }
+                title={
+                  <>
+                    <Tag color="blue" style={{ fontSize: 18 }}>{`${data_item.title}`}</Tag>
+                    <Tag color="geekblue" style={{ fontSize: 18, marginTop: 5 }}>{`${data.dataValues.value} item`}</Tag>
+                    <Tag color="purple" style={{ fontSize: 18 }}>{`${data.dataValues.price} Bath`}</Tag>
+                    <Tag color="cyan">{`${data_item.description}`}</Tag>
+                  </>
+                }
+              />
+            </Card>,
+          );
+          if (val.length === order.current.length) {
+            setShopingCards(val);
+          }
         }
       });
     } catch (error) {
@@ -218,6 +243,33 @@ export const EmployeePage = (props) => {
           }
         });
       });
+      await functionPost(
+        `${createTransaction}`,
+        { quote_id: JSON.parse(localStorage.getItem("userData"))["quote"] },
+        (res) => {
+          let userData = JSON.parse(localStorage.getItem("userData"));
+          userData.quote = res.quote_id;
+          localStorage.setItem("userData", JSON.stringify(userData));
+        },
+      );
+    }
+  };
+
+  const modalCancle = async () => {
+    if (order.current.length !== 0) {
+      await functionPost(
+        `${cancleTransaction}`,
+        { quote_id: JSON.parse(localStorage.getItem("userData"))["quote"] },
+        (res) => {
+          let userData = JSON.parse(localStorage.getItem("userData"));
+          userData.quote = res.quote_id;
+          localStorage.setItem("userData", JSON.stringify(userData));
+          order.current = [];
+          props.setVisibles(false);
+          checkModal.current = false;
+          updateShopingCart(0);
+        },
+      );
     }
   };
 
@@ -298,9 +350,21 @@ export const EmployeePage = (props) => {
                   fontFamily: "sans-serif",
                   fontWeight: 600,
                 }}
-                span={24}
+                span={22}
               >
                 {`Total price : ${Allprice.current}`}
+              </Col>
+              <Col
+                style={{
+                  fontSize: 12,
+                  fontFamily: "sans-serif",
+                  color: "red",
+                  cursor: "pointer",
+                }}
+                onClick={modalCancle}
+                span={2}
+              >
+                {`ยกเลิก`}
               </Col>
             </Row>
             {shopingCards}

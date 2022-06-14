@@ -169,6 +169,7 @@ const Modal = ({ isModalVisible, setModalVisible }) => {
             name="image"
             label="อัพโหลดรูปภาพ"
             getValueFromEvent={normFile}
+            rules={[{ required: true, message: "*กรุณาอัพโหลดรูป" }]}
           >
             <Upload {...uploadProps}>
               <Button icon={<UploadOutlined />}>Upload jpeg/png only</Button>

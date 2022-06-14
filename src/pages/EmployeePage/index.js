@@ -11,6 +11,8 @@ import {
   createOrder,
   createItems,
   createTransaction,
+  ip,
+  cancleTransaction,
 } from "../../constant";
 import { Skeleton, Modal, Card, Avatar, Empty, Row, Col, Tag } from "antd";
 import { old_file_value } from "../../form/employee";
@@ -172,51 +174,54 @@ export const EmployeePage = (props) => {
         let findCheck = order.current.filter((item) => {
           return JSON.parse(item).id === data.id;
         });
-        new_element = {
-          ...data_item,
-          value_buy: JSON.parse(findCheck).dataValues.value,
-          id: data.id,
-        };
-        delete new_element.title;
-        await val.push(
-          <Card
-            {...new_element}
-            style={{
-              width: "100%",
-              marginTop: 16,
-              cursor: "pointer",
-              zIndex: 200,
-            }}
-            onClick={() => {
-              setValue(new_element);
-              setVisible(true);
-              props.setVisibles(false);
-              checkModal.current = true;
-            }}
-          >
-            <Meta
-              avatar={
-                <Avatar
-                  src={`${
-                    data_item.image != null
-                      ? "http://localhost:3001" + "/" + data_item.image
-                      : "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-                  }`}
-                />
-              }
-              title={
-                <>
-                  <Tag color="blue" style={{ fontSize: 18 }}>{`${data_item.title}`}</Tag>
-                  <Tag color="geekblue" style={{ fontSize: 18, marginTop: 5 }}>{`${data.dataValues.value} item`}</Tag>
-                  <Tag color="purple" style={{ fontSize: 18 }}>{`${data.dataValues.price} Bath`}</Tag>
-                  <Tag color="cyan">{`${data_item.description}`}</Tag>
-                </>
-              }
-            />
-          </Card>,
-        );
-        if (val.length === order.current.length) {
-          setShopingCards(val);
+        console.log("findCheck ", findCheck);
+        if (findCheck.length > 0) {
+          new_element = {
+            ...data_item,
+            value_buy: JSON.parse(findCheck).dataValues.value,
+            id: data.id,
+          };
+          delete new_element.title;
+          await val.push(
+            <Card
+              {...new_element}
+              style={{
+                width: "100%",
+                marginTop: 16,
+                cursor: "pointer",
+                zIndex: 200,
+              }}
+              onClick={() => {
+                setValue(new_element);
+                setVisible(true);
+                props.setVisibles(false);
+                checkModal.current = true;
+              }}
+            >
+              <Meta
+                avatar={
+                  <Avatar
+                    src={`${
+                      data_item.image != null
+                        ? ip + "/" + data_item.image
+                        : "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+                    }`}
+                  />
+                }
+                title={
+                  <>
+                    <Tag color="blue" style={{ fontSize: 18 }}>{`${data_item.title}`}</Tag>
+                    <Tag color="geekblue" style={{ fontSize: 18, marginTop: 5 }}>{`${data.dataValues.value} item`}</Tag>
+                    <Tag color="purple" style={{ fontSize: 18 }}>{`${data.dataValues.price} Bath`}</Tag>
+                    <Tag color="cyan">{`${data_item.description}`}</Tag>
+                  </>
+                }
+              />
+            </Card>,
+          );
+          if (val.length === order.current.length) {
+            setShopingCards(val);
+          }
         }
       });
     } catch (error) {
@@ -245,6 +250,24 @@ export const EmployeePage = (props) => {
           let userData = JSON.parse(localStorage.getItem("userData"));
           userData.quote = res.quote_id;
           localStorage.setItem("userData", JSON.stringify(userData));
+        },
+      );
+    }
+  };
+
+  const modalCancle = async () => {
+    if (order.current.length !== 0) {
+      await functionPost(
+        `${cancleTransaction}`,
+        { quote_id: JSON.parse(localStorage.getItem("userData"))["quote"] },
+        (res) => {
+          let userData = JSON.parse(localStorage.getItem("userData"));
+          userData.quote = res.quote_id;
+          localStorage.setItem("userData", JSON.stringify(userData));
+          order.current = [];
+          props.setVisibles(false);
+          checkModal.current = false;
+          updateShopingCart(0);
         },
       );
     }
@@ -327,9 +350,21 @@ export const EmployeePage = (props) => {
                   fontFamily: "sans-serif",
                   fontWeight: 600,
                 }}
-                span={24}
+                span={22}
               >
                 {`Total price : ${Allprice.current}`}
+              </Col>
+              <Col
+                style={{
+                  fontSize: 12,
+                  fontFamily: "sans-serif",
+                  color: "red",
+                  cursor: "pointer",
+                }}
+                onClick={modalCancle}
+                span={2}
+              >
+                {`ยกเลิก`}
               </Col>
             </Row>
             {shopingCards}

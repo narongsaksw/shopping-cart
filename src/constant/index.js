@@ -40,3 +40,4 @@ export const getQuoteItemById = ip + "/api/v1/quote/";
 export const deleteQuoteItemById = ip + "/api/v1/quote/";
 
 export const createTransaction = ip + "/api/v1/transaction";
+export const cancleTransaction = ip + "/api/v1/transaction/cancle";

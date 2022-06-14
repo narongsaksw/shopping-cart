@@ -7,6 +7,7 @@ import {
   promotion_item_find_pid,
   addQuote,
   deleteQuoteItemById,
+  ip,
 } from "../../constant";
 import { functionGet, functionPost, functionPut, functionDelete } from "../../services/employee";
 
@@ -63,7 +64,7 @@ const Drawers = (props) => {
               }}
             >
               <Meta
-                avatar={<Avatar src={`${item.Warehouse.image}`} />}
+                avatar={<Avatar src={`${ip}/${item.Warehouse.image}`} />}
                 title={
                   <>
                     <Tag color="blue" style={{ fontSize: 18 }}>{`${title}`}</Tag>
@@ -200,7 +201,7 @@ const Drawers = (props) => {
             >
               <Image
                 width={197}
-                src={`${
+                src={`${ip}/${
                   value.image != null ? value.image : "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
                 }`}
                 placeholder={

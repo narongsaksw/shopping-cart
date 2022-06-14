@@ -8,7 +8,13 @@ const AddButton = ({ getPromotion }) => {
   const [visible, setVisible] = useState(false);
 
   const onCreate = (values) => {
-    functionPost(create_promotion, values, (res) => {
+    const formData = new FormData();
+    formData.append("name", values.name);
+    formData.append("price", values.price);
+    formData.append("description", values.description);
+    formData.append("dataValues", JSON.stringify(values.dataValues));
+    formData.append("file", values.image[0].originFileObj);
+    functionPost(create_promotion, formData, (res) => {
       if (res.message === "OK") {
         getPromotion();
         setVisible(false);

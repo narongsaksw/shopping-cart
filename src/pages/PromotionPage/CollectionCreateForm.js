@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Form, Input, Select, Button, Space } from "antd";
+import { Modal, Form, Input, Select, Button, Space, Upload } from "antd";
 import { functionGet } from "../../services/employee";
 import { warehouse_find_all } from "../../constant";
-import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
+import {
+  MinusCircleOutlined,
+  PlusOutlined,
+  UploadOutlined,
+} from "@ant-design/icons";
+import { normFile, uploadProps } from "../../utils";
 
 const { Option } = Select;
 
@@ -102,15 +107,13 @@ const CollectionCreateForm = ({ visible, onCreate, onCancel, field }) => {
         </Form.Item>
         <Form.Item
           name="image"
-          label="รูป"
-          rules={[
-            {
-              required: true,
-              message: "กรุณาใส่รูป!",
-            },
-          ]}
+          label="อัพโหลดรูปภาพ"
+          getValueFromEvent={normFile}
+          rules={[{ required: true, message: "*กรุณาอัพโหลดรูป" }]}
         >
-          <Input />
+          <Upload {...uploadProps}>
+            <Button icon={<UploadOutlined />}>Upload jpeg/png only</Button>
+          </Upload>
         </Form.Item>
 
         <Form.List name="dataValues">
@@ -120,7 +123,10 @@ const CollectionCreateForm = ({ visible, onCreate, onCancel, field }) => {
                 <Space key={field.key} style={{ width: "100%" }}>
                   <Form.Item
                     noStyle
-                    shouldUpdate={(prevValues, curValues) => prevValues.area !== curValues.area || prevValues.sights !== curValues.sights}
+                    shouldUpdate={(prevValues, curValues) =>
+                      prevValues.area !== curValues.area ||
+                      prevValues.sights !== curValues.sights
+                    }
                   >
                     {() => (
                       <Form.Item
@@ -150,7 +156,12 @@ const CollectionCreateForm = ({ visible, onCreate, onCancel, field }) => {
               ))}
 
               <Form.Item>
-                <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
+                <Button
+                  type="dashed"
+                  onClick={() => add()}
+                  block
+                  icon={<PlusOutlined />}
+                >
                   เพิ่มรายการสินค้า
                 </Button>
               </Form.Item>

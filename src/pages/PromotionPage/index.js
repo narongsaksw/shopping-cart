@@ -4,7 +4,14 @@ import { Typography } from "antd";
 import { Table, Space, Avatar, Image, Input, Card, Tag, Modal } from "antd";
 import AddButton from "./AddButton";
 import { functionGet } from "../../services/employee";
-import { promotion_find_all, find_warehouse_all, promotion_find_one, find_value_id, update_promotion, delete_promotion } from "../../constant";
+import {
+  promotion_find_all,
+  find_warehouse_all,
+  promotion_find_one,
+  find_value_id,
+  update_promotion,
+  delete_promotion,
+} from "../../constant";
 import CollectionCreateForm from "./CollectionCreateForm";
 import axios from "axios";
 
@@ -45,7 +52,18 @@ const PromotionPage = () => {
       key: "image",
       render: (e) => (
         <>
-          <Avatar size="large" src={<Image src={e != null ? e : `https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png`} />} />
+          <Avatar
+            size="large"
+            src={
+              <Image
+                src={
+                  e != null
+                    ? e
+                    : `https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png`
+                }
+              />
+            }
+          />
         </>
       ),
     },
@@ -146,7 +164,14 @@ const PromotionPage = () => {
   };
 
   const onCreate = async (values) => {
-    await axios.put(update_promotion, { promotion_id: promotion_id, ...values }).then((res) => {
+    const formData = new FormData()
+    formData.append("promotion_id", promotion_id);
+    formData.append('name', values.name)
+    formData.append('price', values.price)
+    formData.append('description', values.description)
+    formData.append("dataValues", JSON.stringify(values.dataValues));
+    formData.append("file", values.image[0].originFileObj);
+    await axios.put(update_promotion, formData).then((res) => {
       setVisible(false);
       getPromotion();
     });
@@ -172,12 +197,26 @@ const PromotionPage = () => {
             }}
           >
             <Meta
-              avatar={<Avatar src={`${item.image != null ? item.image : "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"}`} />}
+              avatar={
+                <Avatar
+                  src={`${
+                    item.image != null
+                      ? item.image
+                      : "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+                  }`}
+                />
+              }
               title={
                 <>
                   <Tag color="blue" style={{ fontSize: 18 }}>{`${title}`}</Tag>
-                  <Tag color="geekblue" style={{ fontSize: 18, marginTop: 5 }}>{`${item.value} item`}</Tag>
-                  <Tag color="purple" style={{ fontSize: 18 }}>{`${item.price} Bath`}</Tag>
+                  <Tag
+                    color="geekblue"
+                    style={{ fontSize: 18, marginTop: 5 }}
+                  >{`${item.value} item`}</Tag>
+                  <Tag
+                    color="purple"
+                    style={{ fontSize: 18 }}
+                  >{`${item.price} Bath`}</Tag>
                   <Tag color="cyan">{`${item.description}`}</Tag>
                 </>
               }
@@ -210,7 +249,12 @@ const PromotionPage = () => {
         }}
         field={field}
       />
-      <Modal title="รายการสินค้า" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+      <Modal
+        title="รายการสินค้า"
+        visible={isModalVisible}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      >
         {ware}
       </Modal>
     </PageLayout>

@@ -9,6 +9,8 @@ import { product_group_find_all, getQuoteById } from "../../constant";
 import { functionGet } from "../../services/employee";
 import EmployeePage from "../../pages/EmployeePage";
 import { order_item } from "../../form/employee";
+import { PageHeader } from "../../pages/style";
+import { Empty } from "antd";
 
 const { Content } = Layout;
 const { SubMenu } = Menu;
@@ -32,15 +34,19 @@ const EmployeeLayout = ({ children, ...props }) => {
       history.replace("/");
     }
     functionGet(product_group_find_all, (e) => {
+      initialCart();
       let val = [];
       if (e.dataValues.lenght !== 0) {
         e.dataValues.forEach((elememt) => {
-          val.push(<Menu.Item key={`${elememt.uuid}`}>{elememt.name}</Menu.Item>);
+          val.push(
+            <Menu.Item key={`${elememt.uuid}`} onClick={() => handleClick({ key: `${elememt.uuid}` })}>
+              {elememt.name}
+            </Menu.Item>,
+          );
         });
         setData(val);
       }
     });
-    initialCart();
   }, []);
 
   const initialCart = async () => {
@@ -62,9 +68,13 @@ const EmployeeLayout = ({ children, ...props }) => {
   };
 
   const handleClick = (e) => {
-    if (e.key === "cart") setVisible(true);
-    else if (e.key === "logout") logout();
-    else history.push(`/employee/${e.key}`);
+    if (e.key === "cart") {
+      if (value > 0) setVisible(true);
+    } else if (e.key === "logout") {
+      logout();
+    } else {
+      history.push(`/employee/${e.key}`);
+    }
   };
 
   const logout = () => {
@@ -79,20 +89,40 @@ const EmployeeLayout = ({ children, ...props }) => {
   return (
     <Layout>
       <Header>
-        <div style={style.logoStyle} />
-        <Menu theme="dark" mode="horizontal" defaultSelectedKeys={["0"]} onClick={handleClick}>
+        <div style={style.logoStyle}>
+          <PageHeader to="/">Shopping Cart</PageHeader>
+        </div>
+        <Menu theme="dark" mode="horizontal" defaultSelectedKeys={["0"]}>
           <SubMenu key="group" title="กรุ๊ป">
-            <Menu.Item key="All Product">All Product</Menu.Item>
+            <Menu.Item key="All Product" onClick={() => handleClick({ key: "All Product" })}>
+              All Product
+            </Menu.Item>
             {data}
           </SubMenu>
-          <Menu.Item key="logout" style={{ float: "right" }}>
-            <LogoutOutlined style={{ fontSize: "28px", color: "white" }} />
+          <Menu.Item key="logout" style={{ float: "right" }} onClick={() => handleClick({ key: "logout" })}>
+            <LogoutOutlined style={{ fontSize: "28px", color: "white", margin: "0 auto" }} />
           </Menu.Item>
-          <Menu.Item key="cart" style={{ float: "right" }}>
-            <Badge count={value}>
-              <ShoppingCartOutlined style={{ fontSize: "28px", color: "white" }} />
-            </Badge>
-          </Menu.Item>
+          <SubMenu
+            key="cart"
+            icon={
+              <Badge count={value} style={{ background: "red" }}>
+                <ShoppingCartOutlined style={{ fontSize: "28px", color: "white", margin: "0 auto" }} />
+              </Badge>
+            }
+            style={{ float: "right" }}
+            onClick={() => handleClick({ key: "cart" })}
+          >
+            {/*  */}
+            <>
+              {value > 0 ? (
+                <></>
+              ) : (
+                <Menu.Item disabled={true} key="No data" style={{ height: "150px" }}>
+                  <Empty />
+                </Menu.Item>
+              )}
+            </>
+          </SubMenu>
         </Menu>
       </Header>
       <Content style={style.siteLayoutStyle}>
@@ -112,7 +142,7 @@ const EmployeeLayout = ({ children, ...props }) => {
           </div>
         </menuContext.Provider>
       </Content>
-      <Footer description={<h3></h3>} />
+      <Footer description={"Shopping Cart"} style={{ background: "#7f96ad" }}></Footer>
     </Layout>
   );
 };

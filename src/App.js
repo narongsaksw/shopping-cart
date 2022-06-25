@@ -16,7 +16,6 @@ import EmployeeListPage from "./pages/EmployeeListPage";
 import PromotionPage from "./pages/PromotionPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import LogoutPage from "./pages/LogoutPage";
-import Cart from "./pages/cart";
 
 const App = () => {
   return (
@@ -45,9 +44,9 @@ const App = () => {
             <Route exact path="/logout" component={LogoutPage} />
           </AdminLayout>
         </Route>
-        <Route path={["/employee", "cart"]}>
+        <Route path={["/employee", "/cart"]}>
           <Route path="/employee/:group" component={EmployeeLayout} />
-          <Route path="/cart" component={Cart} />
+          <Route path="/cart" component={EmployeeLayout} />
         </Route>
         <Route path="/not-found" component={NotFoundPage} />
         <Redirect to="/not-found" />

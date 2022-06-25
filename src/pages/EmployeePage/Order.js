@@ -11,7 +11,7 @@ const Orders = ({ orderId, Allprice, order }) => {
   useEffect(async () => {
     // eslint-disable-next-line array-callback-return
     await order.map(async (item) => {
-      const orderOne = JSON.parse(item);
+      const orderOne = item;
       await check(orderOne.id, async (res) => {
         if (res === "Promotion") {
           functionGet(`${promotion_find_one}${orderOne.id}`, async (resf) => {
@@ -77,7 +77,7 @@ const Orders = ({ orderId, Allprice, order }) => {
 
   return (
     <>
-      <table style={{ width: "90%" }}>
+      <table id="order" style={{ width: "90%" }}>
         <thead>
           <tr>
             <th></th>

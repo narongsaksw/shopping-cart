@@ -22,5 +22,6 @@ export const tradingOrder = {
   dataValues: {
     price: Number,
     order_id: Number,
+    product_name: String,
   },
 };

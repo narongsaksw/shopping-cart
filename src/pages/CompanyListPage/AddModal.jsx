@@ -32,7 +32,6 @@ const AddModal = ({ isModalVisible, setModalVisible }) => {
       message.success("success");
       setModalVisible(false);
     } catch (error) {
-      console.log('error', error)
       message.error("error");
     }
     form.resetFields();

@@ -17,6 +17,7 @@ export const delete_promotion = ip + "/api/v1/promotion/delete/";
 //history
 export const getHistory = ip + "/api/v1/trading-orders";
 export const getHistoryByDate = ip + "/api/v1/transaction/find-by-date";
+export const getHistoryByDateV2 = ip + "/api/v2/transaction/find-by-date";
 export const getWarehouseAll = ip + "/api/v1/warehouse/findAll";
 const userId = JSON.parse(localStorage.getItem("userData"))?.id;
 export const getEmployeeList = ip + `/api/v1/act-membership/findAllMember/${userId}`;

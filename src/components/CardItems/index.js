@@ -17,7 +17,7 @@ const CardItrems = (props) => {
           </div>
         }
         onClick={(e) => {
-          props.setVisible(true);
+          props.setVisibleDrawer(true);
         }}
       >
         <Meta title={props.title} description={props.description} />

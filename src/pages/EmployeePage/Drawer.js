@@ -30,11 +30,11 @@ const Drawers = (props) => {
   useEffect(async () => {
     setValues(props.value.value_buy);
     if (props.value.id != null) {
-      await functionGet(`${warehouse_find_one}${props.value.id}`, async (res) => {
+      await functionGet(`${warehouse_find_one}${props.value.key}`, async (res) => {
         if (res.dataValues != null) {
           setValue(res.dataValues);
         } else {
-          await functionGet(`${promotion_find_one}${props.value.id}`, (res) => {
+          await functionGet(`${promotion_find_one}${props.value.key}`, (res) => {
             if (res.dataValues != null) {
               setValue(res.dataValues);
               itemPromotion(res.dataValues.key);
@@ -87,66 +87,42 @@ const Drawers = (props) => {
   };
 
   const submit = async () => {
-    let order_item_form = order_item;
-    order_item_form.id = value.key;
-    order_item_form.dataValues.value = values;
-    props.value.value_buy = values;
-    order_item_form.dataValues.price = parseInt(values) * parseInt(value.price);
-    order_item_form.dataValues.old_value = 0;
     let quoteForm = {
       quote_id: JSON.parse(localStorage.getItem("userData"))["quote"],
       type: "item",
       item_id: value.key,
       value: values,
-      price: order_item_form.dataValues.price,
+      price: parseInt(values) * parseInt(value.price),
     };
     await functionPost(`${addQuote}`, quoteForm, async (res) => {});
-    props.orderItems(order_item_form);
+    props.updateOrder();
     props.setVisible(false);
     setSumItem([]);
   };
 
   const update = async () => {
-    let order_item_form = order_item;
-    order_item_form.id = value.key;
-    order_item_form.dataValues.value = values;
-    props.value.value_buy = values;
-    order_item_form.dataValues.price = parseInt(values) * parseInt(value.price);
-    order_item_form.dataValues.old_value = 0;
     let quoteForm = {
       quote_id: JSON.parse(localStorage.getItem("userData"))["quote"],
       type: "item",
       item_id: value.key,
       value: values,
-      price: order_item_form.dataValues.price,
+      price: parseInt(values) * parseInt(value.price),
     };
     await functionPut(`${addQuote}`, quoteForm, async (res) => {});
-    props.orderItems(order_item_form);
+    props.updateOrder();
     props.setVisible(false);
     setSumItem([]);
   };
 
   const deleteQuoteItem = async () => {
-    let order_item_form = order_item;
-    order_item_form.id = value.key;
-    order_item_form.dataValues.value = values;
-    props.value.value_buy = values;
-    order_item_form.dataValues.price = parseInt(values) * parseInt(value.price);
-    order_item_form.dataValues.old_value = 0;
-    let quoteForm = {
-      quote_id: JSON.parse(localStorage.getItem("userData"))["quote"],
-      type: "item",
-      item_id: value.key,
-      value: values,
-      price: order_item_form.dataValues.price,
-    };
-    await functionDelete(`${deleteQuoteItemById}${value.key}`, quoteForm, async (res) => {});
-    props.orderItems(order_item_form);
+    await functionDelete(
+      `${deleteQuoteItemById}${JSON.parse(localStorage.getItem("userData")).quote}/item/${value.key}`,
+      async (res) => {},
+    );
+    props.updateOrder();
     props.setVisible(false);
     setSumItem([]);
   };
-
-  console.log("values ", values);
 
   return (
     <>

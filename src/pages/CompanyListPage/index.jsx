@@ -29,7 +29,6 @@ const CompanyListPage = () => {
       setCompanies(res)
       
     } catch (error) {
-      console.log('error', error);
       setCompanies([])
     }
   }
@@ -101,6 +100,7 @@ const CompanyListPage = () => {
         <Table
           dataSource={filterTable === null ? companies : filterTable}
           columns={columns}
+          rowKey="uuid"
         />
         <EditModal
           record={record}

@@ -1,10 +1,5 @@
 import React from "react";
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-  Redirect,
-} from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
 import "./App.css";
 
 //layouts
@@ -49,8 +44,9 @@ const App = () => {
             <Route exact path="/logout" component={LogoutPage} />
           </AdminLayout>
         </Route>
-        <Route path={["/employee"]}>
+        <Route path={["/employee", "/cart"]}>
           <Route path="/employee/:group" component={EmployeeLayout} />
+          <Route path="/cart" component={EmployeeLayout} />
         </Route>
         <Route path="/not-found" component={NotFoundPage} />
         <Redirect to="/not-found" />

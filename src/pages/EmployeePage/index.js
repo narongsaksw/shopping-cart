@@ -55,6 +55,8 @@ export const EmployeePage = ({
     setVisibleDrawer(status);
   };
 
+  console.log("promotion ", promotion);
+
   return (
     <Container>
       {promotion.length == 0 && product.length == 0 ? (
@@ -62,23 +64,23 @@ export const EmployeePage = ({
           <Empty description={false} />
         </div>
       ) : (
-        <div>
+        <div style={{ width: "100%" }}>
           <div>{promotion.length > 0 ? <Divider orientation="left">Promotion</Divider> : null}</div>
-          <>
+          <div style={{ width: "100%", display: "flex", flexWrap: "wrap" }}>
             {promotion.map((item, index) => (
               <CardItems
                 key={item.key}
                 image={item.image}
                 description={`price ${item.price} BATH`}
-                title={item.name}
+                title={item.title}
                 setVisibleDrawer={(event) => {
                   VisibleDrawer(item, event);
                 }}
               />
             ))}
-          </>
+          </div>
           <div>{product.length > 0 ? <Divider orientation="left">Product</Divider> : null}</div>
-          <>
+          <div style={{ width: "100%", display: "flex", flexWrap: "wrap" }}>
             {product.map((item, index) => (
               <CardItems
                 key={item.key}
@@ -90,7 +92,7 @@ export const EmployeePage = ({
                 }}
               />
             ))}
-          </>
+          </div>
         </div>
       )}
       <Drawer

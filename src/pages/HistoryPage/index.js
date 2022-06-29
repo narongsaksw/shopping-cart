@@ -240,7 +240,7 @@ const dataColume3 = [
     title: "ราคา(บาท)",
     dataIndex: "item.price",
     key: "price",
-    render: (price) => <Typography.Text>{price}</Typography.Text>,
+    render: (price, { item }) => <Typography.Text>{`${item?.price}`}</Typography.Text>,
   },
   {
     title: "จำนวนสินค้า",
@@ -383,8 +383,8 @@ const History = () => {
   };
 
   useEffect(() => {
-    getHistory(list);
     setCol(list);
+    getHistory(list);
   }, [startDate, endDate]);
 
   const handlePagination = (pagination) => {
@@ -420,7 +420,7 @@ const History = () => {
   }, [list]);
 
   const handleChange = async (value, object) => {
-    setList(object.key);
+    setList(parseInt(object.key));
     setCol(parseInt(object.key));
   };
 

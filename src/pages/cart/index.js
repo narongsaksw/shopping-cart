@@ -54,21 +54,23 @@ const Cart = ({ order, CancleCart, SubmitQuote, setVisibles, updateOrder, produc
                   marginBottom: 10,
                 }}
               >
-                {order.map((item, index) => (
-                  <CardProductComponent
-                    key={index}
-                    image={item.dataValues.image}
-                    value={item.dataValues.value}
-                    price={item.dataValues.price}
-                    name={item.dataValues.name}
-                    type={item.dataValues.type}
-                    style={{ width: "100%" }}
-                    color={"black"}
-                    onClick={(event) => {
-                      VisibleDrawer(item, true);
-                    }}
-                  />
-                ))}
+                <Space style={{ width: "100%" }} direction="vertical">
+                  {order.map((item, index) => (
+                    <CardProductComponent
+                      key={index}
+                      image={item.dataValues.image}
+                      value={item.dataValues.value}
+                      price={item.dataValues.price}
+                      name={item.dataValues.name}
+                      type={item.dataValues.type}
+                      style={{ width: "100%" }}
+                      color={"black"}
+                      onClick={(event) => {
+                        VisibleDrawer(item, true);
+                      }}
+                    />
+                  ))}
+                </Space>
               </div>
             ) : (
               <Empty />
